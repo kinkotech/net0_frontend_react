@@ -1,0 +1,66 @@
+import React, { useState } from 'react'
+import {
+	LaptopOutlined,
+	NotificationOutlined,
+	UserOutlined,
+} from '@ant-design/icons'
+import type { MenuProps } from 'antd'
+import { Layout, Menu, theme } from 'antd'
+import { MainLayout } from "@/layout/MainLayout";
+import { useNavigate, useRoutes } from 'react-router-dom'
+// import routes from '@/routes/index'
+const { Header, Content, Sider } = Layout
+
+
+const titleMenu: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
+	key,
+	label: `标题 ${key}`,
+}))
+
+const siderMenu: MenuProps['items'] = [
+	{
+		key: 'home',
+		icon: <UserOutlined />,
+		label: '人员管理',
+	},
+	{
+		key: 'about',
+		icon: <NotificationOutlined />,
+		label: '关于系统',
+	},
+	{
+		key: 'info',
+		icon: <LaptopOutlined />,
+		label: '信息管理',
+		children: [
+			{
+				key: 'info-detail',
+				label: '信息详情',
+			},
+			{
+				key: 'info-look',
+				label: '信息查询',
+			},
+		],
+	},
+	{
+		key: 'statistics',
+		icon: <NotificationOutlined />,
+		label: '数量统计',
+	},
+]
+
+const Foot: React.FC = () => {
+	const {
+		token: { colorBgContainer },
+	} = theme.useToken()
+
+	return (
+		<MainLayout>
+			<div>213</div>
+		</MainLayout>
+	)
+}
+
+export default Foot;
+
