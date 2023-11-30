@@ -14,7 +14,7 @@ function Home() {
     let [count, setCount] = useState(0);
 
     useEffect(() => {
-        console.log(1)
+        console.log(11)
         getCarbonByDay()
     })
 
