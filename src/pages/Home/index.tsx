@@ -6,6 +6,7 @@ import {
     Link,
 } from "react-router-dom";
 import * as echarts from 'echarts';
+import api from '@/api/index';
 import './index.scss'
 
 
@@ -13,13 +14,15 @@ function Home() {
     let [count, setCount] = useState(0);
 
     useEffect(() => {
-        
+        console.log(1)
+        getCarbonByDay()
     })
 
-    function addCount() {
-        setCount(count++)
+    async function getCarbonByDay() {
+        await api.GetCarbonByDay('2023-11-30').then(res=>{
+            console.log(res)
+        })
     }
-
 
     return (
         <MainLayout>
