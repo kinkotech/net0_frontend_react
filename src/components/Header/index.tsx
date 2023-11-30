@@ -13,20 +13,20 @@ const { Header, Content, Sider } = Layout
 const menuList = [{
 	key: 0,
 	label: '碳排放预测',
-	keyPath: '/'
+	path: '/'
 },{
 	key: 1,
 	label: '碳足迹评测',
-	keyPath: '/foot'
+	path: '/foot'
 },{
 	key: 2,
 	label: '碳减排策略',
-	keyPath: '/reduction'
+	path: '/reduction'
 }]
 const titleMenu: MenuProps['items'] = menuList.map((item, index) => ({
 	key: item.key,
 	label: `${item.label}`,
-	keyPath: `${item.keyPath}`
+	path: `${item.path}`
 }))
 console.log(titleMenu,'titleMenu')
 
@@ -39,13 +39,12 @@ const HeaderPage: React.FC = () => {
 	// 面包屑名称
 	const [breadcrumbName, setBreadcrumbName] = useState('home')
 	// 点击菜单
-	const handleSiderClick: MenuProps['onClick'] = ({key, keyPath}) => {
-		console.log(key, keyPath)
-		// const name = keyPath.reverse().join('/') || ''
+	const handleSiderClick: MenuProps['onClick'] = ({key}) => {
+		// const name = path.reverse().join('/') || ''
 		// setBreadcrumbName(name)
 		// if (key !== 'home' && key !== 'about') return
 		// 路由跳转
-		let path = menuList[Number(key)].keyPath
+		let path = menuList[Number(key)].path
 		navigate(path, {
 			replace: false,
 			state: {
