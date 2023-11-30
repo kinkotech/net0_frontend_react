@@ -1,0 +1,35 @@
+name: Build And Deploy To Aliyun ECS
+
+on:                               
+  pull_request:
+    branches: [ main ]
+    types:
+      - closed
+
+jobs:                             
+  build-and-deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest        
+    steps:                        
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.20.2' 
+
+    - name: Install dependencies
+      run: npm install --force
+
+    - name: Build static
+      run: npm run build
+
+    - name: Deploy to net0backend server        
+      uses: easingthemes/ssh-deploy@v3.0.0      
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.BACKEND_SSH_KEY }} 
+        ARGS: "-avzr --delete"
+        SOURCE: "dist/*"
+        REMOTE_HOST: ${{ secrets.BACKEND_HOST }}
+        REMOTE_USER: ${{ secrets.BACKEND_USER }}
+        TARGET: "/var/www/net0_react/"
