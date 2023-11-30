@@ -35,9 +35,9 @@ service.interceptors.request.use(
 service.interceptors.response.use(
 	response => {
 		const res = response.data;
-		if (res.code != 200) {
+		if (res.code !== 200) {
 			// 未登录
-			if (res.code == 401) {
+			if (res.code === 401) {
 				// store.commit('SET_TOKEN','');
 				// location.href = `${location.origin}/#/login`;
 			} else {
