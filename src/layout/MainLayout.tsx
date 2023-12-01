@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./MainLayout.module.css";
 import Header from "@/components/Header";
  
 //必须使用React.ReactNode定义props类型

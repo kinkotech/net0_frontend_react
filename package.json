@@ -10,6 +10,7 @@
     "@types/node": "^16.18.60",
     "@types/react": "^18.2.35",
     "@types/react-dom": "^18.2.14",
+    "ahooks": "^3.7.8",
     "antd": "^5.11.0",
     "axios": "^1.6.2",
     "echarts": "^5.4.3",
