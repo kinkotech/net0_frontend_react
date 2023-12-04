@@ -20,6 +20,7 @@ import 'antd/dist/reset.css';
 
 // 引入全局css
 import '@/assets/scss/style.scss';
+import '@/assets/scss/index.scss';
 
 dayjs.locale('zh-cn');
 

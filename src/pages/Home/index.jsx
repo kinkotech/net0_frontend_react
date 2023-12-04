@@ -30,10 +30,15 @@ function Home() {
             <div className='home d-flex flex-column w-100 h-100'>
                 {/* 上 */}
                 <div className='d-flex' style={{flex: 1.3,marginBottom: '.2rem'}}>
-                    <div style={{flex: 1}}>
-                        <LeftTop/>1
+                    <div className='d-flex flex-column' style={{flex: 1}}>
+                        <div style={{height: '2.5rem'}}>
+                            <LeftTop/>    
+                        </div>
+                        <div className='border' style={{flex: 1}}>
+                            <LeftCenter/>
+                        </div>
                     </div>
-                    <div className='border' style={{flex: 2,margin: '0 .2rem'}}>
+                    <div style={{flex: 2,margin: '0 .2rem'}}>
                         <CenterTop/>2
                     </div>
                     <div className='border flex-1'>

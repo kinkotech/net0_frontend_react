@@ -1,0 +1,19 @@
+.kiko-progress {
+    &-name {
+    
+    }
+    &-line {
+        flex: 2;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.4) !important;
+        border-radius: 100px;
+        overflow: hidden;
+        &-con {
+            height: 100%;
+            border-radius: 100px;
+        }
+    }
+    &-value {
+        text-align: right;
+    }
+}

@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import * as echarts from 'echarts';
 import api from '@/api/index';
 
 
 function LeftBottom() {
+	
 	let [date, setDate] = useState('2023-12-01');
 	let [unit, setUnit] = useState('');
 	let [list, setList] = useState([]);
+	const v = useMemo(() => {
+		return []
+	})
+	// let list = useRef([])
 	let [total, setTotal] = useState(0);
 
 	function init() {
@@ -105,36 +110,36 @@ function LeftBottom() {
 							length: 3
 						}
 					},
-					itemStyle: {
-						borderRadius: 8
-					},
 					data: list
 				}
 			]
 		});
 	}
-	
 
-	async function getEnergyTypeByDay () {
+	async function getEnergyTypeByDay (date) {
 		await api.GetEnergyTypeByDay(date).then(res=>{
 			let arr = [];
-			
 			setTotal(res.total);
 			setUnit(res.unit);
 			res.key.forEach((item, i) => {
+				console.log(1)
 				arr.push({
 					name: item,
 					value: res.value[i]
 				})
 			})
-			setList(arr);
+			// 异步执行
+			setList((preState) => {
+				list = [...arr];
+				init();
+			});
 		})
 	}
 
 	useEffect(() => {
-		getEnergyTypeByDay()
-		init()
-    })
+		getEnergyTypeByDay(date)
+		
+    },[date])
 
 
     return (
