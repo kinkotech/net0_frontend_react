@@ -64,9 +64,9 @@ function RightTop({nodeText}) {
 					</div>
 					<ul className="ul-list w-100">
 						{
-							list.map(item => {
+							list.map((item, i) => {
 								return (
-									<li>
+									<li key={i}>
 										<div className="left">
 											<span className="circle"></span>
 											<span className="text">{ item.name }</span>
