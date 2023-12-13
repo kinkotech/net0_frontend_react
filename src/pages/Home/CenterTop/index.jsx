@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import api from '@/api/index';
-import G6 from '@antv/g6'
+import G6 from '@antv/g6';
+import { DatePicker } from 'antd';
+import dayjs from 'dayjs';
+import {getNowDate} from '@/utils/utils';
 
 
-function CenterTop() {
+function CenterTop(props) {
 	let [serverId, setServerId] = useState();
 	let [list, setList] = useState([]);
 	let [graph, setGraph] = useState(null);
 
+	const dateFormat = 'YYYY-MM-DD';
+	let defaultDate = getNowDate();
+
 	useEffect(() => {
+		props.getDate(defaultDate)
 		getGraph(serverId)
     }, [serverId])
 
@@ -208,7 +215,6 @@ function CenterTop() {
 			}                
 			return {}
 		});
-		console.log(list,'list')
 		graph.data(list);
 		graph.render();
 
@@ -218,7 +224,7 @@ function CenterTop() {
 			model.fy = e.y;
 		}
 		graph.on('node:dragstart', (e) => {
-			this.graph.layout();
+			graph.layout();
 			refreshDragedNodePosition(e);
 		});
 		graph.on('node:drag', (e) => {
@@ -236,12 +242,12 @@ function CenterTop() {
 			if (level == 1) return;
 			if (!child) return;
 
-			// let nodes = {
-			// 	id,
-			// 	nodeText,
-			// 	level
-			// }
-			// this.$emit('node', nodes);
+			let nodes = {
+				id,
+				nodeText,
+				level
+			}
+			props.getNodes(nodes);
 		});
 
 		if (typeof window !== 'undefined')
@@ -254,28 +260,31 @@ function CenterTop() {
 		setGraph(() => graph)
 	}
 
-	const init = function() {
-
-	}
-
 	const getGraph = async function(serverId) {
 		let params = {
 			server_id: serverId,
 		}
 		await api.Graph(params).then(res=>{
-			console.log(res)
 			setList(() => {
 				list = res;
 				getCarbonMap()
-				init()
 			})
 		})
 	}
+
+	const onChange = (date, dateString) => {
+		props.getDate(dateString)
+	};
 
 
     return (
 		<div>
 			<div id='carbonMapBox'></div>
+			<DatePicker 
+				onChange={onChange}
+				defaultValue={dayjs(defaultDate, dateFormat)}
+				format={dateFormat}
+				className='w-100 date-white'/>
 		</div>
 	)
 }

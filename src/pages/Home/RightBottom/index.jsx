@@ -3,9 +3,7 @@ import * as echarts from 'echarts';
 import api from '@/api/index';
 
 
-function RightBottom() {
-	
-	let [date, setDate] = useState('2023-12-04');
+function RightBottom({date}) {
 	let [server_id, setServer_id] = useState();
 	let [list, setList] = useState([]);
 	let [xAxisList, setXAxisList] = useState([]);
@@ -109,8 +107,9 @@ function RightBottom() {
 	}
 
 	useEffect(() => {
-		getEquipmentByDay(server_id, date)
-		
+		if (date) {
+			getEquipmentByDay(server_id, date)
+		}
     },[server_id, date])
 
 

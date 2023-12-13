@@ -1,8 +1,9 @@
 .left-top {
+    font-size: .16rem;
     &-center {
         padding-top: .32rem;
         height: .8rem;
-        font-size: 34px;
+        font-size: .45rem;
         font-weight: 600;
     }
     &-bottom {
@@ -12,6 +13,16 @@
             width: 49%;
             padding: .1rem 0;
             text-align: center;
+            .descend {
+                color: #EF8F8F;
+            }
+            .rise {
+                color: #9AE4A7;
+            }
         }
     }
+}
+
+.ant-statistic-content-suffix {
+    font-size: 60% !important;
 }

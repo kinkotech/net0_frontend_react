@@ -3,8 +3,7 @@ import * as echarts from 'echarts';
 import api from '@/api/index';
 import { Select } from 'antd';
 
-function CenterBottom() {
-	let [selectDate, setSelectDate] = useState('2023-12-06'); // 选择的日期
+function CenterBottom({selectDate}) {
 	let [type, setType] = useState('24小时');
 	let [dataType, setDataType] = useState('carbon');
 	let [intervalX, setIntervalX] = useState(2); // x轴间距是否隔开
@@ -25,7 +24,9 @@ function CenterBottom() {
 	})
 
 	useEffect(() => {
-		getPredict(selectDate, type, dataType);
+		if(selectDate) {
+			getPredict(selectDate, type, dataType);
+		}
     }, [selectDate, type, dataType])
 
 

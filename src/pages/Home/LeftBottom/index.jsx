@@ -1,20 +1,11 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as echarts from 'echarts';
 import api from '@/api/index';
+import './index.scss';
 
+function LeftBottom({date}) {
 
-function LeftBottom() {
-	
-	let [date, setDate] = useState('2023-12-01');
-	let [unit, setUnit] = useState('');
-	let [list, setList] = useState([]);
-	const v = useMemo(() => {
-		return []
-	})
-	// let list = useRef([])
-	let [total, setTotal] = useState(0);
-
-	function init() {
+	function init(total, unit, list) {
 		// 基于准备好的dom，初始化echarts实例
 		var myChart = echarts.init(document.getElementById('leftBottomMain'));
 		// 绘制图表
@@ -119,31 +110,28 @@ function LeftBottom() {
 	async function getEnergyTypeByDay (date) {
 		await api.GetEnergyTypeByDay(date).then(res=>{
 			let arr = [];
-			setTotal(res.total);
-			setUnit(res.unit);
 			res.key.forEach((item, i) => {
-				console.log(1)
 				arr.push({
 					name: item,
 					value: res.value[i]
 				})
 			})
-			// 异步执行
-			setList((preState) => {
-				list = [...arr];
-				init();
-			});
+			init(res.total, res.unit, arr);
 		})
 	}
 
 	useEffect(() => {
-		getEnergyTypeByDay(date)
+		if (date) {
+			getEnergyTypeByDay(date)
+		}
 		
     },[date])
 
-
     return (
-		<div id='leftBottomMain' style={{width: '100%',height: '100%'}}></div>
+		<div className='left-bottom h-100 d-flex flex-column'>
+			<div className='left-bottom-title'>园区碳排放源类型占比（天）</div>
+			<div className='flex-1' id='leftBottomMain' style={{width: '100%',height: '100%'}}></div>
+		</div>
 	)
 }
 

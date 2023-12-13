@@ -2,7 +2,6 @@ import ReactDOM from 'react-dom/client';
 import Routes from '@/routes';
 import { RouterProvider } from "react-router-dom";
 import { ConfigProvider } from 'antd';
-import * as echarts from 'echarts';
 
 // 语言汉化
 import zhCN from 'antd/locale/zh_CN';
@@ -27,6 +26,7 @@ dayjs.locale('zh-cn');
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
 );
+
 root.render(
 	// <React.StrictMode>
 		<ConfigProvider locale={zhCN}>

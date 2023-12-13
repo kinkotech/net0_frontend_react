@@ -14,7 +14,7 @@ export function getNowDate(str){
     if (day < 10) {
         day = "0" + day;
     }
-    var nowDate = year + "/" + month + "/" + day;
+    var nowDate = year + "-" + month + "-" + day;
     return nowDate
 }
 

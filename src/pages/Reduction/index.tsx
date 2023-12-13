@@ -7,8 +7,6 @@ import {
 import type { MenuProps } from 'antd'
 import { Layout, Menu, theme } from 'antd'
 import { MainLayout } from "@/layout/MainLayout"
-import { useNavigate, useRoutes } from 'react-router-dom'
-// import routes from '@/routes/index'
 const { Header, Content, Sider } = Layout
 
 const siderMenu: MenuProps['items'] = [

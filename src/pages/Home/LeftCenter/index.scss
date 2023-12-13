@@ -1,0 +1,11 @@
+.left-center {
+    padding: .2rem;
+    font-size: .16rem;
+    &-list {
+        height: 80%;
+        overflow: auto;
+        .kiko-progress {
+            margin-top: .2rem;
+        }
+    }
+}

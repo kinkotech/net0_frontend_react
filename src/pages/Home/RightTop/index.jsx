@@ -3,14 +3,15 @@ import api from '@/api/index';
 import './index.scss';
 
 
-function RightTop({nodeText}) {
-	let [date, setDate] = useState('2023-12-04');
+function RightTop({nodeText, date}) {
 	let [serverId, setServerId] = useState();
 	let [list, setList] = useState([]);
 	let [carbonUnit, setCarbonUnit] = useState('');
 
 	useEffect(() => {
-		getServerByDay(date, serverId)
+		if(date) {
+			getServerByDay(date, serverId)
+		}
 	}, [date, serverId])
 
 	const getServerByDay = async function(date, server_id) {
@@ -20,9 +21,7 @@ function RightTop({nodeText}) {
 			unit: carbonUnit
 		}
 		await api.GetServerByDay(params).then(res=>{
-			console.log(res)
 			setList(() => res.data)
-			
 		})
 	}
 
