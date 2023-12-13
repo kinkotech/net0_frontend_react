@@ -2,6 +2,9 @@
     position: relative;
 }
 .kiko-date {
+    position: absolute;
+    bottom: .05rem;
+    left: 0;
     input {
         text-align: center;
         color: #ccc !important;

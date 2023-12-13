@@ -31,9 +31,9 @@ function Home() {
     return (
         <datav.FullScreenContainer>
             <MainLayout>
-                <div className='home d-flex flex-column w-100 h-100'>
+                <div className='home d-flex flex-column w-100' >
                     {/* 上 */}
-                    <div className='d-flex' style={{flex: 1.3,marginBottom: '.2rem'}}>
+                    <div className='d-flex' style={{height: '500px',marginBottom: '.2rem'}}>
                         <div className='d-flex flex-column' style={{flex: 1}}>
                             <div style={{height: '2.5rem'}}>
                                 <LeftTop date={date}/>    
@@ -51,7 +51,7 @@ function Home() {
                         </div>
                     </div>
                     {/* 下 */}
-                    <div className='d-flex flex-1'>
+                    <div className='d-flex' style={{height: '350px'}}>
                         <div className='border flex-1'>
                             <LeftBottom date={date} node={node}/>
                         </div>

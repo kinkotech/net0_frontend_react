@@ -51,19 +51,38 @@ function CenterBottom({node, selectDate}) {
 
 	useEffect(() => {
 		if(selectDate) {
-			dataType === 'carbon' ? getPredict(selectDate, type, dataType, carbonUnit) : getPredict(selectDate, type, dataType, unit);
+			dataType === 'carbon' ? getPredict(selectDate, type, dataType, carbonUnit, node.id) : getPredict(selectDate, type, dataType, unit, node.id);
 		}
-    }, [selectDate, type, dataType, carbonUnit, unit])
+    }, [selectDate, type, dataType, carbonUnit, unit, node])
 
 
 	// 接口获取数据
-	const getPredict = async function(date, type, dataType, unit) {
-		let params = {
-			day_str: date,
-			type: type == '24小时' ? '24小时' : 7,
-			dataType,
-			park_id: 1,
-			unit
+	const getPredict = async function(date, type, dataType, unit, server_id) {
+		// let params = {
+		// 	day_str: date,
+		// 	type: type == '24小时' ? '24小时' : 7,
+		// 	dataType,
+		// 	park_id: 1,
+		// 	unit
+		// }
+		let params = {}
+		if (server_id) {
+			params = {
+				day_str: date,
+				type: type=='24小时' ? 24 : type,
+				dataType,
+				server_id,
+				park_id: 1,
+				unit
+			}
+		} else {
+			params = {
+				day_str: date,
+				type: type==1 ? 24 : type,
+				dataType,
+				park_id: 1,
+				unit
+			}
 		}
 		const res = await api.GetPredict(params);
 		let obj = {};
