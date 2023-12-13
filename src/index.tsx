@@ -14,6 +14,9 @@ import { Provider } from 'react-redux';
 // 适配flex
 import '@/common/flexible.js';
 
+// icon-park
+import '@/common/iconpark_icons.js';
+
 // antd
 import 'antd/dist/reset.css';
 

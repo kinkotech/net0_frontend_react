@@ -4,6 +4,7 @@ import G6 from '@antv/g6';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import {getNowDate} from '@/utils/utils';
+import './index.scss';
 
 
 function CenterTop(props) {
@@ -16,17 +17,15 @@ function CenterTop(props) {
 
 	useEffect(() => {
 		props.getDate(defaultDate);
-		let nodes = {
-			id: 'a00000000000000',
-			nodeText: '电试院',
-			level: 1
-		}
-		props.getNodes(nodes);
+		// 由于图表需要获取数据，因此会将初始化代码放入useEffect中进行更新，这造成了重复的初始化新的图表对象，并创建画布进行二次渲染
+		graph && graph.destroy();
 		getGraph(serverId)
+		
     }, [serverId])
 
 	const getCarbonMap = function() {
 		const container = document.getElementById('carbonMapBox');
+		console.log(container,'container')
 
 		if (!container) return;
 
@@ -221,8 +220,10 @@ function CenterTop(props) {
 			}                
 			return {}
 		});
+		graph.paint();
 		graph.data(list);
 		graph.render();
+		
 
 		function refreshDragedNodePosition(e) {
 			const model = e.item.get('model');
@@ -253,6 +254,7 @@ function CenterTop(props) {
 				nodeText,
 				level
 			}
+			setServerId(id)
 			props.getNodes(nodes);
 		});
 
@@ -278,19 +280,37 @@ function CenterTop(props) {
 		})
 	}
 
+	// 时间切换
 	const onChange = (date, dateString) => {
 		props.getDate(dateString)
 	};
 
+	// 刷新
+	const refresh = function() {
+		setServerId('a00000000000000');
+		let nodes = {
+			id: 'a00000000000000',
+			nodeText: '电试院',
+			level: 1
+		}
+		props.getNodes(nodes);
+	}
+
 
     return (
-		<div>
+		<div className='center-top'>
 			<div id='carbonMapBox'></div>
+			<div className="refresh-icon pointer" onClick={refresh}>
+				<iconpark-icon size="100%" color="#0BCFC8" name="refresh-9mhn0n62"></iconpark-icon>
+			</div>
 			<DatePicker 
 				onChange={onChange}
 				defaultValue={dayjs(defaultDate, dateFormat)}
 				format={dateFormat}
-				className='w-100 date-white'/>
+				allowClear={false}
+				size='large'
+				superNextIcon
+				className='w-100 kiko-date'/>
 		</div>
 	)
 }

@@ -1,0 +1,24 @@
+.center-top {
+    position: relative;
+}
+.kiko-date {
+    input {
+        text-align: center;
+        color: #ccc !important;
+        font-size: .22rem !important;
+    }
+    .ant-picker-suffix {
+        display: none;
+    }
+}
+.ant-picker {
+    background: #2B2B2B;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.refresh-icon {
+    width: .3rem;
+    height: .3rem;
+    position: absolute;
+    top: .1rem;
+    left: .25rem;
+}

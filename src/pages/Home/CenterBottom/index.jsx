@@ -516,12 +516,12 @@ function CenterBottom({node, selectDate}) {
 					<Select
 						className='kinko-selection'
 						defaultValue={selectValue}
-						style={{ width: 120 }}
+						style={{ width: 100 }}
 						onChange={handleChange}
 						options={selectList}
 						/>
 					<div>预测</div>
-					<SelectNode nodeName={node.nodeText} level={node.level}/>
+					<SelectNode nodeName={node.nodeText || '电试院'} level={node.level || 1}/>
 					{/* // <Popver :con="popverCon"/> */}
 					{/* <Popver :con="popverCon2"/> */}
 				</span>
