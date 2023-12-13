@@ -15,7 +15,13 @@ function CenterTop(props) {
 	let defaultDate = getNowDate();
 
 	useEffect(() => {
-		props.getDate(defaultDate)
+		props.getDate(defaultDate);
+		let nodes = {
+			id: 'a00000000000000',
+			nodeText: '电试院',
+			level: 1
+		}
+		props.getNodes(nodes);
 		getGraph(serverId)
     }, [serverId])
 

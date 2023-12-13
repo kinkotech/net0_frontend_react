@@ -1,0 +1,51 @@
+.node-name {
+    display: flex;
+    align-items: center;
+    margin-left: .1rem;
+    .circle {
+        display: flex;
+        margin-right: .08rem;
+        margin-left: .1rem;
+        width: .19rem;
+        height: .19rem;
+        padding: .04rem;
+        border-radius: 50%;
+        
+        span {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+        &.color1 {
+            border: 2px solid #0BCFC8;
+            span {
+                background: #0BCFC8;
+            }
+        }
+        &.color2 {
+            border: 2px solid #E3769E;
+            span {
+                background: #E3769E;
+            }
+        }
+        &.color3 {
+            border: 2px solid #BDB4FE;
+            span {
+                background: #BDB4FE;
+            }
+        }
+        &.color4 {
+            border: 2px solid #FDDCAB;
+            span {
+                background: #FDDCAB;
+            }
+        }
+        &.color5 {
+            border: 2px solid #fff;
+            span {
+                background: #fff;
+            }
+        }
+    }
+}

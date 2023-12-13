@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from '@/api/index';
+import SelectNode from '@/components/SelectNode';
 import './index.scss';
 
 
-function RightTop({nodeText, date}) {
+function RightTop({node, date}) {
+
 	let [serverId, setServerId] = useState();
 	let [list, setList] = useState([]);
 	let [carbonUnit, setCarbonUnit] = useState('');
@@ -12,7 +14,7 @@ function RightTop({nodeText, date}) {
 		if(date) {
 			getServerByDay(date, serverId)
 		}
-	}, [date, serverId])
+	}, [date, serverId, node])
 
 	const getServerByDay = async function(date, server_id) {
 		let params = {
@@ -35,12 +37,12 @@ function RightTop({nodeText, date}) {
 				<div className="top">
 					<div className="cursor" onClick={back}>
 						{
-							nodeText != '电试院' &&
+							node.nodeText != '电试院' &&
 							<span className="arrar">&lt;</span>
 						}
 						<span className="text1">选中节点：</span>
 					</div>
-					{/* <SelectNode :nodeName="nodeText" :level="level"/> */}
+					<SelectNode nodeName={node.nodeText} level={node.level}/>
 				</div>
 				<div className="bottom w-100">
 					<div className="header">

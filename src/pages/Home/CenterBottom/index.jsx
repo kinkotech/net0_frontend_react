@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import * as echarts from 'echarts';
 import api from '@/api/index';
 import { Select } from 'antd';
+import SelectNode from '@/components/SelectNode';
+import './index.scss';
 
-function CenterBottom({selectDate}) {
+function CenterBottom({node, selectDate}) {
 	let [type, setType] = useState('24小时');
 	let [dataType, setDataType] = useState('carbon');
 	let [intervalX, setIntervalX] = useState(2); // x轴间距是否隔开
 	let [selectValue, setSelectValue] = useState('24小时'); // 下拉框数据
 	// select list
-	let [selectList, setSelectList] = useState(
+	let [selectList] = useState(
 		[
 			{ value: '24小时', label: '24小时' },
 			{ value: '7天', label: '7天' }
@@ -22,22 +24,46 @@ function CenterBottom({selectDate}) {
 		prediction: [], // 预测值
 		reality: [] // 实际值
 	})
+	let [tab, setTab] = useState([
+		{
+			text: '碳排放',
+			type: 'carbon',
+			isActive: true
+		},
+		{
+			text: '能耗',
+			type: 'usage',
+			isActive: false
+		}
+	])
+	// 碳排放单位
+	let [carbonUnit, setCarbonUnit] = useState('kgCO₂e');
+	let [carbonUnitList] = useState([
+		{ value: 'kgCO₂e', label: 'kgCO₂e' },
+		{ value: 'tCO₂e', label: 'tCO₂e' }
+	]);
+	// 能耗单位
+	let [unit, setUnit] = useState('kWh');
+	let [unitList] = useState([
+		{ value: 'kWh', label: 'kWh' },
+		{ value: 'MWh', label: 'MWh' }
+	]);
 
 	useEffect(() => {
 		if(selectDate) {
-			getPredict(selectDate, type, dataType);
+			dataType === 'carbon' ? getPredict(selectDate, type, dataType, carbonUnit) : getPredict(selectDate, type, dataType, unit);
 		}
-    }, [selectDate, type, dataType])
+    }, [selectDate, type, dataType, carbonUnit, unit])
 
 
 	// 接口获取数据
-	const getPredict = async function(date, type, dataType) {
+	const getPredict = async function(date, type, dataType, unit) {
 		let params = {
 			day_str: date,
 			type: type == '24小时' ? '24小时' : 7,
 			dataType,
 			park_id: 1,
-			unit: 'kgCO₂e'
+			unit
 		}
 		const res = await api.GetPredict(params);
 		let obj = {};
@@ -450,17 +476,103 @@ function CenterBottom({selectDate}) {
 		return intersectionPointList;
 	}
 
+	// 能耗/碳排放
+	const changeTab = function(e, type, i) {
+		let arr = tab;
+		arr.forEach((item, index) => {
+			item.isActive = false
+			if (i == index) {
+				item.isActive = true;
+			}
+		})
+		setDataType(type);
+		type === 'carbon' ? setCarbonUnit('kgCO₂e') : setUnit('kWh');
+		setTab(arr)
+	}
+
+	// 碳排放单位切换
+	const changeCarbonUnit = function(value) {
+		if (dataType == 'usage') {
+			setUnit(value)
+		} else {
+			setCarbonUnit(value)
+		}
+	}
+
+	// 能耗单位切换
+	const changeUnit = function(value) {
+		if (dataType == 'usage') {
+			setUnit(value)
+		} else {
+			setCarbonUnit(value)
+		}
+	}
 
     return (
-		<div className='d-flex flex-column w-100 h-100'>
-				<Select
-					className='kinko-selection-white'
-					defaultValue={selectValue}
-					style={{ width: 120 }}
-					onChange={handleChange}
-					options={selectList}
-					/>
-			<div className='flex-1 h-100' id='centerBottomMain'></div>
+		<div className="container border w-100 h-100 d-flex flex-column">
+			<div className="content-header w-100 d-flex">
+				<span className="content-title fw-600 d-flex">
+					<div>未来</div>
+					<Select
+						className='kinko-selection'
+						defaultValue={selectValue}
+						style={{ width: 120 }}
+						onChange={handleChange}
+						options={selectList}
+						/>
+					<div>预测</div>
+					<SelectNode nodeName={node.nodeText} level={node.level}/>
+					{/* // <Popver :con="popverCon"/> */}
+					{/* <Popver :con="popverCon2"/> */}
+				</span>
+				<div className="tabs">
+					<div className="tabs-con right-tabs">
+						{
+							tab.map((item, index) => {
+								return (
+									<div className={item.isActive ? 'item active' : 'item'} key={index} onClick={(e)=> changeTab(e, item.type, index)}>{item.text}</div>
+								)
+							})
+						}
+					</div>
+					{
+						dataType == 'carbon' &&
+						<Select
+							className='kinko-selection'
+							defaultValue={carbonUnit}
+							style={{ width: 120,marginLeft: '.5rem' }}
+							onChange={changeCarbonUnit}
+							options={carbonUnitList}
+							/>
+					}
+					{
+						dataType == 'usage' &&
+						<Select
+							className='kinko-selection'
+							defaultValue={unit}
+							style={{ width: 120,marginLeft: '.5rem' }}
+							onChange={changeUnit}
+							options={unitList}
+							/>
+					}
+				</div>
+			</div>
+			<div className='flex-1' id='centerBottomMain'></div>
+			<div className="legend w-100">
+				<div className="con"><span className="color1"></span>实际值</div>
+				<div className="con"><span className="color2"></span>预测值</div>
+			</div>
+			<div className="date w-100">
+				<div className="d left">
+					<div className="text">{ beforeOneDay }</div>
+				</div>
+				<div className="d center">
+					{/* <div className="text">{{ parseInt(selectDate.split('/')[1]) }}/{{ parseInt(selectDate.split('/')[2]) }}</div> */}
+				</div>
+				<div className="d right">
+					<div className="text">{ afterOneDay }</div>
+				</div>
+			</div>
 		</div>
 	)
 }
