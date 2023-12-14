@@ -1,5 +1,21 @@
 .left-top {
     font-size: .16rem;
+    &-top {
+        align-items: center;
+        .full-screen-icon {
+			border: 1px solid rgba(255, 255, 255, .3);
+			width: .4rem;
+			height: .4rem;
+			padding: .03rem;
+			border-radius: .08rem;
+			margin-left: .2rem;
+			cursor: pointer;
+		}
+		.now-date {
+			margin-left: .2rem;
+			font-size: .24rem;
+		}
+    }
     &-center {
         padding-top: .32rem;
         height: .8rem;

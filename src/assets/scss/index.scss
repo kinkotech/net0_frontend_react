@@ -145,3 +145,10 @@
 .ant-select-single.ant-select-open .ant-select-selection-item {
 	color: #fff !important;
 }
+
+// disabled
+.ant-select-disabled {
+	.ant-select-selection-item {
+		color: #ccc;
+	}
+}

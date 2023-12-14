@@ -58,13 +58,6 @@ function CenterBottom({node, selectDate}) {
 
 	// 接口获取数据
 	const getPredict = async function(date, type, dataType, unit, server_id) {
-		// let params = {
-		// 	day_str: date,
-		// 	type: type == '24小时' ? '24小时' : 7,
-		// 	dataType,
-		// 	park_id: 1,
-		// 	unit
-		// }
 		let params = {}
 		if (server_id) {
 			params = {
@@ -217,15 +210,13 @@ function CenterBottom({node, selectDate}) {
 						origin: 'end',
 					},
 					itemStyle: {
-						normal: {
-							color: 'rgba(240,68,56,.6)',
-							lineStyle: {
-								color: "#36BFFA",
-								type: 'dashed',
-								width: 2
-							},
-						},
+						color: 'rgba(240,68,56,.6)'
 					},
+					lineStyle: {
+						color: "#36BFFA",
+						type: 'dashed',
+						width: 2
+					}
 				},
 				// 第二条线
 				{
@@ -241,14 +232,12 @@ function CenterBottom({node, selectDate}) {
 						origin: 'end',
 					},
 					itemStyle: {
-						normal: {
-							color: 'rgba(50,213,131,.6)',
-							lineStyle: {
-								color: "#36BFFA",
-								width: 2
-							},
-						},
+						color: 'rgba(50,213,131,.6)'
 					},
+					lineStyle: {
+						color: "#36BFFA",
+						width: 2
+					}
 				},
 				{
 					type:'line',
@@ -259,14 +248,10 @@ function CenterBottom({node, selectDate}) {
 							{coord:[date1 && (date1.length-1).toString(), 0]},
 							{coord:[date1 && (date1.length-1).toString(), maxValue]}
 						]],
-						itemStyle: {
-							normal: {
-								lineStyle: {
-									width: 1,
-									color: '#DFDFDD',
-								}
-							}
-						},
+						lineStyle: {
+							width: 1,
+							color: '#DFDFDD',
+						}
 					}
 				}
 			]
@@ -319,14 +304,10 @@ function CenterBottom({node, selectDate}) {
 			symbol: "none", // 去掉折线上面的小圆点
 			data: line3Data,
 			xAxisIndex: 1,
-			itemStyle: {
-				normal: {
-					lineStyle: {
-						color: "#36BFFA",
-						type: 'dashed', // 设置为虚线
-						width: .88
-					},
-				},
+			lineStyle: {
+				color: "#36BFFA",
+				type: 'dashed', // 设置为虚线
+				width: .88
 			},
 			areaStyle: {
 				color: '#1e1e1e',
@@ -342,14 +323,10 @@ function CenterBottom({node, selectDate}) {
 			smooth: false,
 			showSymbol: false,
 			data: lineData4,
-			itemStyle: {
-				normal: {
-					lineStyle: {
-						color: "#36BFFA",
-						type: 'dashed', // 设置为虚线
-						width: .1
-					},
-				},
+			lineStyle: {
+				color: "#36BFFA",
+				type: 'dashed', // 设置为虚线
+				width: .1
 			},
 			areaStyle: {
 				color: '#1e1e1e',

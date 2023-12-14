@@ -78,9 +78,9 @@ function RightTop({node, date}) {
 						<div className="header-unit electricity">
 							<span>能耗</span>
 							<Select
-								className='kinko-selection-white'
+								className='kinko-selection'
 								defaultValue={unit}
-								style={{ width: 100,marginLeft: '.05rem' }}
+								style={{ width: 90,marginLeft: '.05rem' }}
 								onChange={changeUnit}
 								options={unitList}
 								/>

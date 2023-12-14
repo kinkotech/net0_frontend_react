@@ -9,14 +9,18 @@ import CenterBottom from './CenterBottom';
 import RightTop from './RightTop';
 import RightBottom from './RightBottom';
 import * as datav from '@jiaminghi/data-view-react';
+import api from '@/api/index';
 
 function Home() {
     let [node, setNode] = useState({});
     let [date, setDate] = useState('');
+    let [parkList, setParkList] = useState([]);
+    let [pageH, setPageH] = useState(document.getElementById('root').offsetHeight);
 
     useEffect(() => {
-		
-    }, [])
+        
+		getPark();
+    }, [pageH])
 
     // 获取碳节点
     const getNodes = function(node) {
@@ -28,15 +32,28 @@ function Home() {
         setDate(date)
     }
 
+    const getPark = async function() {
+        await api.GetPark().then(res=>{
+            localStorage.setItem('PARK_LIST', JSON.stringify(res));
+            setParkList(res)
+        })
+    }
+
+    const getScreen = function(screen) {
+        setTimeout(() => {
+            setPageH(document.getElementById('root').offsetHeight)
+        }, 150);
+    }
+
     return (
         <datav.FullScreenContainer>
             <MainLayout>
                 <div className='home d-flex flex-column w-100' >
                     {/* 上 */}
-                    <div className='d-flex' style={{height: '500px',marginBottom: '.2rem'}}>
+                    <div className='d-flex' style={{height: pageH *.5,marginBottom: '.2rem'}}>
                         <div className='d-flex flex-column' style={{flex: 1}}>
                             <div style={{height: '2.5rem'}}>
-                                <LeftTop date={date}/>    
+                                <LeftTop date={date} parkList={parkList} getScreen={screen => getScreen(screen)}/>    
                             </div>
                             <div className='border' style={{flex: 1}}>
                                 <LeftCenter date={date}/>
@@ -51,7 +68,7 @@ function Home() {
                         </div>
                     </div>
                     {/* 下 */}
-                    <div className='d-flex' style={{height: '350px'}}>
+                    <div className='d-flex' style={{height: pageH *.4 }}>
                         <div className='border flex-1'>
                             <LeftBottom date={date} node={node}/>
                         </div>

@@ -4,19 +4,21 @@ import G6 from '@antv/g6';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import {getNowDate} from '@/utils/utils';
+import CenterTopRight from '../CenterTopRight';
 import './index.scss';
 
 
 function CenterTop(props) {
-	let [serverId, setServerId] = useState();
+	let [date, setDate] = useState(getNowDate());
+	let [serverId, setServerId] = useState('a00000000000000');
 	let [list, setList] = useState([]);
 	let [graph, setGraph] = useState(null);
 
 	const dateFormat = 'YYYY-MM-DD';
-	let defaultDate = getNowDate();
+	// let defaultDate = getNowDate();
 
 	useEffect(() => {
-		props.getDate(defaultDate);
+		props.getDate(date);
 		// 由于图表需要获取数据，因此会将初始化代码放入useEffect中进行更新，这造成了重复的初始化新的图表对象，并创建画布进行二次渲染
 		graph && graph.destroy();
 		getGraph(serverId)
@@ -25,12 +27,11 @@ function CenterTop(props) {
 
 	const getCarbonMap = function() {
 		const container = document.getElementById('carbonMapBox');
-		console.log(container,'container')
 
 		if (!container) return;
 
 		const width = container.scrollWidth;
-		const height = container.scrollHeight || 500;
+		const height = container.scrollHeight;
 
 		let graph = null;
 		graph = new G6.Graph({
@@ -298,19 +299,22 @@ function CenterTop(props) {
 
 
     return (
-		<div className='center-top'>
-			<div id='carbonMapBox'></div>
+		<div className='center-top h-100'>
+			<div id='carbonMapBox' className='h-100'></div>
 			<div className="refresh-icon pointer" onClick={refresh}>
 				<iconpark-icon size="100%" color="#0BCFC8" name="refresh-9mhn0n62"></iconpark-icon>
 			</div>
 			<DatePicker 
 				onChange={onChange}
-				defaultValue={dayjs(defaultDate, dateFormat)}
+				defaultValue={dayjs(date, dateFormat)}
 				format={dateFormat}
 				allowClear={false}
 				size='large'
 				superNextIcon
 				className='w-100 kiko-date'/>
+			<div className='right h-100'>
+				<CenterTopRight date={date} serverId={serverId}/>
+			</div>
 		</div>
 	)
 }

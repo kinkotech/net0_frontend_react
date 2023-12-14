@@ -63,13 +63,13 @@ function LeftBottom({date}) {
 						a: {
 							fontSize: 12,
 							width: 30,
-							height: 20,
+							height:90,
 							color: '#fff'
 						},
 						b: {
 							fontSize: 12,
 							width: 35,
-							height: 20,
+							height: 25,
 							color: '#fff'
 						},
 					}
@@ -80,26 +80,17 @@ function LeftBottom({date}) {
 					type: 'pie',
 					radius: ['40%', '50%'],
 					center: ['28%', '50%'],
+					//中间文字显示
 					label: {
-						normal: {
-							show: true,
-							fontWeight:'bolder',
-							position: 'center',
-							color: '#fff',
-							formatter: JSON.stringify(total),
-							textStyle: {
-								fontSize: 22,
-								color: '#fff',
-							},
-						},
-						emphasis: {//中间文字显示
-							show: true,
-						}
+						show: true,
+						fontWeight:'bolder',
+						position: 'center',
+						color: '#fff',
+						formatter: JSON.stringify(total),
+						fontSize: 22,
 					},
 					labelLine: {
-						normal: {
-							length: 3
-						}
+						length: 3
 					},
 					data: list
 				}
