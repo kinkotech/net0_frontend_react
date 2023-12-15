@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { List, Statistic } from 'antd';
 import api from '@/api/index';
 import './index.scss';
@@ -29,6 +29,7 @@ class CenterTopRight extends React.Component {
 
 	scrollUp = e => {
 		this.state.data.push(this.state.data[0]);
+		if (!document.getElementById("scrollList")) return false;
 		let height = document.getElementById("scrollList").getElementsByTagName("li")[0].scrollHeight + 1;
 		this.setState({
 			animate: true,

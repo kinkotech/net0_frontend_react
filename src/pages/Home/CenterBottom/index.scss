@@ -68,10 +68,12 @@
             font-size: .2rem;
             .kinko-selection {
                 margin: 0 .05rem;
-            }
-            ::v-deep .ant-select-selection-selected-value {
-                color: #fff;
-                font-size: .16rem;
+                .ant-select-selector {
+                    color: #fff !important;
+                }
+                .ant-select-single.ant-select-open .ant-select-selection-item {
+                    color: #fff !important;
+                }
             }
         }
         .tabs {
@@ -116,4 +118,5 @@
 			font-size: .16rem;
 		}
 	}
+    
 }

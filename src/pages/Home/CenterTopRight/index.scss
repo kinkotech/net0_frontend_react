@@ -56,10 +56,11 @@
             z-index: 1;
         }
     }
+    .ant-statistic-content-suffix {
+        font-size: 100% !important;
+    }
 }
-.ant-statistic-content-suffix {
-    font-size: 100% !important;
-}
+
 .ant-list-empty-text {
     display: none;
 }

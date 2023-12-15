@@ -84,14 +84,12 @@ function LeftTop({date, parkList, getScreen}) {
 	// 切换全屏
 	const changeScreen = function async() {
 		let str = '';
-		if (screen == 'FullScreen') {
+		if (screen === 'FullScreen') {
 			str = 'UnFullScreen';
 			fullScreen(document.documentElement);
-			// this.$store.commit('SET_FULL_SCREEN', 1);
 		} else {
 			str = 'FullScreen';
 			unFullScreen();
-			// this.$store.commit('SET_FULL_SCREEN', 0);
 		}
 		setScreen(str)
 		getScreen(str);
@@ -120,14 +118,14 @@ function LeftTop({date, parkList, getScreen}) {
 					<div className='flex-1'>
 						<Statistic value={carbon} valueStyle={{color: '#fff'}} suffix={carbonUnit}/>
 					</div>
-					<div className={carbonTrend.indexOf('+') > -1 || carbonTrend === '0%' ? 'descend flex-1' : 'rise flex-1'}>较昨天 +97.9%</div>
+					<div className={carbonTrend.indexOf('+') > -1 || carbonTrend === '0%' ? 'descend flex-1' : 'rise flex-1'}>较昨天 {carbonTrend}</div>
 				</div>
 				<div className='left-top-bottom-con d-flex flex-column border'>
 					<div className='flex-1'>新能源产电量（天）</div>
 					<div className='flex-1'>
 						<Statistic value={electricit} valueStyle={{color: '#fff'}} suffix={electricitUnit}/>
 					</div>
-					<div className={electricitTrend.indexOf('-') > -1 || carbonTrend === '0%' ? 'descend flex-1' : 'rise flex-1'}>较昨天 +97.9%</div>
+					<div className={electricitTrend.indexOf('-') > -1 || carbonTrend === '0%' ? 'descend flex-1' : 'rise flex-1'}>较昨天 {electricitTrend}</div>
 				</div>
 			</div>
 		</div>

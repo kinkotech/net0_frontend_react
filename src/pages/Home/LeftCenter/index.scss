@@ -1,6 +1,35 @@
 .left-center {
-    padding: .2rem;
+    padding: 0 .2rem;
     font-size: .16rem;
+    .top {
+		justify-content: space-between;
+		align-items: center;
+		margin: .12rem .2rem 0 0;
+		.title {
+			color: #fff;
+		}
+		.right {
+			display: flex;
+			align-items: center;
+			.sort {
+				align-items: center;
+				padding: .05rem .1rem;
+				margin-right: .1rem;
+				color: #999;
+				border: 1px solid rgba(255, 255, 255, .15);
+				border-radius: .1rem;
+				cursor: pointer;
+				.s1 {
+					vertical-align: middle;
+				}
+			}
+			.sort-icon {
+				width: .25rem;
+				height: .25rem;
+				margin-left: .1rem;
+			}
+		}
+	}
     &-list {
         height: 80%;
         overflow: auto;

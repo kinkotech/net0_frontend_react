@@ -9,7 +9,7 @@ import './index.scss';
 
 
 function CenterTop(props) {
-	let [date, setDate] = useState(getNowDate());
+	let [date] = useState(getNowDate());
 	let [serverId, setServerId] = useState('a00000000000000');
 	let [list, setList] = useState([]);
 	let [graph, setGraph] = useState(null);
@@ -22,7 +22,7 @@ function CenterTop(props) {
 		// 由于图表需要获取数据，因此会将初始化代码放入useEffect中进行更新，这造成了重复的初始化新的图表对象，并创建画布进行二次渲染
 		graph && graph.destroy();
 		getGraph(serverId)
-		
+		// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [serverId])
 
 	const getCarbonMap = function() {
@@ -45,16 +45,16 @@ function CenterTop(props) {
 				preventOverlap: true,
 				// 节点作用力，正数代表节点之间的引力作用，负数代表节点之间的斥力作用
 				nodeStrength: (d) => {
-					if (d.level == 2) {
+					if (d.level === 2) {
 						return -100;
 					}
-					if (d.level == 3) {
+					if (d.level === 3) {
 						return -250;
 					}
-					if (d.level == 4) {
+					if (d.level === 4) {
 						return -250;
 					}
-					if (d.level == 5) {
+					if (d.level === 5) {
 						return -150;
 					}
 					return -200
@@ -75,7 +75,7 @@ function CenterTop(props) {
 
 		graph.node(node => {
 			// 需要动画的样式
-			if (node.master == true) {
+			if (node.master === true) {
 				if (node.level === 5) {
 					return {
 						type: 'circle-animate',
@@ -247,7 +247,7 @@ function CenterTop(props) {
 			let nodeText = e.item._cfg.model.label;
 			// level == 1 不可点击
 			// 无子节点 不可点击
-			if (level == 1) return;
+			if (level === 1) return;
 			if (!child) return;
 
 			let nodes = {

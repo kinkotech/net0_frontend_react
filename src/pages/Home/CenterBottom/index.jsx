@@ -51,7 +51,7 @@ function CenterBottom({node, selectDate}) {
 
 	useEffect(() => {
 		if(selectDate) {
-			dataType === 'carbon' ? getPredict(selectDate, type, dataType, carbonUnit, node.id) : getPredict(selectDate, type, dataType, unit, node.id);
+			getPredict(selectDate, type, dataType, dataType === 'carbon' ? carbonUnit : unit, node.id)
 		}
     }, [selectDate, type, dataType, carbonUnit, unit, node])
 
@@ -62,7 +62,7 @@ function CenterBottom({node, selectDate}) {
 		if (server_id) {
 			params = {
 				day_str: date,
-				type: type=='24小时' ? 24 : type,
+				type: type === '24小时' ? 24 : type,
 				dataType,
 				server_id,
 				park_id: 1,
@@ -71,7 +71,7 @@ function CenterBottom({node, selectDate}) {
 		} else {
 			params = {
 				day_str: date,
-				type: type==1 ? 24 : type,
+				type: type === '24小时' ? 24 : type,
 				dataType,
 				park_id: 1,
 				unit
@@ -80,7 +80,7 @@ function CenterBottom({node, selectDate}) {
 		const res = await api.GetPredict(params);
 		let obj = {};
 		res.forEach(el => {
-			if(el.name == '预测值') {
+			if(el.name === '预测值') {
 				obj.prediction = el.value;
 			} else {
 				obj.reality = el.value;
@@ -111,7 +111,7 @@ function CenterBottom({node, selectDate}) {
 					
 					let tipList = params.map((seg) => {
 						let { value, seriesName, dataIndex, color } = seg;
-						if (seriesName == 'name3' || seriesName == 'name4') return
+						if (seriesName === 'name3' || seriesName === 'name4') return false;
 						dateIndex = dataIndex;
 						return `${getTipDot({ color })}${seriesName}：${value}`
 					})
@@ -283,7 +283,7 @@ function CenterBottom({node, selectDate}) {
 		// 把交点添加到第三条线之间，形成另一条x轴的线
 		scatterData.forEach((el, index) => {
 			line3Data.forEach((item, i) => {
-				if(parseInt(el[0]) == item[0]) {
+				if(parseInt(el[0]) === item[0]) {
 					line3Data.splice(i+1, 0, el)
 				}
 			})
@@ -343,7 +343,7 @@ function CenterBottom({node, selectDate}) {
 	// 获取前面n天的日期
 	const getBeforeDate = function() {
 		let arr = [];
-		if (selectValue != '24小时') {
+		if (selectValue !== '24小时') {
 			let y = Number(selectDate.split('-')[0]); // //当前年
 			let m = Number(selectDate.split('-')[1]); // //当前月
 			let d = Number(selectDate.split('-')[2]); // 当前日
@@ -353,7 +353,7 @@ function CenterBottom({node, selectDate}) {
 			
 			let str = 0;
 			let n = 0; // 未来n天
-			if (selectValue == '3天') {
+			if (selectValue === '3天') {
 				// 3天
 				n = Number(selectValue.slice(0, 1));
 			} else {
@@ -362,7 +362,7 @@ function CenterBottom({node, selectDate}) {
 			}
 			for (let i = 0; i < n + 1; i++) {
 				if (d - i <= 0) {
-					if (m != 1) {
+					if (m !== 1) {
 						str = `${m - 1}/${d - i + time}`;
 					} else {
 						str = `12/${d - i + time}`;
@@ -386,7 +386,7 @@ function CenterBottom({node, selectDate}) {
 	// 获取未来n天的日期
 	const getEndDate = function() {
 		let arr = [];
-		if (selectValue != '24小时') {
+		if (selectValue !== '24小时') {
 			let y = Number(selectDate.split('-')[0]); // //当前年
 			let m = Number(selectDate.split('-')[1]); // //当前月
 			let d = Number(selectDate.split('-')[2]); // 当前日
@@ -398,7 +398,7 @@ function CenterBottom({node, selectDate}) {
 			let n = Number(selectValue.slice(0, 1)) + 1; // 未来n天
 			for (let i = 0; i < n; i++) {
 				if (d + i > time) {
-					if (m != 12) {
+					if (m !== 12) {
 						str = `${m + 1}/${d + i - time}`;
 					} else {
 						str = `01/${d + i - time}`;
@@ -424,7 +424,7 @@ function CenterBottom({node, selectDate}) {
 	const handleChange = (value) => {
 		setType(value);
 		setSelectValue(value);
-		value == '7天' ? setIntervalX(0) : setIntervalX(2);
+		value === '7天' ? setIntervalX(0) : setIntervalX(2);
 	}
 
 	// 计算两个线段交点，通过传入 两条线段、四个端点 的 横纵坐标 值，来计算两者交点的坐标
@@ -442,7 +442,7 @@ function CenterBottom({node, selectDate}) {
 	// 判断两条线段是否有交点, a1、b1 为两条线在 x1 处的值；a2、b2 为两条线在 x2 处的值；
 	// 只要不是一条线段的两个点都高于另一个点就会有交点；
 	const ifHaveIntersectionPoint = function(a1, b1, a2, b2) {
-		return (+a1 > +b1) != (+a2 > +b2)
+		return (+a1 > +b1) !== (+a2 > +b2);
 	}
 
 	// 是否执行后续的计算 ？ 不是最后一个点，且有交点时
@@ -454,7 +454,7 @@ function CenterBottom({node, selectDate}) {
 	const getIntersectionPoint = function({ line1, line2, date } = {}) {
 		// 交点数组
 		let intersectionPointList = []
-		date.map((seg, idx) => {
+		date.forEach((seg, idx) => {
 			// 分别是两条线在相邻两处的数值，用于通过比较大小，来确定此段内是否有交点
 			let valueGroup = [line1[idx], line2[idx], line1[idx + 1], line2[idx + 1]]
 			if (ifCalculatePoint(idx, date.length, valueGroup)) {
@@ -477,7 +477,7 @@ function CenterBottom({node, selectDate}) {
 		let arr = tab;
 		arr.forEach((item, index) => {
 			item.isActive = false
-			if (i == index) {
+			if (i === index) {
 				item.isActive = true;
 			}
 		})
@@ -488,7 +488,7 @@ function CenterBottom({node, selectDate}) {
 
 	// 碳排放单位切换
 	const changeCarbonUnit = function(value) {
-		if (dataType == 'usage') {
+		if (dataType === 'usage') {
 			setUnit(value)
 		} else {
 			setCarbonUnit(value)
@@ -497,7 +497,7 @@ function CenterBottom({node, selectDate}) {
 
 	// 能耗单位切换
 	const changeUnit = function(value) {
-		if (dataType == 'usage') {
+		if (dataType === 'usage') {
 			setUnit(value)
 		} else {
 			setCarbonUnit(value)
@@ -512,7 +512,7 @@ function CenterBottom({node, selectDate}) {
 					<Select
 						className='kinko-selection'
 						defaultValue={selectValue}
-						style={{ width: 100 }}
+						style={{ width: 90 }}
 						onChange={handleChange}
 						options={selectList}
 						/>
@@ -532,21 +532,21 @@ function CenterBottom({node, selectDate}) {
 						}
 					</div>
 					{
-						dataType == 'carbon' &&
+						dataType === 'carbon' &&
 						<Select
 							className='kinko-selection'
 							defaultValue={carbonUnit}
-							style={{ width: 120,marginLeft: '.5rem' }}
+							style={{ width: 100,marginLeft: '.5rem' }}
 							onChange={changeCarbonUnit}
 							options={carbonUnitList}
 							/>
 					}
 					{
-						dataType == 'usage' &&
+						dataType === 'usage' &&
 						<Select
 							className='kinko-selection'
 							defaultValue={unit}
-							style={{ width: 120,marginLeft: '.5rem' }}
+							style={{ width: 100,marginLeft: '.5rem' }}
 							onChange={changeUnit}
 							options={unitList}
 							/>

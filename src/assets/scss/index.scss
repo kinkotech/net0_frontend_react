@@ -108,7 +108,7 @@
 .kinko-selection{  //给该select框加的className
 	color: #fff !important;
     .ant-select-selector{
-		color: #fff;
+		color: #999;
 		background: #1E1E1E !important;
 		border: 1px solid rgba(255, 255, 255, .15) !important;
 		height: auto;
@@ -143,7 +143,7 @@
 	}
 }
 .ant-select-single.ant-select-open .ant-select-selection-item {
-	color: #fff !important;
+	color: #999 !important;
 }
 
 // disabled
