@@ -2,7 +2,9 @@ import {
     createBrowserRouter
 } from "react-router-dom";
 import Home from '@/pages/Home';
-import Foot from '@/pages/Foot';
+import FootBoard from '@/pages/Foot/Board';
+import FootParkType from '@/pages/Foot/ParkType';
+import WaterElectricityGas from '@/pages/Foot/WaterElectricityGas';
 import Reduction from '@/pages/Reduction';
 
 const Router = createBrowserRouter([
@@ -11,8 +13,16 @@ const Router = createBrowserRouter([
         element: <Home/>,
     },
     {
-        path: "foot",
-        element: <Foot/>,
+        path: "foot/board",
+        element: <FootBoard/>,
+    },
+    {
+        path: "foot/parkType",
+        element: <FootParkType/>,
+    },
+    {
+        path: "foot/waterElectricityGas",
+        element: <WaterElectricityGas/>,
     },
     {
         path: 'reduction',

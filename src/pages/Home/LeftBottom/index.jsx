@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import * as echarts from 'echarts';
 import api from '@/api/index';
+import Echarts from '@/components/Echarts';
 import './index.scss';
 
 function LeftBottom({date}) {
+	let [option, setOption] = useState({});
+
+	useEffect(() => {
+		if (date) {
+			getEnergyTypeByDay(date)
+		}
+		
+    },[date])
 
 	function init(total, unit, list) {
-		// 基于准备好的dom，初始化echarts实例
-		var myChart = echarts.init(document.getElementById('leftBottomMain'));
 		// 绘制图表
-		myChart.setOption({
+		setOption({
 			title: [
 				{
 					subtext: unit,
@@ -110,18 +116,13 @@ function LeftBottom({date}) {
 			init(res.total, res.unit, arr);
 		})
 	}
-
-	useEffect(() => {
-		if (date) {
-			getEnergyTypeByDay(date)
-		}
-		
-    },[date])
-
+	
     return (
 		<div className='left-bottom h-100 d-flex flex-column'>
 			<div className='left-bottom-title'>园区碳排放源类型占比（天）</div>
-			<div className='flex-1' id='leftBottomMain' style={{width: '100%',height: '100%'}}></div>
+			<div className='flex-1'>
+				<Echarts id='leftBottomMain' option={option}/>
+			</div>
 		</div>
 	)
 }

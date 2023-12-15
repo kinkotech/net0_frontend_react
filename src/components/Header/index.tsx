@@ -17,7 +17,7 @@ const menuList = [{
 },{
 	key: 1,
 	label: '碳足迹评测',
-	path: '/foot'
+	path: '/foot/board'
 },{
 	key: 2,
 	label: '碳减排策略',

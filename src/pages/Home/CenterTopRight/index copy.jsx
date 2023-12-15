@@ -43,11 +43,6 @@ function CenterTopRight({date, serverId}) {
 							<SwiperSlide key={i}>
 								<div className="prediction-center-right-li" key={i}>
 								<div className="text">
-									{/* <a-statistic precision="1" value={item.value} :value-style="{ color: 'rgba(255, 255, 255, 0.87)',fontSize:'.2rem' }">
-										<template #suffix>
-											<i>{{ item.unit }}</i>
-										</template>
-									</a-statistic> */}
 									<Statistic
 										value={item.value}
 										precision={2}

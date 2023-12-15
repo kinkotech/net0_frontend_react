@@ -16,6 +16,10 @@ class CenterTopRight extends React.Component {
 		await this.getUsageByDay()
 	}
 
+	componentWillUnmount() {
+		clearInterval(scrollInterval);
+	}
+
 	// 碳结构右侧数据
 	getUsageByDay = async function(date, serverId) {
 		await api.GetUsageByDay(date, serverId).then(res=>{
@@ -29,7 +33,6 @@ class CenterTopRight extends React.Component {
 
 	scrollUp = e => {
 		this.state.data.push(this.state.data[0]);
-		if (!document.getElementById("scrollList")) return false;
 		let height = document.getElementById("scrollList").getElementsByTagName("li")[0].scrollHeight + 1;
 		this.setState({
 			animate: true,
@@ -70,11 +73,11 @@ class CenterTopRight extends React.Component {
 		scrollInterval = setInterval(this.scrollUp, 3000);
 	}
 
-	startScrollDown = e => {
-		this.endScroll();
-		this.scrollDown();
-		scrollInterval = setInterval(this.scrollDown, 3000);
-	}
+	// startScrollDown = e => {
+	// 	this.endScroll();
+	// 	this.scrollDown();
+	// 	scrollInterval = setInterval(this.scrollDown, 3000);
+	// }
 
 	endScroll = e => {
 		clearInterval(scrollInterval);

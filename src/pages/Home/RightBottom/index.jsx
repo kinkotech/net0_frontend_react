@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import * as echarts from 'echarts';
 import api from '@/api/index';
+import Echarts from '@/components/Echarts';
 
 
 function RightBottom({date}) {
+	let [option, setOption] = useState({});
 	let [server_id, setServer_id] = useState();
 	let [list, setList] = useState([]);
 	let [xAxisList, setXAxisList] = useState([]);
 
 	function init() {
-		// 基于准备好的dom，初始化echarts实例
-		var myChart = echarts.init(document.getElementById('rightBottomMain'));
 		// 绘制图表
-		myChart.setOption({
+		setOption({
 			title: {
 				text: '节点包含设备数量',
 				textStyle: {
@@ -114,7 +113,7 @@ function RightBottom({date}) {
 
 
     return (
-		<div id='rightBottomMain' style={{width: '100%',height: '100%'}}></div>
+		<Echarts id='rightBottomMain' option={option}/>
 	)
 }
 

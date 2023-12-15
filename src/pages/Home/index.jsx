@@ -48,7 +48,7 @@ function Home() {
     return (
         <datav.FullScreenContainer>
             <MainLayout>
-                <div className='home d-flex flex-column w-100' >
+                <div className='home bg d-flex flex-column w-100' >
                     {/* 上 */}
                     <div className='d-flex' style={{height: pageH *.5,marginBottom: '.2rem'}}>
                         <div className='d-flex flex-column' style={{flex: 1}}>
