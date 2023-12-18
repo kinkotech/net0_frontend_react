@@ -19,7 +19,6 @@ const FootCenter = function () {
         }
        
         await api.GetParkComparison(params).then(res=>{
-            console.log(res.value,'9999')
             let value = res.value;
             let indicatorList = [];
             setUnit(res.unit)

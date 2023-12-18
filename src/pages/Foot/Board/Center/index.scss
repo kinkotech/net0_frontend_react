@@ -1,7 +1,6 @@
 .card {
     position: relative;
     .top {
-        display: flex;
         justify-content: space-between;
         .ant-checkbox-wrapper {
             margin: .2rem .5rem 0 0;
@@ -18,5 +17,8 @@
     .content {
         flex: 1;
         margin-top: .1rem;
+    }
+    .ant-checkbox-wrapper {
+        color: #fff;
     }
 }

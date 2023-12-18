@@ -1,14 +1,8 @@
-import React, { useState } from 'react'
-import {
-	LaptopOutlined,
-	NotificationOutlined,
-	UserOutlined,
-} from '@ant-design/icons'
-import type { MenuProps } from 'antd'
-import { Layout, Menu, theme } from 'antd'
-import { useNavigate, useRoutes } from 'react-router-dom'
-import './index.scss'
-const { Header, Content, Sider } = Layout
+import React, { useState } from 'react';
+import { MenuProps, Layout, Menu, theme} from 'antd';
+import { useNavigate, useRoutes } from 'react-router-dom';
+import './index.scss';
+const { Header } = Layout;
 
 const menuList = [{
 	key: 0,

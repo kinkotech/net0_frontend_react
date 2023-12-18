@@ -1,76 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import api from '@/api/index';
 import ConTitle from '@/components/ConTitle';
-import { Select } from 'antd';
+import { Select, Checkbox } from 'antd';
 import Echarts from '@/components/Echarts';
+import { connect } from 'react-redux';
+import './index.scss';
 
-const FootCenter = function () {
+const FootCenter = function (props) {
+    const { sidebarFold, start, end } = props;
+
     let [checked, setChecked] = useState(false);
     let [unit, setUnit] = useState('kgCO₂e');
     let [unitList, setUnitList] = useState([
         { value: 'tCO₂e', label: 'tCO₂e' },
         { value: 'kgCO₂e', label: 'kgCO₂e' }
     ]);
-    let [option, setOption] = useState({})
-
-    useEffect(() => {
-        getCarbonTrendSingle('2023-01', '2023-12')
-    }, [unit])
-
-    // 获取数据
-    const getCarbonTrendSingle = async (start, end) => {
-        // type ● single: 只查看本周期数据;● comparison:包含去年同期对比
-        let params = {
-            park_id: 0,
-            start,
-            end,
-            type: 'single',
-            unit: unit
-        }
-        await api.GetCarbonTrend(params).then(res=>{
-            getOptions(res)
-        })
-    }
-
-    // 同期对比
-    const getCarbonTrendComparison = async (start, end) => {
-        // type 
-        // ● single: 只查看本周期数据;
-        // ● comparison:包含去年同期对比
-        let params = {
-            park_id: 0,
-            start,
-            end,
-            type: 'comparison',
-            unit: unit
-        }
-        await api.GetCarbonTrend(params).then(res=>{
-            getOptions1(res)
-        })
-    }
-
-    // 图表option
-    const getOptions = (res) => {
-        let _this = this;
-        let xAxisData = [];
-        let data1 = [];
-        let data2 = [];
-        let data3 = [];
-
-        res.forEach(el => {
-            if(el.name == 'date') {
-                xAxisData = el.value;
-            } else if (el.name == '直接排放') {
-                data1 = el.value;
-            } else if (el.name == '购买能源排放') {
-                data2 = el.value;
-            } else if (el.name == '上下游排放') {
-                data3 = el.value;
-            }
-        })
-
-        let options = {
-            tooltip: {
+    let [option, setOption] = useState({
+        tooltip: {
             trigger: 'axis',
                 show: true,
                 formatter(params) {
@@ -88,7 +34,6 @@ const FootCenter = function () {
                          + tipList.join('<br/>');
                 }
             },
-            color: ['#0BCFC8', '#B596FC', '#4565F7'],
             legend: {
                 bottom: '5%',
                 icon: 'circle',
@@ -97,6 +42,7 @@ const FootCenter = function () {
                 itemHeight: 9,
                 textStyle: {
                     fontSize: 12,
+                    color: '#fff'
                 },
             },
             grid: {
@@ -108,7 +54,7 @@ const FootCenter = function () {
             },
             xAxis: {
                 type: 'category',
-                data: xAxisData,
+                data: [],
                 axisLine: {
                     lineStyle: {
                         color:'rgba(255, 255, 255, .12)'
@@ -159,215 +105,154 @@ const FootCenter = function () {
                     show: false,
                 }
             },
-            series: [
-            {
-                name: '直接排放',
-                type: 'bar',
-                stack: '总量',
-                barWidth: '40%',
-                label: {
-                    show: false,
-                    formatter:function(val){
-                        if(val.value){
-                            return val.value
-                        }else{
-                            return ''
-                        }
+            series: []
+    });
+    let [xAxis] = useState({
+        type: 'category',
+        data: [],
+        axisLine: {
+            lineStyle: {
+                color:'rgba(255, 255, 255, .12)'
+            }
+        },
+        axisLabel: {
+            color: 'rgba(255, 255, 255, .87)',
+            interval: 0,
+            fontSize: 12,
+            formatter(data, i) {
+                let arr = data.split('-');
+                arr = [arr[1], arr[0]];
+                arr[0] = Number(arr[0]) + '月';
+                // 第一个数据加上 年 月
+                if (i == 0) {
+                    return arr.join("\n");
+                } else {
+                    // 针对每年的1月特殊处理
+                    if (data.indexOf('01') > -1) {
+                        return arr.join("\n");
+                    } else {
+                        return [`${arr[0]}`];
                     }
-                },
-                data: data1
-            },
-            {
-                name: '购买能源排放',
-                type: 'bar',
-                stack: '总量',
-                barWidth: '40%',
-                label: {
-                    show: false,
-                    formatter:function(val){
-                        if(val.value){
-                            return val.value
-                        }else{
-                            return ''
+                }
+            }
+        }
+    });
+
+    let [option1, setOption1] = useState({})
+
+    useEffect(() => {
+        getCarbonTrend(start, end)
+    }, [unit, checked])
+
+    // 获取数据
+    const getCarbonTrend = async (start, end) => {
+        // type ● single: 只查看本周期数据;● comparison:包含去年同期对比
+        let params = {
+            park_id: 0,
+            start,
+            end,
+            type: !checked ? 'single' : 'comparison',
+            unit: unit
+        }
+        await api.GetCarbonTrend(params).then(res=>{
+            !checked ? getOptions(res) : getOption1(res)
+        })
+    }
+
+    // 图表option
+    const getOptions = (res) => {
+        let xAxisData = [];
+        let series = [];
+
+        res.forEach(el => {
+            if(el.name == 'date') {
+                xAxisData = el.value;
+            } else {
+                series.push({
+                    name: el.name,
+                    type: 'bar',
+                    stack: '总量',
+                    barWidth: '40%',
+                    label: {
+                        show: false,
+                        formatter:function(val){
+                            if(val.value){
+                                return val.value
+                            }else{
+                                return ''
+                            }
                         }
-                    }
-                },
-                data: data2
+                    },
+                    data: el.value
+                })
+            }
+        })
+
+        let options = {
+            ...option,
+            color: ['#0BCFC8', '#B596FC', '#4565F7'],
+            xAxis: {
+                ...xAxis,
+                data: xAxisData
             },
-            {
-                name: '上下游排放',
-                type: 'bar',
-                stack: '总量',
-                barWidth: '40%',
-                label: {
-                    show: false,
-                    formatter:function(val){
-                        if(val.value){
-                            return val.value
-                        }else{
-                            return ''
-                        }
-                    }
-                },
-                data: data3
-            },
-            ]
+            series
         }
         setOption(options)
     }
 
     // 环比option
-    const getOptions1 = (res)=> {
+    const getOption1 = (res)=> {
         let xAxisData = [];
-        let data1 = [];
-        let data2 = [];
+        let series = [];
         
         res.forEach(el => {
             if(el.name == 'date') {
                 xAxisData = el.value;
-            } else if (el.name == '上周期') {
-                data1 = el.value;
-            } else if (el.name == '本周期') {
-                data2 = el.value;
+            } else {
+                series.push({
+                    name: el.name === '上周期' ? '本期' : '上期',
+                    barWidth: '15%',
+                    type: 'bar',
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: el.value
+                })
             }
+
         })
-        this.options1 = {
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                type: 'shadow'
-                }
-            },
-            legend: {
-                bottom: '5%',
-                icon: 'circle',
-                itemGap: 25,
-                itemWidth: 12,
-                itemHeight: 9,
-                textStyle: {
-                    fontSize: 12,
-                },
+        let option1 = {
+            ...option,
+            xAxis: {
+                ...xAxis,
+                data: xAxisData
             },
             color: ['#FFCF5F', '#999'],
-            grid: {
-                left: '3%',
-                right: '3%',
-                top: '5%',
-                bottom: '15%',
-                containLabel: true
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    data: xAxisData,
-                    axisLine: {
-                        lineStyle: {
-                            color:'rgba(255, 255, 255, .12)'
-                        }
-                    },
-                    axisLabel: {
-                        color: 'rgba(255, 255, 255, .87)',
-                        interval: 0,
-                        fontSize: 12,
-                        formatter(data, i) {
-                            let arr = data.split('-');
-                            arr = [arr[1], arr[0]];
-                            arr[0] = Number(arr[0]) + '月';
-                            // 第一个数据加上 年 月
-                            if (i == 0) {
-                                return arr.join("\n");
-                            } else {
-                                // 针对每年的1月特殊处理
-                                if (data.indexOf('01') > -1) {
-                                    return arr.join("\n");
-                                } else {
-                                    return [`${arr[0]}`];
-                                }
-                            }
-                        }
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    position: 'right',
-                    // 网格线
-                    splitLine: {
-                        show: true,
-                        lineStyle: {
-                            color: 'rgba(255, 255, 255, .12)'
-                        }
-                    },
-                    minInterval:1,
-                    axisLabel: {
-                        color: 'rgba(255, 255, 255, .6)',
-                        interval: 0,
-                        fontSize: 12
-                    },
-                    axisLine: {
-                        show: false
-                    },
-                    axisTick: {
-                        alignWithLabel: true,
-                    }
-                }
-            ],
-            series: [
-                {
-                    name: '本期',
-                    barWidth: '15%',
-                    type: 'bar',
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    data: data2
-                },
-                {
-                    name: '上期',
-                    barWidth: '15%',
-                    type: 'bar',
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    data: data1
-                }
-            ]
+            series
         }
+        console.log(option1.series.length)
+        setOption1(option1)
     }
 
     const getTipDot = function({ radius = 5, color = "red" } = {}) {
 		return `<span style='width:${radius * 2}px;height:${radius * 2}px;display:inline-block;border-radius: ${radius}px;background:${color};margin:0px 3px;'></span>`
 	}
 
-
     // 单位切换
     const changeUnit = (val) => {
         setUnit(val)
-        // if(checked) {
-        //     getCarbonTrendComparison(this.footBoard.start, this.footBoard.end);
-        //     getOptions1()
-        // } else {
-        //     getCarbonTrendSingle(this.footBoard.start, this.footBoard.end);
-        //     getOptions()
-        // }
     }
-
+    // 勾选框状态切换
+    const changeChecked = () => {
+        setChecked(!checked)
+    }
 
     return (
         <div className="card d-flex flex-column w-100 h-100">
-            <div className="top">
+            <div className="top d-flex">
                 <ConTitle title="碳足迹趋势" fontSize=".18rem" showPopver={true} popverContent="popver" />
                 <div className="top-right">
-                    {/* <a-checkbox v-model="checked" @change="changeChecked">环比</a-checkbox> */}
-                    {/* <a-select
-                    v-model="unit"
-                    style="width: 1.5rem"
-                    @change="handleChange"
-                    className="kinko-selection"
-                    >
-                    <a-select-option :value="item" v-for="item in selectUnit" :key="item">{{ item }}</a-select-option>
-                </a-select> */}
+                    <Checkbox checked={checked} onChange={changeChecked}>环比</Checkbox>
                     <Select
                         className='kinko-selection'
                         defaultValue={unit}
@@ -378,27 +263,28 @@ const FootCenter = function () {
                 </div>
             </div>
             <div className="content flex-1">
-                <Echarts id='footCenter' option={option} />
-                {/* {
-                checked ? 
-                <Echart
-                :options="options1"
-                height="100%"
-                width="100%"
-                id="board-middle-chart1"
-                v-if="checked"
-                ></Echart>
-                :
-                <Echart
-                :options="options"
-                height="100%"
-                width="100%"
-                id="board-middle-chart"
-                ></Echart>
-             } */}
+                {/* 默认显示 */}
+                {
+                    !checked &&
+                    <Echarts id='footCenter' option={option} />
+                }
+                {/* 环比 */}
+                {
+                    checked &&
+                    <Echarts id='footCenter1' option={option1} />
+                }
             </div>
         </div>
     )
 }
 
-export default FootCenter;
+// 使用connect函数将state和dispatch映射为props
+function mapStateToProps(state) {
+    return {
+        sidebarFold: state.foot.sidebarFold,
+        start: state.foot.start,
+        end: state.foot.end
+    };
+}
+
+export default connect(mapStateToProps)(FootCenter);

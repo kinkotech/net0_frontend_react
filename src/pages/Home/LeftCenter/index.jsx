@@ -108,7 +108,7 @@ function LeftCenter({date}) {
 						/>
 				</div>
 			</div>
-			<div>
+			<div className='total'>
 				<Statistic value={allValue} valueStyle={{color: '#fff'}} suffix={unit}/>
 			</div>
 			<div className='left-center-list' style={{height: listHeight}}>

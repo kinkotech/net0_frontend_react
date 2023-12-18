@@ -57,4 +57,10 @@
 			vertical-align: middle; 
 		}
     }
+	:global {
+		.ant-menu-dark {
+			color: rgba(255, 255, 255, .4);
+			background: #f00;
+		}
+	}
 }

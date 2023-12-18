@@ -8,8 +8,13 @@ function Echarts({id, option}) {
     }, [option])
 
     function init() {
-		// 基于准备好的dom，初始化echarts实例
-		let myChart = echarts.init(document.getElementById(id));
+        let chartDom = document.getElementById(id);
+        //获取之前的echarts的实例
+        let myChart = echarts.getInstanceByDom(chartDom);
+        //没有就初始化echarts实例
+        if (!myChart) {
+            myChart = echarts.init(chartDom);
+        }
 		// 绘制图表
 		myChart.setOption(option);
 	}
