@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '@/api/index';
 import ConTitle from '@/components/ConTitle';
 import { Select, Checkbox } from 'antd';
@@ -23,7 +23,7 @@ const FootCenter = function (props) {
                     let total = 0;
                     let tipList = params.map((seg) => {
                         let { value, seriesName, color } = seg;
-                        if (typeof(value) == 'object') {
+                        if (typeof(value) === 'object') {
                             value = value[1]
                         }
                         total += value * 100;
@@ -69,7 +69,7 @@ const FootCenter = function (props) {
                         arr = [arr[1], arr[0]];
                         arr[0] = Number(arr[0]) + '月';
                         // 第一个数据加上 年 月
-                        if (i == 0) {
+                        if (i === 0) {
                             return arr.join("\n");
                         } else {
                             // 针对每年的1月特殊处理
@@ -124,7 +124,7 @@ const FootCenter = function (props) {
                 arr = [arr[1], arr[0]];
                 arr[0] = Number(arr[0]) + '月';
                 // 第一个数据加上 年 月
-                if (i == 0) {
+                if (i === 0) {
                     return arr.join("\n");
                 } else {
                     // 针对每年的1月特殊处理
@@ -138,11 +138,24 @@ const FootCenter = function (props) {
         }
     });
 
-    let [option1, setOption1] = useState({})
+    let [option1, setOption1] = useState({});
+
+    // const centerRef = useRef(null);
 
     useEffect(() => {
-        getCarbonTrend(start, end)
-    }, [unit, checked])
+        getCarbonTrend(start, end);
+
+        
+        // window.addEventListener('resize', () => {
+        //     console.log('resize')
+        // })
+
+        // console.log(centerRef)
+    }, [unit, checked, sidebarFold])
+
+    const getChart = (a) => {
+        console.log(a)
+    }
 
     // 获取数据
     const getCarbonTrend = async (start, end) => {
@@ -165,7 +178,7 @@ const FootCenter = function (props) {
         let series = [];
 
         res.forEach(el => {
-            if(el.name == 'date') {
+            if(el.name === 'date') {
                 xAxisData = el.value;
             } else {
                 series.push({
@@ -206,7 +219,7 @@ const FootCenter = function (props) {
         let series = [];
         
         res.forEach(el => {
-            if(el.name == 'date') {
+            if(el.name === 'date') {
                 xAxisData = el.value;
             } else {
                 series.push({
@@ -266,12 +279,12 @@ const FootCenter = function (props) {
                 {/* 默认显示 */}
                 {
                     !checked &&
-                    <Echarts id='footCenter' option={option} />
+                    <Echarts id='footCenter' option={option}/>
                 }
                 {/* 环比 */}
                 {
                     checked &&
-                    <Echarts id='footCenter1' option={option1} />
+                    <Echarts id='footCenter1' option={option1}/>
                 }
             </div>
         </div>

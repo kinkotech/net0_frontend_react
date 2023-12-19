@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import * as echarts from 'echarts';
 
 function Echarts({id, option}) {
 
     useEffect(() => {
-        init()
+        init();
     }, [option])
 
     function init() {

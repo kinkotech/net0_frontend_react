@@ -1,401 +1,158 @@
 import React, { useState, useEffect } from 'react';
 import api from '@/api/index';
 import ConTitle from '@/components/ConTitle';
-import { Select } from 'antd';
 import Echarts from '@/components/Echarts';
 
 const BottomCenter = function () {
-    let [checked, setChecked] = useState(false);
-    let [unit, setUnit] = useState('kgCO₂e');
-    let [unitList, setUnitList] = useState([
-        { value: 'tCO₂e', label: 'tCO₂e' },
-        { value: 'kgCO₂e', label: 'kgCO₂e' }
-    ]);
-    let [option, setOption] = useState({})
+    let [unit, setUnit] = useState('');
+    let [option, setOption] = useState({});
 
     useEffect(() => {
-        getCarbonTrendSingle('2023-01', '2023-12')
-    }, [unit])
+        getFactorComparison('2023-01', '2023-12')
+    }, [])
 
     // 获取数据
-    const getCarbonTrendSingle = async (start, end) => {
-        // type ● single: 只查看本周期数据;● comparison:包含去年同期对比
+    const getFactorComparison = async (start, end) => {
         let params = {
+            // park_id: this.footBoard.park_id,
             park_id: 0,
             start,
-            end,
-            type: 'single',
-            unit: unit
+            end
         }
-        await api.GetCarbonTrend(params).then(res=>{
-            getOptions(res)
+        await api.GetFactorComparison(params).then(res=>{
+            setUnit(res.unit);
+            getOptions(res.value, res.key)
         })
     }
 
-    // 同期对比
-    const getCarbonTrendComparison = async (start, end) => {
-        // type 
-        // ● single: 只查看本周期数据;
-        // ● comparison:包含去年同期对比
-        let params = {
-            park_id: 0,
-            start,
-            end,
-            type: 'comparison',
-            unit: unit
-        }
-        await api.GetCarbonTrend(params).then(res=>{
-            getOptions1(res)
-        })
-    }
-
-    // 图表option
-    const getOptions = (res) => {
-        let _this = this;
-        let xAxisData = [];
-        let data1 = [];
-        let data2 = [];
-        let data3 = [];
-
-        res.forEach(el => {
-            if(el.name == 'date') {
-                xAxisData = el.value;
-            } else if (el.name == '直接排放') {
-                data1 = el.value;
-            } else if (el.name == '购买能源排放') {
-                data2 = el.value;
-            } else if (el.name == '上下游排放') {
-                data3 = el.value;
-            }
-        })
-
+    const getOptions = (data, xData) => {
         let options = {
             tooltip: {
-            trigger: 'axis',
-                show: true,
-                formatter(params) {
-                    let total = 0;
-                    let tipList = params.map((seg) => {
-                        let { value, seriesName, color } = seg;
-                        if (typeof(value) == 'object') {
-                            value = value[1]
-                        }
-                        total += value * 100;
-                        return `${getTipDot({ color })}${seriesName}：${value}`;
-                    })
-                    total = total / 100;
-                    return `<div>${params[0].axisValueLabel}（总计：${total}）<div>`
-                         + tipList.join('<br/>');
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
                 }
             },
-            color: ['#0BCFC8', '#B596FC', '#4565F7'],
-            legend: {
-                bottom: '5%',
-                icon: 'circle',
-                itemGap: 25,
-                itemWidth: 12,
-                itemHeight: 9,
-                textStyle: {
-                    fontSize: 12,
-                },
-            },
             grid: {
-                left: '3%',
-                right: '3%',
-                top: '5%',
-                bottom: '15%',
+                left: '0%',
+                right: '8%',
+                top:'5%',
+                bottom: '8%',
                 containLabel: true
             },
             xAxis: {
-                type: 'category',
-                data: xAxisData,
+                type: 'log',
+                min: 1,
+                logBase: 10,
                 axisLine: {
-                    lineStyle: {
-                        color:'rgba(255, 255, 255, .12)'
-                    }
+                    show: false
                 },
+                splitLine: {
+                    "show": false
+                },
+                // 坐标轴刻度XY如何转为科学计数法（a*10的n次方的形式）
                 axisLabel: {
-                    color: 'rgba(255, 255, 255, .87)',
-                    interval: 0,
                     fontSize: 12,
-                    formatter(data, i) {
-                        let arr = data.split('-');
-                        arr = [arr[1], arr[0]];
-                        arr[0] = Number(arr[0]) + '月';
-                        // 第一个数据加上 年 月
-                        if (i == 0) {
-                            return arr.join("\n");
-                        } else {
-                            // 针对每年的1月特殊处理
-                            if (data.indexOf('01') > -1) {
-                                return arr.join("\n");
-                            } else {
-                                return [`${arr[0]}`];
+                    formatter: function(value){
+                        let indexList = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹']
+                        if (Math.abs(value) > 10){
+                            if (value === 0)
+                                return '0'
+                                // 检查是否已经转化为科学计数了
+                                // else if ((value + '').indexOf('e') > 0)
+                                //   return (value + '').replace(/e/, 'E')
+                            else
+                                {
+                                    let res = value.toString()
+                                    let numN1 = 0
+                                    let numN2 = 1
+                                    let num1 = 0
+                                    let num2 = 0
+                                    let t1 = 1
+                                    // 计入小数点前后有多少位
+                                    for (let k = 0; k < res.length; k++){
+                                        if (res[k] === '.')
+                                            t1 = 0;
+                                        if (t1)
+                                            num1++;
+                                        else
+                                            num2++;
+                                    }
+                                // 均转换为科学计数法表示
+                                if (Math.abs(value) < 1) {
+                                    // 小数点后一位开始计算
+                                    for (let i = 2; i < res.length; i++){
+                                        if (res[i] === '0')
+                                            numN2++; //记录10的负指数值（默认值从1开始）
+                                        else if (res[i] === '.')
+                                            continue;
+                                        else
+                                            break;
+                                    }
+                                    let v = parseFloat(value);
+                                    // 10的numN2次方
+                                    v = v * Math.pow(10, numN2);
+                                    v = v.toFixed(1) //四舍五入 仅保留一位小数位数
+                                    let char = indexList[Number(numN2)];
+
+                                    let str = v.toString() != '1' ? `${v.toString()}*` : '';
+
+                                    return str + '10' + char;
+                                } else if (num1 > 1) {
+                                    numN1 = num1 - 1;
+                                    let v = parseFloat(value);
+                                    v = v / Math.pow(10, numN1);
+                                    if (num2 > 1)
+                                        v = v.toFixed(1);
+                                        let char = indexList[Number(numN1)];
+
+                                        let str = v.toString() != '1' ? `${v.toString()}*` : '';
+
+                                        return str + '10' + char;
+                                }
                             }
                         }
+                        else
+                            return value
                     }
                 },
             },
             yAxis: {
-                type: 'value',
-                position: 'right',
-                // 网格线
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: 'rgba(255, 255, 255, .12)'
-                    }
-                },
-                minInterval:1,
-                axisLabel: {
-                    color: 'rgba(255, 255, 255, .6)',
-                    interval: 0,
-                    fontSize: 12
-                },
+                type: 'category',
                 axisLine: {
                     show: false
                 },
-                axisTick: {
-                    show: false,
-                }
+                axisLabel: {
+                    interval: 0,
+                    color: 'rgba(255, 255, 255, .87)',
+                    fontSize: 12
+                },
+                data: xData
             },
             series: [
-            {
-                name: '直接排放',
-                type: 'bar',
-                stack: '总量',
-                barWidth: '40%',
-                label: {
-                    show: false,
-                    formatter:function(val){
-                        if(val.value){
-                            return val.value
-                        }else{
-                            return ''
-                        }
-                    }
-                },
-                data: data1
-            },
-            {
-                name: '购买能源排放',
-                type: 'bar',
-                stack: '总量',
-                barWidth: '40%',
-                label: {
-                    show: false,
-                    formatter:function(val){
-                        if(val.value){
-                            return val.value
-                        }else{
-                            return ''
-                        }
-                    }
-                },
-                data: data2
-            },
-            {
-                name: '上下游排放',
-                type: 'bar',
-                stack: '总量',
-                barWidth: '40%',
-                label: {
-                    show: false,
-                    formatter:function(val){
-                        if(val.value){
-                            return val.value
-                        }else{
-                            return ''
-                        }
-                    }
-                },
-                data: data3
-            },
+                {
+                    name: '数量',
+                    type: 'bar',
+                    barWidth: '30%',
+                    itemStyle:{
+                        color: '#2276FC'
+                    },
+                    data
+                }
             ]
         }
         setOption(options)
     }
 
-    // 环比option
-    const getOptions1 = (res)=> {
-        let xAxisData = [];
-        let data1 = [];
-        let data2 = [];
-        
-        res.forEach(el => {
-            if(el.name == 'date') {
-                xAxisData = el.value;
-            } else if (el.name == '上周期') {
-                data1 = el.value;
-            } else if (el.name == '本周期') {
-                data2 = el.value;
-            }
-        })
-        this.options1 = {
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                type: 'shadow'
-                }
-            },
-            legend: {
-                bottom: '5%',
-                icon: 'circle',
-                itemGap: 25,
-                itemWidth: 12,
-                itemHeight: 9,
-                textStyle: {
-                    fontSize: 12,
-                },
-            },
-            color: ['#FFCF5F', '#999'],
-            grid: {
-                left: '3%',
-                right: '3%',
-                top: '5%',
-                bottom: '15%',
-                containLabel: true
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    data: xAxisData,
-                    axisLine: {
-                        lineStyle: {
-                            color:'rgba(255, 255, 255, .12)'
-                        }
-                    },
-                    axisLabel: {
-                        color: 'rgba(255, 255, 255, .87)',
-                        interval: 0,
-                        fontSize: 12,
-                        formatter(data, i) {
-                            let arr = data.split('-');
-                            arr = [arr[1], arr[0]];
-                            arr[0] = Number(arr[0]) + '月';
-                            // 第一个数据加上 年 月
-                            if (i == 0) {
-                                return arr.join("\n");
-                            } else {
-                                // 针对每年的1月特殊处理
-                                if (data.indexOf('01') > -1) {
-                                    return arr.join("\n");
-                                } else {
-                                    return [`${arr[0]}`];
-                                }
-                            }
-                        }
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    position: 'right',
-                    // 网格线
-                    splitLine: {
-                        show: true,
-                        lineStyle: {
-                            color: 'rgba(255, 255, 255, .12)'
-                        }
-                    },
-                    minInterval:1,
-                    axisLabel: {
-                        color: 'rgba(255, 255, 255, .6)',
-                        interval: 0,
-                        fontSize: 12
-                    },
-                    axisLine: {
-                        show: false
-                    },
-                    axisTick: {
-                        alignWithLabel: true,
-                    }
-                }
-            ],
-            series: [
-                {
-                    name: '本期',
-                    barWidth: '15%',
-                    type: 'bar',
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    data: data2
-                },
-                {
-                    name: '上期',
-                    barWidth: '15%',
-                    type: 'bar',
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    data: data1
-                }
-            ]
-        }
-    }
-
-    const getTipDot = function({ radius = 5, color = "red" } = {}) {
-		return `<span style='width:${radius * 2}px;height:${radius * 2}px;display:inline-block;border-radius: ${radius}px;background:${color};margin:0px 3px;'></span>`
-	}
-
-
-    // 单位切换
-    const changeUnit = (val) => {
-        setUnit(val)
-        // if(checked) {
-        //     getCarbonTrendComparison(this.footBoard.start, this.footBoard.end);
-        //     getOptions1()
-        // } else {
-        //     getCarbonTrendSingle(this.footBoard.start, this.footBoard.end);
-        //     getOptions()
-        // }
-    }
-
 
     return (
-        <div className="card d-flex flex-column w-100 h-100">
-            <div className="top">
-                <ConTitle title="碳足迹趋势" fontSize=".18rem" showPopver={true} popverContent="popver" />
-                <div className="top-right">
-                    {/* <a-checkbox v-model="checked" @change="changeChecked">环比</a-checkbox> */}
-                    {/* <a-select
-                    v-model="unit"
-                    style="width: 1.5rem"
-                    @change="handleChange"
-                    className="kinko-selection"
-                    >
-                    <a-select-option :value="item" v-for="item in selectUnit" :key="item">{{ item }}</a-select-option>
-                </a-select> */}
-                    <Select
-                        className='kinko-selection'
-                        defaultValue={unit}
-                        style={{ width: '1.5rem' }}
-                        onChange={changeUnit}
-                        options={unitList}
-                    />
-                </div>
-            </div>
+        <div className="bottom-left d-flex flex-column w-100 h-100">
+            <ConTitle title="活动类型碳足迹对比" fontSize=".18rem" showPopver={true} popverContent="popverContent"/>
             <div className="content flex-1">
-                <Echarts id='footCenter' option={option} />
-                {/* {
-                checked ? 
-                <Echart
-                :options="options1"
-                height="100%"
-                width="100%"
-                id="board-middle-chart1"
-                v-if="checked"
-                ></Echart>
-                :
-                <Echart
-                :options="options"
-                height="100%"
-                width="100%"
-                id="board-middle-chart"
-                ></Echart>
-             } */}
+                <Echarts
+                option={option}
+                id="board-b-c-chart"
+                />
             </div>
         </div>
     )

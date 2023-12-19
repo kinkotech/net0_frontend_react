@@ -5,6 +5,9 @@ import { FootLayout } from '@/pages/Foot/index';
 import Top from './Top';
 import Center from './Center';
 import BottomLeft from './BottomLeft';
+import BottomCenter from './BottomCenter';
+import BottomRight from './BottomRight';
+import Right from './Right';
 import './index.scss';
 
 const FootBoard = () => {
@@ -21,11 +24,11 @@ const FootBoard = () => {
 					<div className='border' style={{flex: 4}}><Center/></div>
 					<div className='bottom d-flex' style={{flex: 2}}>
 						<div className='border flex-1'><BottomLeft/></div>
-						<div className='border flex-1'><BottomLeft/></div>
-						<div className='border flex-1'><BottomLeft/></div>
+						<div className='border flex-1'><BottomCenter/></div>
+						<div className='border flex-1'><BottomRight/></div>
 					</div>
 				</div>
-				<div className='border foot-right'>right</div>
+				<Right/>
 			</div>
 		</FootLayout>
 	)

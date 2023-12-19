@@ -3,94 +3,106 @@ import api from '@/api/index';
 import ConTitle from '@/components/ConTitle';
 import Echarts from '@/components/Echarts';
 
-const FootCenter = function () {
-    let [unit, setUnit] = useState('kgCO₂e');
-    let [option, setOption] = useState({})
+const BottomLeft = function () {
+    let [unit, setUnit] = useState('');
+    let [option, setOption] = useState({});
+    let [number, setNumber] = useState(0);
+    let [sum, setSum] = useState(0);
+    let [max, setMax] = useState(0);
 
     useEffect(() => {
-        getParkComparison('2023-01', '2023-12')
+        getActivityComparison('2023-01', '2023-12')
     }, [])
 
     // 获取数据
-    const getParkComparison = async (start, end) => {
+    const getActivityComparison = async (start, end) => {
         let params = {
+            // park_id: footBoard.park_id,
+            park_id: 0,
             start,
-            end
+            end,
         }
-       
-        await api.GetParkComparison(params).then(res=>{
-            let value = res.value;
-            let indicatorList = [];
-            setUnit(res.unit)
-            let max = Math.max.apply(null, value);
-            res.key.forEach(el => {
-                indicatorList.push({
-                    name: el,
-                    max
+        await api.GetActivityComparison(params).then(res=>{
+            let result = res;
+            let key = result.key;
+            let data = [];
+
+            setUnit(res.unit);
+
+            result.value.forEach((el, i) => {
+                data.push({
+                    value: el,
+                    name: key[i]
                 })
+            });
+
+            let sum = 0;
+            let max = 0;
+            data.forEach(item => {
+                sum += item.value;
+                if(item.value >= max) max = item.value;
             })
-            getOptions(indicatorList, value)
+
+            // 放大规则
+            let number = Math.round(max * 0.5);
+            data = data.map(item => {
+                return {
+                    value: number + item.value,
+                    name: item.name
+                }
+            })
+            setNumber(number);
+            setSum(sum);
+            setMax(max);
+            getOptions(data);
         })
     }
 
-    const getOptions = (indicatorList, value) => {
+    const getOptions = (data) => {
         let options = {
-            color: ['#FFCF5F', '#D81B60'],
-            tooltip: {
-                trigger: 'axis'
-            },
+            color: ['#12B76A', '#4E5BA6', '#0BA5EC','#2E90FA', '#6172F3', '#7A5AF8', '#EE46BC', '#9E77ED', '#FB6514', '#F63D68'],
+            // tooltip: {
+            //     trigger: 'item',
+            //     formatter: function (param){
+            //         let {color, name, value} = param;
+            //         return `${getTipDot({ color })}${name}：${(value - number).toFixed(2)} ${unit}`
+            //     }
+            // },
             legend: {
-                bottom: '-2%',
-                itemWidth: 12,
-                itemHeight: 2,
-                itemGap: 14,
+                itemWidth: 6,
+                itemHeight: 6,
+                right: 'right',
+                top: 'center',
+                icon: 'circle',
+                itemGap: 5,
                 textStyle: {
                     fontSize: 12,
                     color: '#fff',
                 },
             },
-            radar: [
-                {
-                    indicator: indicatorList,
-                    center: ['50%', '45%'],
-                    radius: '70%', // //雷达图半径
-                    splitNumber: 4,
-                    nameGap: 0, // 指示器名称和指示器轴的距离
-                    name: {
-                        color: 'rgba(255, 255, 255, 0.85)',
-                        fontSize: 12
-                    },
-                    splitArea: {
-                        areaStyle: {
-                            color: ['rgba(255, 255, 255, 0.7)', 'rgba(255, 255, 255, 0.5)', 'rgba(255, 255, 255, 0.3)', 'rgba(255, 255, 255, 0.1)'],
-                            shadowColor: 'rgba(0, 0, 0, 0.2)',
-                            shadowBlur: 10
-                        }
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.06)'
-                        }
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.06)'
-                        }
-                    }
-                },
-            ],
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: { show: true },
+                }
+            },
             series: [
                 {
-                type: 'radar',
-                tooltip: {
-                    trigger: 'item'
-                },
-                emphasis: {
-                    lineStyle: {
-                        width: 4
-                    }
-                },
-                data: value
+                    type: 'pie',
+                    label: {
+                        show: false
+                    },
+                    radius: ['30%', '80%'],
+                    center: ['40%', '50%'],
+                    roseType: 'radius',
+                    itemStyle: {
+                        borderRadius: 5,
+                        normal: {
+                            borderWidth: 5,
+                            borderColor: '#1e1e1e'
+                        }
+                    },
+                    data
                 }
             ]
         }
@@ -100,7 +112,7 @@ const FootCenter = function () {
 
     return (
         <div className="bottom-left d-flex flex-column w-100 h-100">
-            <ConTitle title="园区高碳排活动周期对比" fontSize=".18rem" showPopver={true} popverContent="popverContent"/>
+            <ConTitle title="范围类别排放量占比" fontSize=".18rem" showPopver={true} popverContent="popverContent"/>
             <div className="content flex-1">
                 <Echarts
                 option={option}
@@ -111,4 +123,4 @@ const FootCenter = function () {
     )
 }
 
-export default FootCenter;
+export default BottomLeft;
