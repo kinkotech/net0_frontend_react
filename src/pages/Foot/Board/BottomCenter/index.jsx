@@ -127,6 +127,10 @@ const BottomCenter = function () {
                     color: 'rgba(255, 255, 255, .87)',
                     fontSize: 12
                 },
+                // 是否显示坐标轴刻度
+                axisTick: {
+                    show: false
+                },
                 data: xData
             },
             series: [

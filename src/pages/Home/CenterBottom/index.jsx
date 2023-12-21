@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import * as echarts from 'echarts';
 import api from '@/api/index';
 import { Select } from 'antd';
@@ -48,6 +48,8 @@ function CenterBottom({node, selectDate}) {
 		{ value: 'kWh', label: 'kWh' },
 		{ value: 'MWh', label: 'MWh' }
 	]);
+
+	// const [messageApi, contextHolder] = message.useMessage();
 
 	useEffect(() => {
 		if(selectDate) {
@@ -148,6 +150,10 @@ function CenterBottom({node, selectDate}) {
 					lineStyle: {
 						color:'rgba(255, 255, 255, .87)'
 					}
+				},
+				// 是否显示坐标轴刻度
+				axisTick: {
+					show: false
 				},
 				// 设置 x 轴的 展示标签， 使其根据 当前标签的序列号转换为 日期
 				axisLabel: {

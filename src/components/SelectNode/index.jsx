@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import './index.scss'
 
 const SelectNode = function({nodeName, level}) {

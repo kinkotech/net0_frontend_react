@@ -22,18 +22,18 @@ const BottomRight = function () {
             let value = res.value;
             let indicatorList = [];
             setUnit(res.unit)
-            let max = Math.max.apply(null, value);
-            res.key.forEach(el => {
+
+            res.key.forEach((el, i) => {
                 indicatorList.push({
                     name: el,
-                    max
+                    // max
                 })
             })
             getOptions(indicatorList, value)
         })
     }
 
-    const getOptions = (indicatorList, value) => {
+    const getOptions = (indicatorList, data) => {
         let options = {
             color: ['#FFCF5F', '#D81B60'],
             tooltip: {
@@ -81,16 +81,14 @@ const BottomRight = function () {
             ],
             series: [
                 {
-                type: 'radar',
-                tooltip: {
-                    trigger: 'item'
-                },
-                emphasis: {
+                    type: 'radar',
+                    tooltip: {
+                        trigger: 'item'
+                    },
                     lineStyle: {
                         width: 4
-                    }
-                },
-                data: value
+                    },
+                    data
                 }
             ]
         }

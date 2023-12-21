@@ -8,6 +8,7 @@ import BottomLeft from './BottomLeft';
 import BottomCenter from './BottomCenter';
 import BottomRight from './BottomRight';
 import Right from './Right';
+import TimeLine from '@/components/TimeLine';
 import './index.scss';
 
 const FootBoard = () => {
@@ -17,7 +18,8 @@ const FootBoard = () => {
 
 	return (
 		<FootLayout>
-			<div className='time-line'>time line1</div>
+			{/* <div className='time-line'>time line1</div> */}
+			<TimeLine/>
 			<div className='flex-1 d-flex'>
 				<div className='flex-1 d-flex flex-column'>
 					<div style={{flex: 1}}><Top/></div>

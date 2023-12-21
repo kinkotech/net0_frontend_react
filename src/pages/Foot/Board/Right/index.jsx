@@ -73,7 +73,7 @@ const Right = ({start, end, park_id}) => {
     }
 
     return (
-        <div className="right border w-100 h-100">
+        <div className="foot-page-right border w-100 h-100">
             <div className="title fw-600">碳足迹评测</div>
             <div className="right-bottom h-100">
                 <div className="right-bottom-con1">
@@ -122,7 +122,7 @@ const Right = ({start, end, park_id}) => {
                             <div className="item1-num">
                                 <Statistic
                                     value={rightCenterValue.last_emission}
-                                    valueStyle={{ color: rightCenterValue.last_emission-rightCenterValue.last_emission > 0 ? '#EF8F8F' : '#12B76A',fontSize:'.3rem',fontWeight: 600 }}
+                                    valueStyle={{ color: rightCenterValue.last_emission-rightCenterValue.emission > 0 ? '#EF8F8F' : '#12B76A',fontSize:'.3rem',fontWeight: 600 }}
                                     suffix='tCO₂e'
                                     />
                             </div>
@@ -134,7 +134,6 @@ const Right = ({start, end, park_id}) => {
                                     <Statistic
                                     value={rightCenterValue.trend}
                                     valueStyle={{ color: trendUp ? '#EF8F8F' : '#12B76A',fontSize:'.3rem',fontWeight: 600 }}
-                                    suffix='tCO₂e'
                                     />
                                     <div className={trendUp ? 'icon up' : 'icon'}>
                                         <iconpark-icon size="100%" color={trendUp ? '#EF8F8F' : '#12B76A'} name="down-one"/>

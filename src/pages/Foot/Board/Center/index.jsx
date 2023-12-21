@@ -115,6 +115,10 @@ const FootCenter = function (props) {
                 color:'rgba(255, 255, 255, .12)'
             }
         },
+        // 是否显示坐标轴刻度
+        axisTick: {
+            show: false
+        },
         axisLabel: {
             color: 'rgba(255, 255, 255, .87)',
             interval: 0,
@@ -243,7 +247,6 @@ const FootCenter = function (props) {
             color: ['#FFCF5F', '#999'],
             series
         }
-        console.log(option1.series.length)
         setOption1(option1)
     }
 
