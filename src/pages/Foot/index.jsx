@@ -17,9 +17,8 @@ export const FootLayout = (props) => {
 	const [list] = useState([
         {
             label: '园区类型',
-            key: 'parkType',
+            key: '/foot/parkType',
             icon: <Icon iconName={'Dashboard'} color={'rgba(255, 255, 255, 0.4)'}/>,
-            path: '/foot/parkType'
         },
         {
             label: '企业',
@@ -27,16 +26,13 @@ export const FootLayout = (props) => {
             icon: <Icon iconName={'Dashboard'} color={'rgba(255, 255, 255, 0.4)'}/>,
             children: [{
                 label: '数据看板',
-                key: '1-1',
-                path: '/foot/board'
+                key: '/foot/board',
             },{
                 label: '水电煤看板',
-                key: '1-2',
-                path: '/foot/waterElectricityGas'
+                key: '/foot/waterElectricityGas',
             },{
                 label: '碳足迹报告',
-                key: '1-3',
-                path: '/foot/list'
+                key: '/foot/list',
             }]
         },
         {
@@ -45,20 +41,10 @@ export const FootLayout = (props) => {
             icon: <Icon iconName={'peoples'} color={'rgba(255, 255, 255, 0.4)'}/>,
             children: [{
                 label: '碳普惠',
-                key: '2-1'
+                key: '/staff'
             }]
         }
     ])
-
-	// const toPath = (path) => {
-	// 	navigate(path, {
-	// 		replace: false,
-	// 		state: {
-	// 			id: path
-	// 		}
-	// 	})
-	// 	setPath(path)
-	// }
 
 	return (
 		<MainLayout>

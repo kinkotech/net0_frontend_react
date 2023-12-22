@@ -20,15 +20,10 @@ const LeftMenu = function(props) {
     }
 
     const changeMenu = (e) => {
-        let path = e.item.props.path;
-        navigate(path, {
-			replace: false,
-			state: {
-				id: path
-			}
-		})
-        console.log(path,e.key)
-        setCurrent(e.key);
+        // let path = e.item.props.path;
+        navigate(e.key, {replace: false})
+        // console.log(path,e.key)
+        // setCurrent(e.key);
         
 
     };
@@ -62,7 +57,7 @@ const LeftMenu = function(props) {
                                 width: '100%',
                             }}
                             defaultOpenKeys={['enterprise', 'staff']}
-                            selectedKeys={[current]}
+                            selectedKeys={[window.location.pathname]}
                             mode="inline"
                             items={list}
                         />
