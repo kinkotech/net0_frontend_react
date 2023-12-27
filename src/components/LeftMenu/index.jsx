@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Layout, Menu } from 'antd';
-import { useNavigate, useRoutes } from 'react-router-dom';
+import { useState } from 'react';
+import { Menu } from 'antd';
+import { useNavigate} from 'react-router-dom';
 import { connect } from 'react-redux';
 import './index.scss';
 
@@ -20,12 +20,8 @@ const LeftMenu = function(props) {
     }
 
     const changeMenu = (e) => {
-        // let path = e.item.props.path;
+        if(e.key === '/staff') return;
         navigate(e.key, {replace: false})
-        // console.log(path,e.key)
-        // setCurrent(e.key);
-        
-
     };
 
     return (
@@ -55,6 +51,9 @@ const LeftMenu = function(props) {
                             onClick={changeMenu}
                             style={{
                                 width: '100%',
+                                background: '#1E1E1E',
+                                fontSize: '.2rem',
+                                color: 'rgba(255, 255, 255, 0.4)'
                             }}
                             defaultOpenKeys={['enterprise', 'staff']}
                             selectedKeys={[window.location.pathname]}

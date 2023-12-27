@@ -4,6 +4,7 @@ import ConTitle from '@/components/ConTitle';
 import { Select, Checkbox } from 'antd';
 import Echarts from '@/components/Echarts';
 import { connect } from 'react-redux';
+import * as echarts from 'echarts';
 import './index.scss';
 
 const FootCenter = function (props) {
@@ -147,19 +148,18 @@ const FootCenter = function (props) {
     // const centerRef = useRef(null);
 
     useEffect(() => {
+        if (!start || !end) return;
         getCarbonTrend(start, end);
 
-        
-        // window.addEventListener('resize', () => {
-        //     console.log('resize')
-        // })
+        // 图表自适应方法
+        const footCenterChart = document.getElementById('footCenter') && echarts.init(document.getElementById('footCenter'));
+        footCenterChart && footCenterChart.resize();
 
-        // console.log(centerRef)
-    }, [unit, checked, sidebarFold])
+        const footCenterChart1 = document.getElementById('footCenter1') && echarts.init(document.getElementById('footCenter1'));
+        footCenterChart1 && footCenterChart1.resize();
 
-    const getChart = (a) => {
-        console.log(a)
-    }
+    }, [unit, checked, sidebarFold, start, end])
+
 
     // 获取数据
     const getCarbonTrend = async (start, end) => {

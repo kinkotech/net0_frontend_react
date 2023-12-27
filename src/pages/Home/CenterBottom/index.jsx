@@ -6,7 +6,6 @@ import SelectNode from '@/components/SelectNode';
 import './index.scss';
 
 function CenterBottom({node, selectDate}) {
-	let [type, setType] = useState('24小时');
 	let [dataType, setDataType] = useState('carbon');
 	let [intervalX, setIntervalX] = useState(2); // x轴间距是否隔开
 	let [selectValue, setSelectValue] = useState('24小时'); // 下拉框数据
@@ -53,18 +52,18 @@ function CenterBottom({node, selectDate}) {
 
 	useEffect(() => {
 		if(selectDate) {
-			getPredict(selectDate, type, dataType, dataType === 'carbon' ? carbonUnit : unit, node.id)
+			getPredict(selectDate, selectValue === '24小时' ? 24 : 7, dataType, dataType === 'carbon' ? carbonUnit : unit, node.id)
 		}
-    }, [selectDate, type, dataType, carbonUnit, unit, node])
+    }, [selectDate, selectValue, dataType, carbonUnit, unit, node])
 
 
 	// 接口获取数据
-	const getPredict = async function(date, type, dataType, unit, server_id) {
-		let params = {}
+	const getPredict = async function(date, selectValue, dataType, unit, server_id) {
+		let params = {};
 		if (server_id) {
 			params = {
 				day_str: date,
-				type: type === '24小时' ? 24 : type,
+				type: selectValue,
 				dataType,
 				server_id,
 				park_id: 1,
@@ -73,7 +72,7 @@ function CenterBottom({node, selectDate}) {
 		} else {
 			params = {
 				day_str: date,
-				type: type === '24小时' ? 24 : type,
+				type: selectValue === '24小时' ? 24 : selectValue,
 				dataType,
 				park_id: 1,
 				unit
@@ -427,8 +426,7 @@ function CenterBottom({node, selectDate}) {
 	}
 
 	// 切换下拉框内容
-	const handleChange = (value) => {
-		setType(value);
+	const selectChange = (value) => {
 		setSelectValue(value);
 		value === '7天' ? setIntervalX(0) : setIntervalX(2);
 	}
@@ -519,7 +517,7 @@ function CenterBottom({node, selectDate}) {
 						className='kinko-selection'
 						defaultValue={selectValue}
 						style={{ width: 90 }}
-						onChange={handleChange}
+						onChange={selectChange}
 						options={selectList}
 						/>
 					<div>预测</div>

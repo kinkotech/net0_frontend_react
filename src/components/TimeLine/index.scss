@@ -1,2 +1,16 @@
-
-
+.time-line {
+    position: relative;
+    .time-chart {
+        position: absolute;
+        top: 10%;
+        left: 0;
+        z-index: 1;
+        padding: 10px;
+    }
+    .grid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+    }
+}

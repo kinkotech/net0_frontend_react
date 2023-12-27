@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '@/api/index';
 import ConTitle from '@/components/ConTitle';
 import Echarts from '@/components/Echarts';
+import * as echarts from 'echarts';
+import { connect } from 'react-redux';
 
-const BottomCenter = function () {
+const BottomCenter = function ({start, end}) {
     let [unit, setUnit] = useState('');
     let [option, setOption] = useState({});
 
     useEffect(() => {
-        getFactorComparison('2023-01', '2023-12')
-    }, [])
+        if (!start || !end) return;
+        getFactorComparison(start, end);
+
+        // 图表自适应方法
+        const BoardBCChart = document.getElementById('board-b-c-chart') && echarts.init(document.getElementById('board-b-c-chart'));
+        BoardBCChart && BoardBCChart.resize();
+    }, [start, end])
 
     // 获取数据
     const getFactorComparison = async (start, end) => {
@@ -162,4 +169,13 @@ const BottomCenter = function () {
     )
 }
 
-export default BottomCenter;
+// 使用connect函数将state和dispatch映射为props
+function mapStateToProps(state) {
+    return {
+        sidebarFold: state.foot.sidebarFold,
+        start: state.foot.start,
+        end: state.foot.end
+    };
+}
+
+export default connect(mapStateToProps)(BottomCenter);

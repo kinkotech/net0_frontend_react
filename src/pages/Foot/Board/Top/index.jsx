@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Statistic } from 'antd';
 import api from '@/api/index';
+import { connect } from 'react-redux';
 import './index.scss';
 
 
-const FootTop = function() {
+const FootTop = function({start, end}) {
     let [scopeTotal, setScopeTotal] = useState({});
     let [scope1, setScope1] = useState({});
     let [scope2, setScope2] = useState({});
     let [scope3, setScope3] = useState({});
-    let [start] = useState('');
-    let [end] = useState('');
+    // let [start] = useState('');
+    // let [end] = useState('');
     let [id] = useState(0)
 
     useEffect(() => {
-        getScopeTotal('2023-01', '2023-12', 0);
-        getScope1('2023-01', '2023-12', 0)
-        getScope2('2023-01', '2023-12', 0)
-        getScope3('2023-01', '2023-12', 0)
+        if (!start || !end) return;
+        getScopeTotal(start, end, 0);
+        getScope1(start, end, 0)
+        getScope2(start, end, 0)
+        getScope3(start, end, 0)
     }, [start, end, id])
 
     //年累积
@@ -158,4 +160,19 @@ const FootTop = function() {
     )
 }
 
-export default FootTop;
+
+// 使用connect函数将state和dispatch映射为props
+function mapStateToProps(state) {
+    return {
+        start: state.foot.start,
+        end: state.foot.end,
+        park_id: state.foot.park_id
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        setSidebarFold: () => dispatch({ type: 'SET_SIDEBAR_FOLD' })
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(FootTop);

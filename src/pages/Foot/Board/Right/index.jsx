@@ -14,10 +14,11 @@ const Right = ({start, end, park_id}) => {
     let [preEnd] = useState(`${end.split('-')[0]-1}-${end.split('-')[1]}`);
 
     useEffect(() => {
+        if (!start || !end) return;
         getCycleComparison(start, end);
         getEnergyTarget(start, end);
         getGreenEnergy(start, end);
-    }, [])
+    }, [start, end])
 
     // 本周期总排放量/上一周期总排放量/周期波动
     const getCycleComparison = async (start, end) => {
@@ -109,7 +110,7 @@ const Right = ({start, end, park_id}) => {
                 <div className="right-bottom-con2">
                         <div className="item1">
                             <div>本周期总排放量({ start }至{ end })</div>
-                            <div className="item1-num">
+                            <div className="center">
                                 <Statistic
                                     value={rightCenterValue.emission}
                                     valueStyle={{ color: rightCenterValue.emission-rightCenterValue.last_emission > 0 ? '#EF8F8F' : '#12B76A',fontSize:'.3rem',fontWeight: 600 }}
@@ -119,7 +120,7 @@ const Right = ({start, end, park_id}) => {
                         </div>
                         <div className="item1">
                             <div>上一周期总排放量({ preStart }至{ preEnd })</div>
-                            <div className="item1-num">
+                            <div className="center">
                                 <Statistic
                                     value={rightCenterValue.last_emission}
                                     valueStyle={{ color: rightCenterValue.last_emission-rightCenterValue.emission > 0 ? '#EF8F8F' : '#12B76A',fontSize:'.3rem',fontWeight: 600 }}

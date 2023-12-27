@@ -61,7 +61,7 @@ function RightTop({node, date}) {
 				<div className="top">
 					<div className="cursor" onClick={back}>
 						{
-							node.nodeText != '电试院' &&
+							node.nodeText !== '电试院' &&
 							<span className="arrar">&lt;</span>
 						}
 						<span className="text1">选中节点：</span>

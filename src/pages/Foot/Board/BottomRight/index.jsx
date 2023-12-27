@@ -2,14 +2,21 @@ import React, { useState, useEffect } from 'react';
 import api from '@/api/index';
 import ConTitle from '@/components/ConTitle';
 import Echarts from '@/components/Echarts';
+import * as echarts from 'echarts';
+import { connect } from 'react-redux';
 
-const BottomRight = function () {
+const BottomRight = function ({start, end}) {
     let [unit, setUnit] = useState('kgCO₂e');
     let [option, setOption] = useState({})
 
     useEffect(() => {
-        getParkComparison('2023-01', '2023-12')
-    }, [])
+        if (!start || !end) return;
+        getParkComparison(start, end);
+
+        // 图表自适应方法
+        const BoardBRChart = document.getElementById('board-b-r-chart') && echarts.init(document.getElementById('board-b-r-chart'));
+        BoardBRChart && BoardBRChart.resize();
+    }, [start, end])
 
     // 获取数据
     const getParkComparison = async (start, end) => {
@@ -109,4 +116,13 @@ const BottomRight = function () {
     )
 }
 
-export default BottomRight;
+// 使用connect函数将state和dispatch映射为props
+function mapStateToProps(state) {
+    return {
+        sidebarFold: state.foot.sidebarFold,
+        start: state.foot.start,
+        end: state.foot.end
+    };
+}
+
+export default connect(mapStateToProps)(BottomRight);

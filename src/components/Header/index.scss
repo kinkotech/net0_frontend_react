@@ -1,3 +1,41 @@
 .layout-page {
     flex: none;
+    .left {
+        line-height: normal;
+        position: absolute;
+		top: .2rem;
+		left: .3rem;
+        display: flex;
+        align-items: center;
+        .logo {
+            width: .4rem;
+            height: .4rem;
+        }
+        .text {
+            font-size: .2rem;
+            color: #fff;
+            margin-left: .14rem;
+        }
+    }
+    .avatar {
+		width: .3rem;
+		position: absolute;
+		top: .1rem;
+		right: .3rem;
+		cursor: pointer;
+        color: #fff;
+	}
+    .ant-menu-dark.ant-menu-horizontal >.ant-menu-item-selected {
+        background: none;
+        border-bottom: 4px solid #0BCFC8;
+    }
+    .ant-menu-item {
+        font-size: .2rem;
+        margin: 0 .7rem;
+        padding: 0 .05rem;
+    }
+    .ant-menu-item-active {
+        font-weight: 700;
+        border-bottom: 4px solid #0BCFC8;
+    }
 }

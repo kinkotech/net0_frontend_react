@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '@/api/index';
 import ConTitle from '@/components/ConTitle';
 import Echarts from '@/components/Echarts';
+import * as echarts from 'echarts';
+import { connect } from 'react-redux';
 
-const BottomLeft = function () {
+const BottomLeft = function ({start, end}) {
     let [unit, setUnit] = useState('');
     let [option, setOption] = useState({});
     let [number, setNumber] = useState(0);
@@ -11,8 +13,13 @@ const BottomLeft = function () {
     let [max, setMax] = useState(0);
 
     useEffect(() => {
-        getActivityComparison('2023-01', '2023-12')
-    }, [])
+        if (!start || !end) return;
+        getActivityComparison(start, end);
+
+        // 下左图表
+        const boardBLChart = echarts.init(document.getElementById('board-b-l-chart'));
+        boardBLChart && boardBLChart.resize();
+    }, [start, end])
 
     // 获取数据
     const getActivityComparison = async (start, end) => {
@@ -123,4 +130,13 @@ const BottomLeft = function () {
     )
 }
 
-export default BottomLeft;
+// 使用connect函数将state和dispatch映射为props
+function mapStateToProps(state) {
+    return {
+        sidebarFold: state.foot.sidebarFold,
+        start: state.foot.start,
+        end: state.foot.end
+    };
+}
+
+export default connect(mapStateToProps)(BottomLeft);

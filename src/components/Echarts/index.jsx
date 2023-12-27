@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import * as echarts from 'echarts';
 
 function Echarts({id, option}) {

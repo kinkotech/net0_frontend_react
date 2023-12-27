@@ -100,17 +100,13 @@
                 .item1-zqbd {
                     justify-content: center;
                 }
-                .item1-num {
-                    ::v-deep .ant-statistic {
-                        text-align: center;	
-                    }
+                .center {
+                    margin-top: .05rem;
+                    text-align: center;
                 }
                 .flex {
                     width: 100%;
                     display: flex;
-                }
-                .text {
-                    // line-height: .3rem;
                 }
                 .p {
                     display: flex;

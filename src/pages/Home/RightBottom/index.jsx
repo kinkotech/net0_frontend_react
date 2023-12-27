@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import api from '@/api/index';
 import Echarts from '@/components/Echarts';
 
 
 function RightBottom({date}) {
 	let [option, setOption] = useState({});
-	let [server_id, setServer_id] = useState();
+	let [server_id] = useState();
 	let [list, setList] = useState([]);
 	let [xAxisList, setXAxisList] = useState([]);
 
