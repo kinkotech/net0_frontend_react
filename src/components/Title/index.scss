@@ -1,0 +1,40 @@
+.page-title {
+    width: 100%;
+    font-size: 24px;
+    margin: .2rem 0;
+    display: flex;
+    justify-content: space-between;
+    .page-title-left {
+        display: flex;
+        align-items: center;
+        .time {
+            margin-left: .2rem;
+        }
+    }
+    .page-title-right {
+        flex: 1;
+    }
+    .kinko-selection {
+        margin-left: .1rem;
+    }
+    
+    .screen-icon {
+        width: .4rem;
+        height: .4rem;
+        margin-left: .2rem;
+        padding: .03rem;
+        border-radius: .08rem;
+    }
+    &.white {
+        color: #fff;
+        .screen-icon {
+            border: 1px solid rgba(255, 255, 255, .3);
+        }
+    }
+    &.black {
+        color: #000;
+        .screen-icon {
+            border: 1px solid #D9D9D9;
+        }
+    }
+}

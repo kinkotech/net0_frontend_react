@@ -16,7 +16,7 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
 
     useEffect(() => {
         getParams(24);
-    },[startIndex, endIndex])
+    },[startIndex, endIndex, park_id])
 
     /**
      * 获取柱形图的开始日期和结束日期

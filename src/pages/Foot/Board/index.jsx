@@ -1,6 +1,4 @@
-import React, { useState } from 'react'
-import { Flex, Layout, Menu, theme } from 'antd'
-import { MainLayout } from "@/layout/MainLayout";
+import { useState } from 'react'
 import { FootLayout } from '@/pages/Foot/index';
 import Top from './Top';
 import Center from './Center';
@@ -9,16 +7,14 @@ import BottomCenter from './BottomCenter';
 import BottomRight from './BottomRight';
 import Right from './Right';
 import TimeLine from '@/components/TimeLine';
+import Title from '@/components/Title';
 import './index.scss';
 
 const FootBoard = () => {
-	const {
-		token: { colorBgContainer },
-	} = theme.useToken()
 
 	return (
 		<FootLayout>
-			{/* <div className='time-line'>time line1</div> */}
+			<Title title="数据看板" fontSize=".18rem" color={'white'} showPopver={true} showSelect={true}/>
 			<TimeLine/>
 			<div className='flex-1 d-flex'>
 				<div className='flex-1 d-flex flex-column'>

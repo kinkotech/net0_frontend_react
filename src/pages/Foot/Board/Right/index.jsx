@@ -5,16 +5,19 @@ import { connect } from 'react-redux';
 import './index.scss';
 
 const Right = ({start, end, park_id}) => {
+    console.log(start,end,'000')
     let [rightTopValue, setRightTopValue] = useState({});
     let [rightBottomValue, setRightBottomValue] = useState([]);
     let [rightCenterValue, setRightCenterValue] = useState({});
     let [trendUp, setTrendUp] = useState(null);
     let [currentYear] = useState('');
-    let [preStart] = useState(`${start.split('-')[0]-1}-${start.split('-')[1]}`);
-    let [preEnd] = useState(`${end.split('-')[0]-1}-${end.split('-')[1]}`);
+    let [preStart, setPreStart] = useState();
+    let [preEnd, setPreEnd] = useState();
 
     useEffect(() => {
         if (!start || !end) return;
+        setPreStart(`${start.split('-')[0]-1}-${start.split('-')[1]}`);
+        setPreEnd(`${end.split('-')[0]-1}-${end.split('-')[1]}`);
         getCycleComparison(start, end);
         getEnergyTarget(start, end);
         getGreenEnergy(start, end);
