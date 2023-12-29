@@ -5,22 +5,19 @@ import { connect } from 'react-redux';
 import './index.scss';
 
 
-const FootTop = function({start, end}) {
+const FootTop = function({start, end, park_id}) {
     let [scopeTotal, setScopeTotal] = useState({});
     let [scope1, setScope1] = useState({});
     let [scope2, setScope2] = useState({});
     let [scope3, setScope3] = useState({});
-    // let [start] = useState('');
-    // let [end] = useState('');
-    let [id] = useState(0)
 
     useEffect(() => {
         if (!start || !end) return;
-        getScopeTotal(start, end, 0);
-        getScope1(start, end, 0)
-        getScope2(start, end, 0)
-        getScope3(start, end, 0)
-    }, [start, end, id])
+        getScopeTotal(start, end, park_id);
+        getScope1(start, end, park_id)
+        getScope2(start, end, park_id)
+        getScope3(start, end, park_id)
+    }, [start, end, park_id])
 
     //年累积
     const getScopeTotal = async (start, end, park_id) => {

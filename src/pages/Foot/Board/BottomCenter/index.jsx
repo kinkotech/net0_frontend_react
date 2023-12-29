@@ -5,24 +5,23 @@ import Echarts from '@/components/Echarts';
 import * as echarts from 'echarts';
 import { connect } from 'react-redux';
 
-const BottomCenter = function ({start, end}) {
+const BottomCenter = function ({start, end, park_id}) {
     let [unit, setUnit] = useState('');
     let [option, setOption] = useState({});
 
     useEffect(() => {
         if (!start || !end) return;
-        getFactorComparison(start, end);
+        getFactorComparison(start, end, park_id);
 
         // 图表自适应方法
         const BoardBCChart = document.getElementById('board-b-c-chart') && echarts.init(document.getElementById('board-b-c-chart'));
         BoardBCChart && BoardBCChart.resize();
-    }, [start, end])
+    }, [start, end, park_id])
 
     // 获取数据
-    const getFactorComparison = async (start, end) => {
+    const getFactorComparison = async (start, end, park_id) => {
         let params = {
-            // park_id: this.footBoard.park_id,
-            park_id: 0,
+            park_id,
             start,
             end
         }
@@ -174,7 +173,8 @@ function mapStateToProps(state) {
     return {
         sidebarFold: state.foot.sidebarFold,
         start: state.foot.start,
-        end: state.foot.end
+        end: state.foot.end,
+        park_id: state.foot.park_id
     };
 }
 

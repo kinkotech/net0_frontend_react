@@ -8,7 +8,7 @@ import * as echarts from 'echarts';
 import './index.scss';
 
 const FootCenter = function (props) {
-    const { sidebarFold, start, end } = props;
+    const { sidebarFold, start, end, park_id } = props;
 
     let [checked, setChecked] = useState(false);
     let [unit, setUnit] = useState('kgCO₂e');
@@ -149,7 +149,7 @@ const FootCenter = function (props) {
 
     useEffect(() => {
         if (!start || !end) return;
-        getCarbonTrend(start, end);
+        getCarbonTrend(start, end, park_id);
 
         // 图表自适应方法
         const footCenterChart = document.getElementById('footCenter') && echarts.init(document.getElementById('footCenter'));
@@ -158,14 +158,14 @@ const FootCenter = function (props) {
         const footCenterChart1 = document.getElementById('footCenter1') && echarts.init(document.getElementById('footCenter1'));
         footCenterChart1 && footCenterChart1.resize();
 
-    }, [unit, checked, sidebarFold, start, end])
+    }, [unit, checked, sidebarFold, start, end, park_id])
 
 
     // 获取数据
-    const getCarbonTrend = async (start, end) => {
+    const getCarbonTrend = async (start, end, park_id) => {
         // type ● single: 只查看本周期数据;● comparison:包含去年同期对比
         let params = {
-            park_id: 0,
+            park_id,
             start,
             end,
             type: !checked ? 'single' : 'comparison',
@@ -299,7 +299,8 @@ function mapStateToProps(state) {
     return {
         sidebarFold: state.foot.sidebarFold,
         start: state.foot.start,
-        end: state.foot.end
+        end: state.foot.end,
+        park_id: state.foot.park_id
     };
 }
 

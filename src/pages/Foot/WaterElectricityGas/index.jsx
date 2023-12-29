@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 import Echarts from '@/components/Echarts';
 import footApi from '@/api/foot';
 import { Statistic } from 'antd';
+import TimeLine from '@/components/TimeLine';
+import Title from '@/components/Title';
+import * as echarts from 'echarts';
 import './index.scss';
 
-const WaterElectricityGas = ({start, end}) => {
+const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 	let [electricity, setElectricity] = useState({
 		unit: '',
 		total: 0,
@@ -24,11 +27,23 @@ const WaterElectricityGas = ({start, end}) => {
 	});
 
 	useEffect(() => {
-		getWEC('2023-01', '2023-12')
-	}, [])
+		if (!start || !end) return;
+		getWEC(start, end, park_id);
+
+		// 图表自适应方法
+        const chart1 = document.getElementById('chart1') && echarts.init(document.getElementById('chart1'));
+        chart1 && chart1.resize();
+
+        const chart2 = document.getElementById('chart2') && echarts.init(document.getElementById('chart2'));
+        chart2 && chart2.resize();
+
+		const chart3 = document.getElementById('chart3') && echarts.init(document.getElementById('chart3'));
+        chart3 && chart3.resize();
+
+	}, [start, end, park_id, sidebarFold])
 
 	// 获取数据
-	const getWEC = async(start, end) => {
+	const getWEC = async(start, end, park_id) => {
 		let data = ['electricity', 'gas', 'water']
 
 		for(let i = 0;i<data.length; i++) {
@@ -36,7 +51,7 @@ const WaterElectricityGas = ({start, end}) => {
 			let unit = '';
 			let total = 0;
 			let param = {
-                park_id: '1',
+                park_id,
                 type: data[i],
                 start,
                 end
@@ -158,20 +173,15 @@ const WaterElectricityGas = ({start, end}) => {
 		}
 	}
 
+	const popverContent = `<p className='info5'></p>
+	<p>该报告结合了公用事业账单数据、天气数据和排放因素，为您的企业提供了能源和水使用的全面细分数据看板。</p>
+	<p>帮助您的企业了解何时、何地以及使用了多少能源和水，以便告知在哪些方面实现最大的减排目标，并评估实施节能措施后所实现的节约情况。</p>`;
+
 	return (
 		<FootLayout>
 			<div className="page w-100 h-100">
-			{/* <Title
-				:title="title"
-				:showSelect="true"
-				:showAll="true" 
-				:showTimer="true" 
-				:defaultValue="defaultValue" 
-				:showPopver="true" 
-				:popverContent="popverContent"
-			></Title> */}
-			<div className="page-time-line">
-				</div>
+				<Title title="水电煤看板" fontSize=".18rem" color={'white'} showPopver={true} popverContent={popverContent} showSelect={true}/>
+				<TimeLine/>
 				<div className="page-right border">
 					<div className="page-right-left">
 							<div className="page-right-left-title">
@@ -254,7 +264,9 @@ const WaterElectricityGas = ({start, end}) => {
 function mapStateToProps(state) {
     return {
         start: state.foot.start,
-		end: state.foot.end
+		end: state.foot.end,
+		park_id: state.foot.park_id,
+		sidebarFold: state.foot.sidebarFold,
     };
 }
 export default connect(mapStateToProps)(WaterElectricityGas);

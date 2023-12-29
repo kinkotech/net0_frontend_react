@@ -5,7 +5,7 @@ import Echarts from '@/components/Echarts';
 import * as echarts from 'echarts';
 import { connect } from 'react-redux';
 
-const BottomLeft = function ({start, end}) {
+const BottomLeft = function ({start, end, park_id}) {
     let [unit, setUnit] = useState('');
     let [option, setOption] = useState({});
     let [number, setNumber] = useState(0);
@@ -14,7 +14,7 @@ const BottomLeft = function ({start, end}) {
 
     useEffect(() => {
         if (!start || !end) return;
-        getActivityComparison(start, end);
+        getActivityComparison(start, end, park_id);
 
         // 下左图表
         const boardBLChart = echarts.init(document.getElementById('board-b-l-chart'));
@@ -22,10 +22,9 @@ const BottomLeft = function ({start, end}) {
     }, [start, end])
 
     // 获取数据
-    const getActivityComparison = async (start, end) => {
+    const getActivityComparison = async (start, end, park_id) => {
         let params = {
-            // park_id: footBoard.park_id,
-            park_id: 0,
+            park_id,
             start,
             end,
         }
@@ -135,7 +134,8 @@ function mapStateToProps(state) {
     return {
         sidebarFold: state.foot.sidebarFold,
         start: state.foot.start,
-        end: state.foot.end
+        end: state.foot.end,
+        park_id: state.foot.park_id
     };
 }
 

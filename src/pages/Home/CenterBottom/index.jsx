@@ -3,9 +3,12 @@ import * as echarts from 'echarts';
 import api from '@/api/index';
 import { Select } from 'antd';
 import SelectNode from '@/components/SelectNode';
+import Popver from '@/components/Popver';
+import { connect } from 'react-redux';
 import './index.scss';
 
-function CenterBottom({node, selectDate}) {
+function CenterBottom({node, selectDate, timeUnit}) {
+	console.log(timeUnit,'000')
 	let [dataType, setDataType] = useState('carbon');
 	let [intervalX, setIntervalX] = useState(2); // x轴间距是否隔开
 	let [selectValue, setSelectValue] = useState('24小时'); // 下拉框数据
@@ -47,12 +50,16 @@ function CenterBottom({node, selectDate}) {
 		{ value: 'kWh', label: 'kWh' },
 		{ value: 'MWh', label: 'MWh' }
 	]);
+	let [helpObj, setHelpObj] = useState({});
 
-	// const [messageApi, contextHolder] = message.useMessage();
+	
 
 	useEffect(() => {
 		if(selectDate) {
-			getPredict(selectDate, selectValue === '24小时' ? 24 : 7, dataType, dataType === 'carbon' ? carbonUnit : unit, node.id)
+			getPredict(selectDate, selectValue === '24小时' ? 24 : 7, dataType, dataType === 'carbon' ? carbonUnit : unit, node.id);
+			getModelPredictionAccuracy();
+			getBeforeOneDay();
+			getAfterOneDay();
 		}
     }, [selectDate, selectValue, dataType, carbonUnit, unit, node])
 
@@ -508,6 +515,37 @@ function CenterBottom({node, selectDate}) {
 		}
 	}
 
+	// 预测准确率
+	const getModelPredictionAccuracy = async () => {
+		await api.GetModelPredictionAccuracy().then(res=>{
+			let obj = {
+				...res,
+				date: selectDate
+			}
+			setHelpObj(obj);
+		})
+	}
+
+	// 前一天
+	const getBeforeOneDay = () => {
+		let date = new Date(new Date(selectDate).getTime() - 24*60*60*1000);
+		let m = date.getMonth() + 1;
+		let d = date.getDate();
+		setBeforeOneDay(`${m}/${d}`)
+	}
+
+	// 后一天
+	const getAfterOneDay = () => {
+		let date = new Date(new Date(selectDate).getTime() + 24*60*60*1000);
+		let m = date.getMonth() + 1;
+		let d = date.getDate();
+		setAfterOneDay(`${m}/${d}`)
+	}
+
+	const popverCon = `<p className='info3'></p>
+	<p className='title'>选择不同模型</p>
+	<p>获得未来24小时和7天的用能相关的碳排放预测数据。</p>`
+
     return (
 		<div className="container border w-100 h-100 d-flex flex-column">
 			<div className="content-header w-100 d-flex">
@@ -522,8 +560,7 @@ function CenterBottom({node, selectDate}) {
 						/>
 					<div>预测</div>
 					<SelectNode nodeName={node.nodeText || '电试院'} level={node.level || 1}/>
-					{/* // <Popver :con="popverCon"/> */}
-					{/* <Popver :con="popverCon2"/> */}
+					<Popver con={popverCon}/>
 				</span>
 				<div className="tabs">
 					<div className="tabs-con right-tabs">
@@ -558,23 +595,40 @@ function CenterBottom({node, selectDate}) {
 				</div>
 			</div>
 			<div className='flex-1' id='centerBottomMain'></div>
-			<div className="legend w-100">
+			{
+				selectValue == '24小时' &&
+				<div className="time-unit">{ timeUnit }</div>
+			}
+			<div className="legend">
 				<div className="con"><span className="color1"></span>实际值</div>
 				<div className="con"><span className="color2"></span>预测值</div>
 			</div>
-			<div className="date w-100">
-				<div className="d left">
-					<div className="text">{ beforeOneDay }</div>
+			{
+				selectValue === '24小时' &&
+				<div className="date w-100">
+					<div className="d left">
+						<div className="text">{ beforeOneDay }</div>
+					</div>
+					<div className="d center">
+						<div className="text">{ parseInt(selectDate.split('-')[1]) }/{ parseInt(selectDate.split('-')[2]) }</div>
+					</div>
+					<div className="d right">
+						<div className="text">{ afterOneDay }</div>
+					</div>
 				</div>
-				<div className="d center">
-					{/* <div className="text">{{ parseInt(selectDate.split('/')[1]) }}/{{ parseInt(selectDate.split('/')[2]) }}</div> */}
-				</div>
-				<div className="d right">
-					<div className="text">{ afterOneDay }</div>
-				</div>
+			}
+			<div className="bottom-help d-flex">
+				<div>预测准确率</div>
+				<Popver help={true} helpObj={helpObj}/>
 			</div>
 		</div>
 	)
 }
 
-export default CenterBottom;
+function mapStateToProps(state) {
+    return {
+        timeUnit: state.foot.timeUnit
+    };
+}
+
+export default connect(mapStateToProps)(CenterBottom);

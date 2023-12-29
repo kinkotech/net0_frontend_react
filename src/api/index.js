@@ -81,6 +81,18 @@ export default class api {
         })
     }
     /**
+     * 未来预测 预测准确率
+     * @returns 
+     */
+    static async GetModelPredictionAccuracy() {
+        return request({
+            method: 'post',
+            data: {
+                cmd: 'getModelPredictionAccuracy'
+            }
+        })
+    }
+    /**
      * 碳节点
      */
     static async Graph(data) {

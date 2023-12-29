@@ -4,7 +4,8 @@ import Popver from '../Popver';
 import { connect } from 'react-redux';
 import './index.scss';
 
-const Title = function({color, title, currentTime, showPopver, showHelp, showSelect, setParkId}) {
+const Title = function({color, title,popverContent, currentTime, showPopver, showHelp, showSelect, setParkId}) {
+    console.log(popverContent)
     let [screen, setScreen] = useState('FullScreen');
     const [parkList] = useState(JSON.parse(localStorage.getItem('PARK_LIST')));
     let [defaultValue, setDefaultValue] = useState('电试院');
@@ -81,6 +82,7 @@ const Title = function({color, title, currentTime, showPopver, showHelp, showSel
                         style={{minWidth: '115px',width: '1.6rem' }}
                         onChange={changePark}
                         options={parkList}
+                        disabled
                     />
                 }
                 <div className="screen-icon pointer" onClick={changeScreen}>
@@ -91,7 +93,7 @@ const Title = function({color, title, currentTime, showPopver, showHelp, showSel
                 <div v-if="showCurrentTime" className="time">{ currentTime }</div>
                 {
                     showPopver &&
-                    <Popver/>
+                    <Popver con={popverContent}/>
                 }
                 {
                     // showHelp &&

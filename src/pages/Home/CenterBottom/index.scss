@@ -36,7 +36,7 @@
         height: .5rem;
         color: rgba(255, 255, 255, .87);
         position: absolute;
-        bottom: 0rem;
+        bottom: .15rem;
         left: 0;
         z-index: 9;
         .d {
@@ -54,6 +54,14 @@
         .right {
             justify-content: end;
         }
+    }
+    .bottom-help {
+        align-items: center;
+        color: #fff;
+        position: absolute;
+        bottom: .1rem;
+        right: 3%;
+        z-index: 19;
     }
     .content-header {
         box-sizing: border-box;
@@ -108,15 +116,13 @@
     }
 	#chart-container {
 		flex: 1;
-		position: relative;
-		.time-unit {
-			position: absolute;
-			bottom: 15.3%;
-			right: 2.5%;
-			color: #999;
-			z-index: 9;
-			font-size: .16rem;
-		}
 	}
-    
+    .time-unit {
+        position: absolute;
+        bottom: 13%;
+        right: 2.5%;
+        color: #999;
+        z-index: 9;
+        font-size: .16rem;
+    }
 }
