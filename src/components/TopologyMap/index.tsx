@@ -8,7 +8,7 @@ interface Props {
     dayDeviceType: any
 }
 
-interface Item {
+type Item = {
     text: string;
     color: string;
 }
