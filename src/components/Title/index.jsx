@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Select } from 'antd';
 import Popver from '../Popver';
 import { connect } from 'react-redux';
+import Help from '../Help';
 import './index.scss';
 
-const Title = function({color, title,popverContent, currentTime, showPopver, showHelp, showSelect, setParkId}) {
-    console.log(popverContent)
+const Title = function({color, title,popverContent, currentTime, showPopver, showHelp=false, helpImgUrl, showSelect, setParkId}) {
     let [screen, setScreen] = useState('FullScreen');
     const [parkList] = useState(JSON.parse(localStorage.getItem('PARK_LIST')));
     let [defaultValue, setDefaultValue] = useState('电试院');
@@ -96,8 +96,8 @@ const Title = function({color, title,popverContent, currentTime, showPopver, sho
                     <Popver con={popverContent}/>
                 }
                 {
-                    // showHelp &&
-                    // <Help url={helpImgUrl}/>
+                    showHelp &&
+                    <Help url={helpImgUrl}/>
                 }
             </div>
         </div>

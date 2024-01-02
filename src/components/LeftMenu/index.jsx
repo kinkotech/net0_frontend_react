@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Menu } from 'antd';
 import { useNavigate} from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -7,9 +6,7 @@ import './index.scss';
 const LeftMenu = function(props) {
     const { type, list,  sidebarFold, setSidebarFold } = props;
 
-    const [current, setCurrent] = useState('1-1');
     const navigate = useNavigate()
-
 
     const addFoot = function() {
         

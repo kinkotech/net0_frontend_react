@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import './index.scss';
 
 function CenterBottom({node, selectDate, timeUnit}) {
-	console.log(timeUnit,'000')
 	let [dataType, setDataType] = useState('carbon');
 	let [intervalX, setIntervalX] = useState(2); // x轴间距是否隔开
 	let [selectValue, setSelectValue] = useState('24小时'); // 下拉框数据
@@ -627,7 +626,7 @@ function CenterBottom({node, selectDate, timeUnit}) {
 
 function mapStateToProps(state) {
     return {
-        timeUnit: state.foot.timeUnit
+        timeUnit: state.common.timeUnit
     };
 }
 

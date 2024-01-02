@@ -6,7 +6,10 @@ import FootBoard from '@/pages/Foot/Board';
 import FootList from "@/pages/Foot/List";
 import FootParkType from '@/pages/Foot/ParkType';
 import WaterElectricityGas from '@/pages/Foot/WaterElectricityGas';
-import Reduction from '@/pages/Reduction';
+import ReductionBoard from '@/pages/Reduction/board';
+import ReductionDay from '@/pages/Reduction/day';
+import ReductionYear from '@/pages/Reduction/year';
+import ReductionSetting from "@/pages/Reduction/setting";
 
 const Router = createBrowserRouter([
     {
@@ -14,7 +17,7 @@ const Router = createBrowserRouter([
         element: <Home/>,
     },
     {
-        path: "foot/board",
+        path: "foot",
         element: <FootBoard/>,
     },
     {
@@ -30,8 +33,20 @@ const Router = createBrowserRouter([
         element: <FootList/>,
     },
     {
+        path: 'reduction/board',
+        element: <ReductionBoard/>
+    },
+    {
         path: 'reduction',
-        element: <Reduction/>
+        element: <ReductionDay/>
+    },
+    {
+        path: 'reduction/year',
+        element: <ReductionYear/>
+    },
+    {
+        path: 'reduction/setting',
+        element: <ReductionSetting/>
     }
 ]);
 

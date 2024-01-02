@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { MainLayout } from "@/layout/MainLayout";
 import LeftMenu from '@/components/LeftMenu';
 import Icon from '@/components/Icon';
-import { useNavigate, useRoutes } from 'react-router-dom'
 import './index.scss';
 
 export const FootLayout = (props) => {
-	let [path, setPath] = useState();
-
-	 const navigate = useNavigate()
-
-	// useEffect(() => {
-	// 	toPath()
-	// }, [path])
-
 	const [list] = useState([
         {
             label: '园区类型',
@@ -26,7 +17,7 @@ export const FootLayout = (props) => {
             icon: <Icon iconName={'Dashboard'} color={'rgba(255, 255, 255, 0.4)'}/>,
             children: [{
                 label: '数据看板',
-                key: '/foot/board',
+                key: '/foot',
             },{
                 label: '水电煤看板',
                 key: '/foot/waterElectricityGas',

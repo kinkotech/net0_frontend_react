@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { FootLayout } from '@/pages/Foot/index';
 import Top from './Top';
 import Center from './Center';

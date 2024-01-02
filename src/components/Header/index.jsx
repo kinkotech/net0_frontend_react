@@ -24,8 +24,8 @@ const HeaderPage = () => {
 		};
 	}
 	let name = window.location.pathname;
-	let footPath = '/foot/board';
-	if (name === '/foot/waterElectricityGas' || name === '/foot/board' || name === '/foot/parkType' || name === '/foot/list' || name === 'staff') {
+	let footPath = '/foot';
+	if (name === '/foot/waterElectricityGas' || name === '/foot' || name === '/foot/parkType' || name === '/foot/list' || name === 'staff') {
 		footPath = name;
 	}
 	const menuItems = [
