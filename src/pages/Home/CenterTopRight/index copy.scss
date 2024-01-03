@@ -1,0 +1,39 @@
+
+.prediction-center-right {
+    width: 2rem;
+    box-sizing: border-box;
+    margin-right: .2rem;
+    display: flex;
+    flex-direction: column;
+    &-li {
+        flex: 1;
+        margin-top: .5rem;
+        text-align: right;
+        &-name {
+            color: #fff;
+            font-size: .18rem;
+            margin-top: .1rem;
+        }
+        .icon {
+            text-align: right;
+            width: .4rem;
+            display: inline-block;
+            margin-left: .1rem;
+        }
+        .text {
+            display: inline-block;
+            min-width: 1.3rem;
+            text-align: right;
+            .ant-statistic {
+                z-index: 1;
+            }
+        }
+    }
+    .ant-statistic-content-suffix {
+        font-size: 100% !important;
+    }
+}
+.swiper {
+    height: 450px;
+    width: 170px;
+}

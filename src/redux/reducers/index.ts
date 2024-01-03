@@ -1,9 +1,13 @@
-import { combineReducers } from 'redux'
-import countReducer from './count'
-import tigerReducer from './tiger'
+// reducers.js
+import { combineReducers } from 'redux';
+import footReducer from './foot';
+import commonReducer from './common';
+import reductionReducer from './reduction';
 
 // 合并所有reducers
 export default combineReducers({
-	count: countReducer,
-	tigerArr: tigerReducer,
+	foot: footReducer,
+	common: commonReducer,
+	reduction: reductionReducer
 })
+  

@@ -1,0 +1,44 @@
+.left-top {
+    font-size: .16rem;
+    &-top {
+        align-items: center;
+        .full-screen-icon {
+			border: 1px solid rgba(255, 255, 255, .3);
+			width: .4rem;
+			height: .4rem;
+			padding: .03rem;
+			border-radius: .08rem;
+			margin-left: .2rem;
+			cursor: pointer;
+		}
+		.now-date {
+			margin-left: .2rem;
+			font-size: .24rem;
+		}
+    }
+    &-center {
+        padding-top: .32rem;
+        height: .8rem;
+        font-size: .45rem;
+        font-weight: 600;
+    }
+    &-bottom {
+        margin-bottom: .2rem;
+        justify-content: space-between;
+        &-con {
+            width: 49%;
+            padding: .1rem 0;
+            text-align: center;
+            .descend {
+                color: #EF8F8F;
+            }
+            .rise {
+                color: #9AE4A7;
+            }
+        }
+    }
+}
+
+.ant-statistic-content-suffix {
+    font-size: 60% !important;
+}

@@ -9,7 +9,6 @@ import qs from 'qs';
 //     content: error.message,
 //   })
 // }
-console.log(process.env,'env')
 const baseURL = 'http://47.103.199.226:8001';
 const service = axios.create({
   baseURL: baseURL+'/api/v1/net0/',
