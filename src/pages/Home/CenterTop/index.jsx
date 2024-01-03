@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '@/api/index';
 import G6 from '@antv/g6';
 import { DatePicker } from 'antd';

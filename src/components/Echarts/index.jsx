@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import * as echarts from 'echarts';
 
 function Echarts({id, option}) {
-
     useEffect(() => {
         init();
     }, [option])

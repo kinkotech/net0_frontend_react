@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Title from '@/components/Title';
 import { ReductionLayout } from '@/pages/Reduction/index';
-import { Select } from 'antd';
+import { Select, Statistic } from 'antd';
 import Echarts from '@/components/Echarts';
 import { connect } from 'react-redux';
 import * as echarts from 'echarts';
 import helpImgUrl from '@/assets/img/help.png';
 import Popver from '@/components/Popver';
 import TopologyMap from '@/components/TopologyMap';
+import reductionApi from '@/api/reduction';
+import api from '@/api/index';
+import {getNowDate} from '@/utils/utils';
 import './index.scss';
 
 // x轴坐标
@@ -16,7 +19,7 @@ for(let i=0;i<24; i++) {
     date.push(`${i}:00`)
 }
 
-const ReductionDay = ({timeUnit}) => {
+const ReductionDay = ({timeUnit, dayDeviceTypeColor, server_id='a00000000000000'}) => {
 	let [option, setOption] = useState({
 		tooltip: {
 			trigger: 'axis'
@@ -180,23 +183,40 @@ const ReductionDay = ({timeUnit}) => {
 	})
 	let [rightTitle, setRightTitle] = useState('电试院');
 	let [rightTitleLight] = useState('光伏产能');
-	let [selectValue] = useState('comparison');
-	let [unit] = useState('');
-	let [lightUnit] = useState('')
+	let [selectValue, setSelectValue] = useState('comparison');
+	let [unit, setUnit] = useState('');
+	let [lightUnit] = useState('');
+	let [deviceType, setDeviceType] = useState(['综合设备', '照明设备', '空调设备']); // 默认的设备类型
+	let [dayDeviceTypeName, setDayDeviceTypeName] = useState([]);
+	let [dayDemandList, setDayDemandList] = useState([]);
+	let [daySupplyList, setDaySupplyList] = useState([]);
 
 	const selectList = [{
-		type: 'comparison',
-		text: '日策略-综合对比',
+		value: 'comparison',
+		label: '日综合对比',
 		color: ['#0BCFC8', '#FD853A', '#6200EE']
 	},{
-		type: 'dashboard',
-		text: '日策略-实测值'
+		value: 'dashboard',
+		label: '日实测值'
 	}, {
-		type: 'normal',
-		text: '日策略-不优化'
+		value: 'normal',
+		label: '日预测值'
 	}, {
-		type: 'optimize',
-		text: '日策略-优化'
+		value: 'optimize',
+		label: '日推荐值'
+	}]
+	const comparisonLegend = [{
+		color: '#0BCFC8',
+		type: 'actual_value',
+		name: '实测值'
+	},{
+		color: '#FD853A',
+		type: 'predict_value',
+		name: '预测值'
+	},{
+		color: '#6200EE',
+		type: 'strategy_value',
+		name: '优化值'
 	}]
 	const popverCon1 = `<p class="info9"></p>
 	<p>通过使用深度强化学习的高效探索方法推演出零碳智慧园区碳减排的策略的模型，尤其涉及基于园区配电网建模后设定多目标后的优化决策。</p>
@@ -205,10 +225,113 @@ const ReductionDay = ({timeUnit}) => {
 	<p>不优化的曲线，是由碳排放预测模块给出的24小时，电力碳排放曲线。</p>
 	<p>日策略的实测值，是电表的实时更新数据。</p>`;
 	const popverCon3 = '使用LSTM模型预测的24小时内的光伏预测数据，与实际的光伏数据的对比';
-	const changeDay = () => {
 
+	useEffect(() => {
+		getDayDeviceType();
+		getDayStrategy(server_id, selectValue, deviceType);
+		getDayDemand();
+		getDaySupply();
+		getEnvironment()
+	}, [server_id, selectValue, deviceType])
+
+	// 切换下拉框
+	const changeDay = (val, item) => {
+		setSelectValue(val);
+		getDayStrategy(server_id, val, deviceType)
 	}
+	// 需求侧
+	const getDayDemand = async () => {
+		await api.GetDayDemand().then(res=>{
+			setDayDemandList(res)
+		})
+	}
+	// 供给端
+	const getDaySupply = async () => {
+		await api.GetDaySupply().then(res=>{
+			setDaySupplyList(res)
+		})
+	}
+	// 环境
+	const getEnvironment = async () => {
+		await reductionApi.GetEnvironment().then(res=>{
+			setEnvironment(res)
+		})
+	}
+	// 获取设备类型
+	const getDayDeviceType = async () => {
+		await reductionApi.GetDeviceList().then(res=>{
+			setDayDeviceTypeName(res.data);
+		})
+	}
+	// 柱形图
+	const getDayStrategy = async (server_id, type, device) => {
+		let params = {
+			day_str: getNowDate(),
+			server_id,
+			type,
+			device
+		}
+		await api.GetDayStrategy(params).then(res=>{
+			let arr = res.data;
+			setUnit(res.unit)
+			if (type == 'comparison') {
+				arr.forEach(el => {
+					el.type = 'line';
+					el.smooth = true;
+					el.showSymbol = false;
+
+					if (el.name == 'actual_value') { // 真实值
+						el.data = el.value;
+						el.name= '实测值';
+					} else if (el.name == 'predict_value') { // 预测值
+						el.data = el.value;
+						el.name= '预测值';
+					} else if (el.name == 'strategy_value') { // 优化值
+						el.data = el.value;
+						el.name= '优化值';
+					}
+				})
+				
+				setOption({
+					...option,
+					color: selectList[0].color,
+					series: arr
+				})
+			} else {
+				arr.forEach(el => {
+					if (el.name != '优化曲线') {
+						el.data = el.value;
+						el.type = 'bar';
+						el.barWidth = '35%';
+						el.stack = 'total';
+						el.emphasis = {
+							focus: 'series'
+						};
+						// 根据设备名称显示对应颜色
+						let index = dayDeviceTypeName.indexOf(el.name)
+						el.itemStyle = {
+							normal: {
+								color: dayDeviceTypeColor[index]
+							}
+						}
+					}
+				})
+				setOption({
+					...option,
+					series: arr
+				})
+			}
+		})
+	}
+
 	const getItem = () => {}
+
+	// 获取graph的item
+	const getGraphItem = (item) => {
+		console.log(selectValue)
+		setRightTitle(item.label)
+		getDayStrategy(item.id, selectValue, deviceType)
+	}
 
 	return (
 		<ReductionLayout>
@@ -222,7 +345,7 @@ const ReductionDay = ({timeUnit}) => {
 									<div>一楼一策（按用能设备统计）</div>
 									<Popver con={popverCon1}/>
 								</div>
-								<TopologyMap item={getItem}/>
+								<TopologyMap item={getItem} dayDeviceTypeName={dayDeviceTypeName} getGraphItem={getGraphItem}/>
 							</div>
 							<div className="barContaniner-right w-100">
 								<div className="barContaniner-right-title">
@@ -234,7 +357,7 @@ const ReductionDay = ({timeUnit}) => {
 										<Select
 											className='kinko-selection'
 											defaultValue={selectValue}
-											style={{ width: '2.5rem' }}
+											style={{ width: '1.5rem' }}
 											onChange={changeDay}
 											options={selectList}
 										/>
@@ -250,28 +373,50 @@ const ReductionDay = ({timeUnit}) => {
 									</div>
 								</div>
 								<div className="w-100 h-100 barContaniner-right-content">
-									<template>
-										<Echarts id='reduction-day-chart' option={option}/>
-										<div className="unit">{ unit }</div>
-										{/* <ul className="barContaniner-right-content-legend" v-if="dayActive && selectValue == 'comparison'">
-											<li v-for="(item, i) in comparisonLegend" :key="i">
-												<span :style="{background: item.color}" className="circle"></span>
-												<span>{{ item.name }}</span>
-											</li>
-										</ul> */}
-										{/* <ul className="barContaniner-right-content-legend device-type-legend" v-if="dayActive && selectValue != 'comparison'">
-											<li v-for="(item, i) in deviceType" :key="i">
-												<span :style="{background: $store.state.dayDeviceType.color[i]}" className="circle"></span>
-												<span>{{ item }}</span>
-											</li>
-										</ul> */}
-										<div className="name-text">{ timeUnit }</div>
-									</template>
-									<template>
-										<Echarts id='reduction-day-light-chart' option={lightOptions}/>
-										<div className="unit">{ lightUnit }</div>
-										<div className="light-name-text">{ timeUnit }</div>
-									</template>
+									{
+										dayActive ?
+										<>
+											<Echarts id='reduction-day-chart' option={option}/>
+											<div className="unit">{ unit }</div>
+											{
+												selectValue == 'comparison' ?
+												<ul className="barContaniner-right-content-legend">
+													{
+														comparisonLegend.map((item, i) => {
+															return (
+																<li key={item.name}>
+																	<span style={{background: item.color}} className="circle"></span>
+																	<span>{ item.name }</span>
+																</li>
+															)
+														})
+													}
+													
+												</ul>
+												:
+												<ul className="barContaniner-right-content-legend device-type-legend">
+													{
+														deviceType.map((item, i) => {
+															return (
+																<li key={item}>
+																	<span style={{background: dayDeviceTypeColor[i]}} className="circle"></span>
+																	<span>{ item }</span>
+																</li>
+															)
+														})
+													}
+												</ul>
+											}
+											<div className="name-text">{ timeUnit }</div>
+										</>
+										:
+										<>
+											<Echarts id='reduction-day-light-chart' option={lightOptions}/>
+											<div className="unit">{ lightUnit }</div>
+											<div className="light-name-text">{ timeUnit }</div>
+										</>
+									}
+									
 								</div>
 								{/* <ul className="config-con" v-if="showConfigCon" @click.stop>
 									<a-checkbox-group @change="onChangeDeviceType" :default-value="deviceType">
@@ -289,50 +434,83 @@ const ReductionDay = ({timeUnit}) => {
 						<div className="bottom-con h-100">
 							<div className="text">需求侧</div>
 							<div className="box h-100">
-									{/* <div className="box-con h-100">
-										<div className="p1">
-											<div className="name">{ item.title }</div>
-										</div>
-										<div className="box-con-ul">
-											<div className="box-con-ul-li">
-												<div className="box-con-ul-li-title">{{ item.value_label }}({{ item.value_unit }})</div>
-												<div className="box-con-ul-li-value">
-													<a-statistic :value="item.value" :value-style="{ color: '#fff',fontSize:'.38rem',fontWeight: 700 }"></a-statistic>
+								{
+									dayDemandList.map((item, i) => {
+										return (
+											<div className="box-con h-100">
+												<div className="p1">
+													<div className="name">{ item.title }</div>
 												</div>
-											</div>
-											<div className="box-con-ul-li right">
-												<div className="box-con-ul-li-title">{{ item.carbon_label }}({{ item.carbon_unit }})</div>
-												<div className="box-con-ul-li-value">
-													<a-statistic :value="item.carbon_value" :value-style="{ color: '#fff',fontSize:'.38rem',fontWeight: 700 }"></a-statistic>
-													<div :className="item.trend_label == '+' ? 'box-con-ul-li-value-scope up' : 'box-con-ul-li-value-scope down'">
-														<span className="triangle"></span>
-														<span className="box-con-ul-li-value-scope-value">{{ item.trend_value }}{{ item.trend_unit }}</span>
+												<div className="box-con-ul">
+													<div className="box-con-ul-li">
+														<div className="box-con-ul-li-title">{ item.value_label }({ item.value_unit })</div>
+														<div className="box-con-ul-li-value">
+															<Statistic
+																value={item.value}
+																valueStyle={{ color: '#fff',fontSize:'.3rem',fontWeight: 700 }}
+																suffix='%'
+																/>
+														</div>
+													</div>
+													<div className="box-con-ul-li right">
+														<div className="box-con-ul-li-title">{ item.carbon_label }({ item.carbon_unit })</div>
+														<div className="box-con-ul-li-value">
+															<Statistic
+																value={item.carbon_value}
+																valueStyle={{ color: '#fff',fontSize:'.3rem',fontWeight: 700 }}
+																suffix='%'
+																/>
+															<div className={item.trend_label == '+' ? 'box-con-ul-li-value-scope up' : 'box-con-ul-li-value-scope down'}>
+																<span className="triangle"></span>
+																<span className="box-con-ul-li-value-scope-value">{ item.trend_value }{ item.trend_unit }</span>
+															</div>
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-									</div> */}
+										)
+									})
+								}
 							</div>
 						</div>
 						<div className="bottom-con2 h-100">
 							<div className="text">供给侧</div>
 							<div className="box h-100">
-									{/* <div className="box-con h-100" style="flex: 1;" v-for="(item, i) in getDaySupplyList" :key="i">
-										<div className="p1">
-											<div className="name">{{ item.title }}</div>
-											<div className="icon">
-												<iconpark-icon size="100%" color="#36BFFA" name="TypePurchasedEnergy" v-if="item.title == '可再生能源'"/>
-												<iconpark-icon size="100%" color="#FDB022" name="TypeThunderbolt" v-if="item.title == '光伏'"/>
+								{
+									daySupplyList.map((item, i) => {
+										return (
+											<div className="box-con h-100 flex-1" key={item.title}>
+												<div className="p1">
+													<div className="name">{ item.title }</div>
+													<div className="icon">
+														{
+															item.title == '可再生能源' &&
+															<iconpark-icon size="100%" color="#36BFFA" name="TypePurchasedEnergy"/>
+														}
+														{
+															item.title == '光伏' &&
+															<iconpark-icon size="100%" color="#FDB022" name="TypeThunderbolt"/>
+														}
+													</div>
+												</div>
+												{
+													item.data.map((el, j) => {
+														return (
+															<div className="p2" key={el.key}>
+																<div className="name">{ el.key }</div>
+																<div className="right">
+																	<div className="value">{ el.value }</div>
+																	<div className="unit">{ el.unit }</div>
+																</div>
+															</div>
+														)
+													})
+												}
+												
 											</div>
-										</div>
-										<div className="p2" v-for="(el, j) in item.data" :key="j">
-											<div className="name">{{ el.key }}</div>
-											<div className="right">
-												<div className="value">{{ el.value }}</div>
-												<div className="unit">{{ el.unit }}</div>
-											</div>
-										</div>
-									</div> */}
+										)
+									})
+								}
 							</div>
 						</div>
 						<div className="bottom-con3 h-100">
@@ -381,9 +559,16 @@ const ReductionDay = ({timeUnit}) => {
 // 使用connect函数将state和dispatch映射为props
 function mapStateToProps(state) {
     return {
-        timeUnit: state.common.timeUnit
+        timeUnit: state.common.timeUnit,
+		dayDeviceTypeColor: state.reduction.dayDeviceTypeColor
     };
 }
 
-export default connect(mapStateToProps)(ReductionDay);
+function mapDispatchToProps(dispatch) {
+    return {
+        // setDayDeviceTypeName: (value) => dispatch({ type: 'SET_DAY_DEVICE_TYPE_NAME', value })
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReductionDay);
 
