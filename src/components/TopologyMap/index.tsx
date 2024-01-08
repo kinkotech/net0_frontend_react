@@ -22,7 +22,7 @@ const TopologyMap = function(props: Props) {
     let [graphObj, setGraphObj] = useState(null);
 
     useEffect(() => {
-        if(dayDeviceTypeName.length == 0) return;
+        if(dayDeviceTypeName.length === 0) return;
         getStrategyByServer(server_id)
         
     }, [server_id, dayDeviceTypeName])
@@ -67,7 +67,7 @@ const TopologyMap = function(props: Props) {
                                             <span 
                                                 style='display:inline-block;width:.1rem;height:.1rem;border-radius:100%;
                                                 background:${color}'></span>
-                                            <span>${item}: ${isSumZero == 0 ? 0 : valuesArr[i]}</span>
+                                            <span>${item}: ${isSumZero === 0 ? 0 : valuesArr[i]}</span>
                                         </li>`
                                 }
                                 
@@ -194,16 +194,16 @@ const TopologyMap = function(props: Props) {
                 type: 'force',
                 preventOverlap: true,
                 linkDistance: (d:any) => {
-                    if (d.target.level == 1) {
+                    if (d.target.level === 1) {
                         return 80;
                     }
-                    if (d.target.level == 2) {
+                    if (d.target.level === 2) {
                         return 100;
                     }
                 },
                 // 节点作用力，正数代表节点之间的引力作用，负数代表节点之间的斥力作用
                 nodeStrength: (d:any) => {
-                    if (d.level == 2) {
+                    if (d.level === 2) {
                         return -100;
                     }
                     return 1
@@ -310,14 +310,14 @@ const TopologyMap = function(props: Props) {
                     sum = sum + value;
                 })
                 data.nodes[i].isSumZero = sum; // 标记是否全为0
-                if (sum == 0) {
+                if (sum === 0) {
                     for(let j in data.nodes[i].donutAttrs) {
                         data.nodes[i].donutAttrs[j] = 1; // 随意的Number只为占位
                     }
                 }
 
                 // donutAttrs只有一个数据时,需手动添加一条数据为页面展示使用，但是要在tooltip里去掉
-                if(arr.length == 1) {
+                if(arr.length === 1) {
                     data.nodes[i].donutAttrs['test'] = 0.000000000000000000000000000000000001; // 随意的key只为占位,数值极限小是为了不被显示出来
                 }
             })

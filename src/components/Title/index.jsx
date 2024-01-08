@@ -71,7 +71,7 @@ const Title = function({color, title,popverContent, currentTime, showPopver, sho
     }
     
 	return (
-        <div className={color=='white' ? 'page-title white': 'page-title black'}>
+        <div className={color==='white' ? 'page-title white': 'page-title black'}>
             <div className="page-title-left">
                 <div className="fw-600">{ title }</div>
                 {

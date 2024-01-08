@@ -106,7 +106,7 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 									arr = [arr[1], arr[0]];
 									arr[0] = Number(arr[0]) + '月';
 									// 第一个数据加上 年 月
-									if (i == 0) {
+									if (i === 0) {
 										return arr.join("\n");
 									} else {
 										// 针对每年的1月特殊处理

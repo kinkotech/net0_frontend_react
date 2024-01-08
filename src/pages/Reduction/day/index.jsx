@@ -274,19 +274,19 @@ const ReductionDay = ({timeUnit, dayDeviceTypeColor, server_id='a00000000000000'
 		await api.GetDayStrategy(params).then(res=>{
 			let arr = res.data;
 			setUnit(res.unit)
-			if (type == 'comparison') {
+			if (type === 'comparison') {
 				arr.forEach(el => {
 					el.type = 'line';
 					el.smooth = true;
 					el.showSymbol = false;
 
-					if (el.name == 'actual_value') { // 真实值
+					if (el.name === 'actual_value') { // 真实值
 						el.data = el.value;
 						el.name= '实测值';
-					} else if (el.name == 'predict_value') { // 预测值
+					} else if (el.name === 'predict_value') { // 预测值
 						el.data = el.value;
 						el.name= '预测值';
-					} else if (el.name == 'strategy_value') { // 优化值
+					} else if (el.name === 'strategy_value') { // 优化值
 						el.data = el.value;
 						el.name= '优化值';
 					}
@@ -299,7 +299,7 @@ const ReductionDay = ({timeUnit, dayDeviceTypeColor, server_id='a00000000000000'
 				})
 			} else {
 				arr.forEach(el => {
-					if (el.name != '优化曲线') {
+					if (el.name !== '优化曲线') {
 						el.data = el.value;
 						el.type = 'bar';
 						el.barWidth = '35%';
@@ -379,7 +379,7 @@ const ReductionDay = ({timeUnit, dayDeviceTypeColor, server_id='a00000000000000'
 											<Echarts id='reduction-day-chart' option={option}/>
 											<div className="unit">{ unit }</div>
 											{
-												selectValue == 'comparison' ?
+												selectValue === 'comparison' ?
 												<ul className="barContaniner-right-content-legend">
 													{
 														comparisonLegend.map((item, i) => {
@@ -460,7 +460,7 @@ const ReductionDay = ({timeUnit, dayDeviceTypeColor, server_id='a00000000000000'
 																valueStyle={{ color: '#fff',fontSize:'.3rem',fontWeight: 700 }}
 																suffix='%'
 																/>
-															<div className={item.trend_label == '+' ? 'box-con-ul-li-value-scope up' : 'box-con-ul-li-value-scope down'}>
+															<div className={item.trend_label === '+' ? 'box-con-ul-li-value-scope up' : 'box-con-ul-li-value-scope down'}>
 																<span className="triangle"></span>
 																<span className="box-con-ul-li-value-scope-value">{ item.trend_value }{ item.trend_unit }</span>
 															</div>
@@ -484,11 +484,11 @@ const ReductionDay = ({timeUnit, dayDeviceTypeColor, server_id='a00000000000000'
 													<div className="name">{ item.title }</div>
 													<div className="icon">
 														{
-															item.title == '可再生能源' &&
+															item.title === '可再生能源' &&
 															<iconpark-icon size="100%" color="#36BFFA" name="TypePurchasedEnergy"/>
 														}
 														{
-															item.title == '光伏' &&
+															item.title === '光伏' &&
 															<iconpark-icon size="100%" color="#FDB022" name="TypeThunderbolt"/>
 														}
 													</div>

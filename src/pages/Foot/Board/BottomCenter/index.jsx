@@ -101,7 +101,7 @@ const BottomCenter = function ({start, end, park_id}) {
                                     v = v.toFixed(1) //四舍五入 仅保留一位小数位数
                                     let char = indexList[Number(numN2)];
 
-                                    let str = v.toString() != '1' ? `${v.toString()}*` : '';
+                                    let str = v.toString() !== '1' ? `${v.toString()}*` : '';
 
                                     return str + '10' + char;
                                 } else if (num1 > 1) {
@@ -112,7 +112,7 @@ const BottomCenter = function ({start, end, park_id}) {
                                         v = v.toFixed(1);
                                         let char = indexList[Number(numN1)];
 
-                                        let str = v.toString() != '1' ? `${v.toString()}*` : '';
+                                        let str = v.toString() !== '1' ? `${v.toString()}*` : '';
 
                                         return str + '10' + char;
                                 }

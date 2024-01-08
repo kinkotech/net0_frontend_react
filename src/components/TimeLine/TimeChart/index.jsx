@@ -74,7 +74,7 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
                         let text = data;
                         let arr = text.split('-');
                         // 第一个数据加上 年 月
-                        if (i == 0) {
+                        if (i === 0) {
                             return `${arr[0]}-${arr[1]}`
                         } else {
                             // 针对每年的1月特殊处理

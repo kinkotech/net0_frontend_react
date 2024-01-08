@@ -31,7 +31,7 @@ const LeftMenu = function(props) {
                     sidebarFold &&
                     <div className="menu">
                         {
-                            type=='foot' ?
+                            type==='foot' ?
                             <div className="menu-btn pointer" onClick={addFoot}>
                                 <div className="menu-btn-icon">
                                     <iconpark-icon size="100%" color="#fff" name="Add"></iconpark-icon>
