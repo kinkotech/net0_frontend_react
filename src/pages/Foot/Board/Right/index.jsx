@@ -164,7 +164,7 @@ const Right = ({start, end, park_id}) => {
                                             </div>
                                             <div className="name">{ item.title }</div>
                                         </div>
-                                        <div className="right-bottom-center-con-item-right"><span className={item.num =='有' ? 'blue span fw-600' : 'span fw-600'}>{ item.num }</span> / { item.total }</div>
+                                        <div className="right-bottom-center-con-item-right"><span className={item.num ==='有' ? 'blue span fw-600' : 'span fw-600'}>{ item.num }</span> / { item.total }</div>
                                     </div>
                                 )
                             })
