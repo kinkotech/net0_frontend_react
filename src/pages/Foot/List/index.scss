@@ -1,0 +1,127 @@
+.list {
+    box-sizing: border-box;
+    background: #fff;
+    color: #1E1E1E;
+    padding: 0 .27rem;
+	position: relative;
+	font-size: .14rem;
+    .top {
+		display: flex;
+		justify-content: space-between;
+		.page-title  {
+			flex: 1;
+		}
+		.btns {
+			width: 40%;
+			padding-right: .3rem;
+			display: flex;
+			align-items: center;
+			justify-content: end;
+			.btn {
+				display: flex;
+				align-items: center;
+				margin-right: .2rem;
+				color: #1E1E1E;
+				cursor: pointer;
+				.icon {
+					width: .2rem;
+					height: .2rem;
+				}
+				span{
+					display: inline-block;
+					padding: .05rem;
+				}
+			}
+		}
+    }
+    .filter-condition {
+		margin-bottom: .15rem;
+		ul {
+			display: flex;
+			flex-wrap: wrap;
+			li {
+				width: 25%;
+				min-width: 300px;
+				max-width: 5rem;
+				padding-right: .35rem;
+				margin-top: .12rem;
+				display: flex;
+				align-items: center;
+				.title {
+					display: inline-block;
+					min-width: 60px;
+					width: .6rem;
+					text-align: right;
+					margin-right: .12rem;
+				}
+				.filter-condition-right {
+					display: flex;
+				}
+			}
+		}
+    }
+    .addIcon {
+		padding: .1rem .15rem;
+		background: #0BCFC8;
+		border-radius: .1rem;
+		font-size: .16rem;
+		color: #fff;
+		align-items: center;
+		justify-content: center;
+		.icon {
+			width: .18rem;
+			height: .18rem;
+			margin-right: .1rem;
+		}
+    }
+    .table {
+		overflow-y: auto;
+		width: 100%;
+      .edit-btn {
+        margin-left: .16rem;
+      }
+      .percentage-bg {
+        width: 80%;
+        height: .07rem;
+        display: flex;
+		border-radius: 5px;
+		overflow: hidden;
+        span {
+		  height: .07rem;
+        }
+        .span0 {
+          background: #0BCFC8;
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+        }
+        .span1 {
+          background: #B596FC;
+        }
+        .span2 {
+          background: #4565F7;
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+        }
+      }
+      .action {
+        display: inline-block;
+      }
+    }
+	.page-footer {
+		position: absolute;
+		bottom: .2rem;
+		left: 0;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0 .3rem;
+		background: #fff;
+		.page-footer-con {
+			width: 100%;
+			padding: .16rem .2rem;
+			border-top: 1px solid #EEEEEE;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+	}
+}
