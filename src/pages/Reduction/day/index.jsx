@@ -130,16 +130,16 @@ const ReductionDay = ({timeUnit, dayDeviceTypeColor, server_id='a00000000000000'
 				showSymbol: false,
 				areaStyle: {
 					opacity: 0.8,
-					color: echarts.graphic.LinearGradient(0, 0, 0, 1, [
-					{
-						offset: 0,
-						color: 'rgb(128, 255, 165)'
-					},
-					{
-						offset: 1,
-						color: 'rgb(1, 191, 236)'
-					}
-					])
+					// color: echarts.graphic.LinearGradient(0, 0, 0, 1, [
+					// {
+					// 	offset: 0,
+					// 	color: 'rgb(128, 255, 165)'
+					// },
+					// {
+					// 	offset: 1,
+					// 	color: 'rgb(1, 191, 236)'
+					// }
+					// ])
 				},
 				emphasis: {
 					focus: 'series'
@@ -156,16 +156,16 @@ const ReductionDay = ({timeUnit, dayDeviceTypeColor, server_id='a00000000000000'
 				showSymbol: false,
 				areaStyle: {
 					opacity: 0.8,
-					color: echarts.graphic.LinearGradient(0, 0, 0, 1, [
-					{
-						offset: 0,
-						color: 'rgb(0, 221, 255)'
-					},
-					{
-						offset: 1,
-						color: 'rgb(77, 119, 255)'
-					}
-					])
+					// color: echarts.graphic.LinearGradient(0, 0, 0, 1, [
+					// {
+					// 	offset: 0,
+					// 	color: 'rgb(0, 221, 255)'
+					// },
+					// {
+					// 	offset: 1,
+					// 	color: 'rgb(77, 119, 255)'
+					// }
+					// ])
 				},
 				emphasis: {
 					focus: 'series'
