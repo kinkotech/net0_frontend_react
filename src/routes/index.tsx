@@ -4,6 +4,7 @@ import {
 import Home from '@/pages/Home';
 import FootBoard from '@/pages/Foot/Board';
 import FootList from "@/pages/Foot/List";
+import FootAdd from '@/pages/Foot/Add';
 import FootParkType from '@/pages/Foot/ParkType';
 import WaterElectricityGas from '@/pages/Foot/WaterElectricityGas';
 import ReductionBoard from '@/pages/Reduction/board';
@@ -31,6 +32,10 @@ const Router = createBrowserRouter([
     {
         path: "foot/list",
         element: <FootList/>,
+    },
+    {
+        path: "addFoot/create",
+        element: <FootAdd/>,
     },
     {
         path: 'reduction/board',

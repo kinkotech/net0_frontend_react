@@ -1,14 +1,15 @@
 import axios from 'axios'
-// import { message } from 'ant-design-vue';
+import { message } from 'antd';
 import qs from 'qs';
 // import store from '@/store';
 
 // 记录和显示错误
-// function errorLog(error) {
-//   message.error({
-//     content: error.message,
-//   })
-// }
+function errorLog(error) {
+  message.error({
+    content: error.message,
+  })
+}
+
 const baseURL = 'http://47.103.199.226:8001';
 const service = axios.create({
   baseURL: baseURL+'/api/v1/net0/',
@@ -40,8 +41,8 @@ service.interceptors.response.use(
 				// store.commit('SET_TOKEN','');
 				// location.href = `${location.origin}/#/login`;
 			} else {
-				// message.error(res.message);
-				return Promise.reject(service.interceptors.response.error)
+				message.error(res.message);
+				return;
 			}			
 		} else {
 			// 有分页字段时
@@ -84,7 +85,7 @@ service.interceptors.response.use(
 				default: break;
 			}
 		}
-		// errorLog(error);
+		errorLog(error);
 		return Promise.reject(error);
 	}
 );

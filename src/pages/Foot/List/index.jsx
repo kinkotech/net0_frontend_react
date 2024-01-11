@@ -1,20 +1,30 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react';
 import { Dropdown, Space, Select, Input, DatePicker, Table } from 'antd';
 import { DownOutlined, SmileOutlined } from '@ant-design/icons';
 import { FootLayout } from '@/pages/Foot/index';
 import Title from '@/components/Title';
+import Percent from '@/components/Percentage';
+import api from '@/api/index';
+import { useNavigate} from 'react-router-dom';
+
 import './index.scss';
 const { RangePicker } = DatePicker;
 
 const FootList = () => {
+	const navigate = useNavigate();
+
 	const [parkList] = useState(JSON.parse(localStorage.getItem('PARK_LIST')));
-    let [defaultValue, setDefaultValue] = useState('电试院');
+	const [defaultParkValue] = useState('电试院');
+    let [park_id, setPark_id] = useState(1);
+	let [timeString, setTimeString] = useState([]);
+	let [reporter, setReporter] = useState('')
 	const [unitList] = useState([{
 		value: '碳排放总量(tCO₂e)'
 	},{
 		value: '碳排放总量(kgCO₂e)'
 	}]);
     let [unit, setUnit] = useState('碳排放总量(tCO₂e)');
+	let [dataSource, setDataSource] = useState([]);
 
 	const items = [
 		{
@@ -53,83 +63,117 @@ const FootList = () => {
 
 	const columns = [
 		{
-			dataIndex: 'index',
-		  },
+			dataIndex: 'key',
+			key: 'key'
+		},
 		{
 		  title: '园区',
+		  key: 'name',
 		  dataIndex: 'name',
 		  sorter: (a, b) => a.name.length - b.name.length,
 		//   sortDirections: ['descend'],
 		},
 		{
 		  title: '统计月份',
-		  dataIndex: 'age',
+		  key: 'month',
+		  dataIndex: 'month',
 		//   defaultSortOrder: 'descend',
 		  sorter: (a, b) => a.age - b.age,
 		},
 		{
 		  title: '报告者姓名',
-		  dataIndex: 'address',
+		  key: 'reporter',
+		  dataIndex: 'reporter',
 		  sorter: (a, b) => a.age - b.age,
 		},
 		{
 			title: '碳排放组成',
-			dataIndex: 'address',
+			key: 'percentage',
+			dataIndex: 'percentage',
 			sorter: (a, b) => a.age - b.age,
+			render: (record) => {
+				return <Percent list={record}/>
+			}
 		},
 		{
 			title: '碳排放总量',
-			dataIndex: 'address',
+			key: 'num',
+			dataIndex: 'num',
 			sorter: (a, b) => a.age - b.age,
 		},
 		{
 			title: '操作',
-			dataIndex: 'address',
-			sorter: (a, b) => a.age - b.age,
+			key: 'action',
+			dataIndex: '',
+			render: () => {
+				return <div className='action w-100'>
+					<span className='theme-color pointer'>详情</span>
+					<span className='theme-color pointer'>编辑</span>
+					<span className='pointer'>删除</span>
+				</div>
+			}
 		},
 	]
+	
+	useEffect(() => {
+		let params = {
+			// 筛选
+			filter_info: {
+				park_id,
+				start: timeString[0],
+				end: timeString[1],
+				reporter
+			},
+			// 排序
+			// order_by: order_by || {},
+			// pageSize: this.pagination.defaultPageSize,
+			// page: this.page,
+			unit
+		}
+		getReport(params)
+	}, [park_id, timeString, reporter, unit])
 
-	const data = [
-		{
-		  key: '1',
-		  name: 'John Brown',
-		  age: 32,
-		  address: 'New York No. 1 Lake Park',
-		},
-		{
-		  key: '2',
-		  name: 'Jim Green',
-		  age: 42,
-		  address: 'London No. 1 Lake Park',
-		},
-		{
-		  key: '3',
-		  name: 'Joe Black',
-		  age: 32,
-		  address: 'Sydney No. 1 Lake Park',
-		},
-		{
-		  key: '4',
-		  name: 'Jim Red',
-		  age: 32,
-		  address: 'London No. 2 Lake Park',
-		},
-	];
+	// 碳足迹报告创建接口
+	const getReport = async (params) => {
+		await api.GetReport(params).then(res=>{
+			if (res) {
+				let data = res.data
+				const dataSource = data.map((item, index) => ({ ...item, key: (index+1).toString() }));
+				setDataSource(dataSource);
+				// this.pagination.total = res.total;
+			}
+		})
+	}
 
 	// 园区切换
 	const changePark = (value, option) => {
-        
+        setPark_id(option.id)
     }
+	// 时间切换
+	const changePicker = (time, timeString) => {
+		console.log(time, timeString)
+		setTimeString(timeString)
+	}
 
 	// 单位切换
 	const unitChange = (value, option) => {
         
     }
+	// 报告者
+	const reporterChange = (e) => {
+		setReporter(e.target.value)
+	}
 
 	// 分页切换
 	const onChange = (pagination, filters, sorter, extra) => {
 		console.log('params', pagination, filters, sorter, extra);
 	};
+	// 上传
+	const uploadClick = () => {}
+	// 添加
+	const goAdd = () => {
+		navigate('/addFoot/create', {replace: false})
+	}
 
 	return (
 		<FootLayout>
@@ -137,7 +181,7 @@ const FootList = () => {
 				<div className="top">
 					<Title title="碳足迹" color={'black'}></Title>
 					<div className="btns">
-						<div className="btn" onClick="uploadClick">
+						<div className="btn" onClick={uploadClick}>
 							<div className="icon">
 								<iconpark-icon size="100%" color="#1E1E1E" name="Input"></iconpark-icon>
 							</div>
@@ -155,7 +199,7 @@ const FootList = () => {
 							</Space>
 							</a>
 						</Dropdown>
-					<div className="addIcon d-flex pointer" onClick="goAdd">
+					<div className="addIcon d-flex pointer" onClick={goAdd}>
 						<div className="icon">
 							<iconpark-icon size="100%" color="#fff" name="Add"></iconpark-icon>
 						</div>
@@ -170,7 +214,7 @@ const FootList = () => {
 							<span className="title">园区</span>
 							<div className="flex-1">
 								<Select
-									defaultValue={defaultValue}
+									defaultValue={defaultParkValue}
 									style={{width: '100%',marginLeft: '12px' }}
 									onChange={changePark}
 									options={parkList}
@@ -180,13 +224,13 @@ const FootList = () => {
 						<li>
 							<span className="title">起止时间</span>
 							<div className="filter-condition-right flex-1">
-								<RangePicker picker="month" />
+								<RangePicker picker="month" onChange={changePicker}/>
 							</div>
 						</li>
 						<li>
 							<span className="title">报告者</span>
 							<div className="flex-1">
-								<Input placeholder="请输入" />
+								<Input placeholder="请输入" value={reporter} onChange={reporterChange}/>
 								{/* <a-input v-model="reporter" @change="reporterChange(reporter)" placeholder="请输入" style="width: 100%;margin-left: 12px;"/> */}
 							</div>
 						</li>
@@ -204,7 +248,7 @@ const FootList = () => {
 					</ul>
 				</div>
 				<div className="table">
-					<Table columns={columns} dataSource={data} onChange={onChange} />
+					<Table dataSource={dataSource} columns={columns} rowKey={(record) => record.id} />
 				</div>
 				<div className="page-footer">
 					<div className="page-footer-con">
