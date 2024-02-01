@@ -15,7 +15,7 @@ export default function commonReducer(
 	state = initialState,
 	action: {type: String, value: String}
 ) {
-	const { type, value } = action;
+	const { type } = action;
 	switch (type) {
 		default:
 			return state;

@@ -1,5 +1,5 @@
 import * as echarts from 'echarts';
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 function init() {
 	// 基于准备好的dom，初始化echarts实例
