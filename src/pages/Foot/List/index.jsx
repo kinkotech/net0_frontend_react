@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Dropdown, Space, Select, Input, DatePicker, Table } from 'antd';
-import { DownOutlined, SmileOutlined } from '@ant-design/icons';
+// import { DownOutlined, SmileOutlined } from '@ant-design/icons';
 import { FootLayout } from '@/pages/Foot/index';
 import Title from '@/components/Title';
 import Percent from '@/components/Percentage';
@@ -42,7 +42,7 @@ const FootList = () => {
 			  2nd menu item (disabled)
 			</a>
 		  ),
-		  icon: <SmileOutlined />,
+		//   icon: <SmileOutlined />,
 		  disabled: true,
 		},
 		{
@@ -195,7 +195,7 @@ const FootList = () => {
 							<a onClick={(e) => e.preventDefault()}>
 							<Space>
 								草稿
-								<DownOutlined />
+								{/* <DownOutlined /> */}
 							</Space>
 							</a>
 						</Dropdown>

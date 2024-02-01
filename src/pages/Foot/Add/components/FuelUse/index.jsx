@@ -1,20 +1,10 @@
 // 主体信息
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
 	Input,
-	Checkbox,
-	Col,
-	ColorPicker,
 	Form,
-	InputNumber,
 	Radio,
-	Rate,
-	Row,
-	Select,
-	Slider,
-	Space,
-	Switch,
-	Upload,
+	Select
   } from 'antd';
 import './index.scss';
 
