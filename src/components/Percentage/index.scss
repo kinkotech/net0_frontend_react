@@ -1,0 +1,23 @@
+.percentage-bg {
+    width: 80%;
+    height: .07rem;
+    display: flex;
+    border-radius: 5px;
+    overflow: hidden;
+    li {
+      height: .07rem;
+    }
+    .color0 {
+      background: #0BCFC8;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+    .color1 {
+      background: #B596FC;
+    }
+    .color2 {
+      background: #4565F7;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+}
