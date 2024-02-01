@@ -15,7 +15,6 @@ const OrganizationSummary = () => {
         month: [{required: true}]
     }
 
-
 	return (
 		<div className='organization-summary w-100'>
             <Form.Item name="park_id" label="园区" rules={rules.park_id}>
