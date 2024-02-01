@@ -19,13 +19,14 @@ type Item = {
 const TopologyMap = function(props: Props) {
     let {server_id, dayDeviceTypeName, dayDeviceTypeColor, getGraphItem} = props;
     let [legend, setLegend] = useState<Item[]>([]);
-    let [graphObj, setGraphObj] = useState(null);
+    // let [setGraphObj] = useState(null);
 
     useEffect(() => {
         if(dayDeviceTypeName.length === 0) return;
         getStrategyByServer(server_id)
         
     }, [server_id, dayDeviceTypeName])
+
 
     // 配置tooltip
     const tooltip = new G6.Tooltip({
@@ -34,11 +35,16 @@ const TopologyMap = function(props: Props) {
             let donutAttrs = e.item.getModel().donutAttrs;
             let donutColorMap = e.item.getModel().donutColorMap;
             
-            let donutColorMapArr = [];
+            interface DonutObj {
+                key: string,
+                value: any
+            }
+            let donutColorMapArr:DonutObj[] = [];
 
-            Object.keys(donutColorMap).forEach((item, i) =>{
+            Object.keys(donutColorMap).forEach((item) =>{
                 // 根据设备名称显示对应颜色
-                let index = dayDeviceTypeName.indexOf(item)
+                let index = dayDeviceTypeName.indexOf(item);
+
                 donutColorMapArr.push({
                     key: item,
                     value: dayDeviceTypeColor[index]
@@ -209,7 +215,7 @@ const TopologyMap = function(props: Props) {
                     return 1
                 },
                 // 边的作用力，范围是 0 到 1，默认根据节点的出入度自适应
-                edgeStrength: (d:any) => {
+                edgeStrength: () => {
                     return .1;
                 },
             }
@@ -290,7 +296,7 @@ const TopologyMap = function(props: Props) {
             if (!container || !container.scrollWidth || !container.scrollHeight) return;
         };
 
-        setGraphObj(graph);
+        // setGraphObj(graph);
     }
 
     // 默认显示 优化值 的内容
