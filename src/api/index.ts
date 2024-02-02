@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export default class api {
     // 总碳排放量
-    static async GetCarbonByDay(day_str, park_id) {
+    static async GetCarbonByDay(day_str?: string, park_id?: string) {
         return request({
             method: 'post',
             data: {
@@ -13,7 +13,7 @@ export default class api {
         })
       }
     // 新能源产电量
-    static async GetElectricityByDay(day_str) {
+    static async GetElectricityByDay(day_str?: string) {
       return request({
         method: 'post',
         data: {
@@ -23,7 +23,7 @@ export default class api {
     })
     }
     // 园区汇总
-    static async GetParkByDay(data) {
+    static async GetParkByDay(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -33,7 +33,7 @@ export default class api {
         })
     }
     // 园区碳排放源类型占比
-    static async GetEnergyTypeByDay(day_str, park_id) {
+    static async GetEnergyTypeByDay(day_str?: string, park_id?: string) {
         return request({
             method: 'post',
             data: {
@@ -44,7 +44,7 @@ export default class api {
         })
     }
     // 节点列表
-    static async GetServerByDay(data) {
+    static async GetServerByDay(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -54,7 +54,7 @@ export default class api {
         })
     }
     // 节点包含设备数量
-    static async GetEquipmentByDay(server_id, day_str) {
+    static async GetEquipmentByDay(server_id?: string, day_str?: string) {
         return request({
             method: 'post',
             data: {
@@ -71,7 +71,7 @@ export default class api {
      * @param {*} data_type :数据类型，可选值为'usage'或'carbon'
      * @returns 
      */
-    static async GetPredict(data) {
+    static async GetPredict(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -95,7 +95,7 @@ export default class api {
     /**
      * 碳节点
      */
-    static async Graph(data) {
+    static async Graph(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -105,7 +105,7 @@ export default class api {
         })
     }
     // 碳节点 右侧
-    static async GetUsageByDay(day_str, server_id) {
+    static async GetUsageByDay(day_str?: string, server_id?: string) {
         return request({
             method: 'post',
             data: {
@@ -120,7 +120,7 @@ export default class api {
      * 数据监测
      */
     // 目标排放量
-    static async GetTargetEmissions(data) {
+    static async GetTargetEmissions(data?: any) {
         return request({ 
             method: 'post',
             data: {
@@ -130,7 +130,7 @@ export default class api {
         })
     }
     // 今日减排
-    static async GetCutEmissions(day_str) {
+    static async GetCutEmissions(day_str?: string) {
         return request({
             method: 'post',
             data: {
@@ -140,7 +140,7 @@ export default class api {
         })
     }
     // 负载示意图
-    static async GetLoadDiagram(data) {
+    static async GetLoadDiagram(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -154,7 +154,7 @@ export default class api {
      * 日策略
      */
     // 日策略
-    static async GetDayStrategy(data) {
+    static async GetDayStrategy(data?: any) {
         return request({ 
             method: 'post',
             data: {
@@ -182,7 +182,7 @@ export default class api {
         })
     }
      // 日策略 左侧节点图
-     static async GetStrategyByServer(data) {
+     static async GetStrategyByServer(data?: any) {
         return request({ 
             method: 'post',
             data: {
@@ -206,7 +206,7 @@ export default class api {
      * @param {*} endDate 
      * @returns 
      */
-    static async GetYearCarbon(data) {
+    static async GetYearCarbon(data?: any) {
         return request({ 
             method: 'post',
             data: {
@@ -273,7 +273,7 @@ export default class api {
         })
     }
     // 数据类型排放量对比
-    static async GetFactorComparison(data) {
+    static async GetFactorComparison(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -283,7 +283,7 @@ export default class api {
         })
     }
     // 本周期总排放量/上一周期总排放量/周期波动
-    static async GetCycleComparison(data) {
+    static async GetCycleComparison(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -293,7 +293,7 @@ export default class api {
         })
     }
     // 零碳园区能源系统指标
-    static async GetEnergyTarget(data) {
+    static async GetEnergyTarget(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -303,7 +303,7 @@ export default class api {
         })
     }
     // 绿色能源占比
-    static async GetGreenEnergy(data) {
+    static async GetGreenEnergy(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -313,10 +313,11 @@ export default class api {
         })
     }
     // 碳减排策略设置 提交
-    static async PostUpdateConfigItems(data) {
+    // type: 'form',
+    static async PostUpdateConfigItems(data?: any) {
         return request({
             method: 'post',
-            type: 'form',
+            
             data: {
                 cmd: 'updateConfigItems',
                 ...data
@@ -339,7 +340,7 @@ export default class api {
         Waste: 废弃物和水页签
      * @returns 
      */
-    static async GetCarbonFootPrintFactor(type) {
+    static async GetCarbonFootPrintFactor(type?: string) {
         return request({
             method: 'post',
             data: {
@@ -353,7 +354,7 @@ export default class api {
      * @param {*} data 
      * @returns 
      */
-    static async GetScopeTotal(data) {
+    static async GetScopeTotal(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -367,7 +368,7 @@ export default class api {
      * @param {*} data 
      * @returns 
      */
-    static async GetScope1(data) {
+    static async GetScope1(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -381,7 +382,7 @@ export default class api {
      * @param {*} data 
      * @returns 
      */
-    static async GetScope2(data) {
+    static async GetScope2(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -395,7 +396,7 @@ export default class api {
      * @param {*} data 
      * @returns 
      */
-    static async GetScope3(data) {
+    static async GetScope3(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -406,11 +407,12 @@ export default class api {
     }
     /**
      * 提交碳足迹
+     * type: 'form',
      */
-    static async CreateCarbonReport(data) {
+    static async CreateCarbonReport(data?: any) {
         return request({
             method: 'post',
-            type: 'form',
+            
             data: {
                 cmd: 'createCarbonReport',
                 ...data
@@ -419,11 +421,12 @@ export default class api {
     }
     /**
      * 更新报告/更新草稿
+     * type: 'form',
      */
-    static async UpdateCarbonReport(data) {
+    static async UpdateCarbonReport(data?: any) {
         return request({
             method: 'post',
-            type: 'form',
+            
             data: {
                 cmd: 'updateCarbonReport',
                 ...data
@@ -432,11 +435,12 @@ export default class api {
     }
     /**
      * 修改草稿名称
+     * type: 'form',
      */
-    static async UpdateDraftName(data) {
+    static async UpdateDraftName(data?: any) {
         return request({
             method: 'post',
-            type: 'form',
+            
             data: {
                 cmd: 'updateDraftName',
                 ...data
@@ -446,7 +450,7 @@ export default class api {
     /**
      * 报告列表
      */
-    static async GetReport(data) {
+    static async GetReport(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -469,7 +473,7 @@ export default class api {
     /**
      * 编辑草稿
      */
-    static async EditDraftReport(data) {
+    static async EditDraftReport(data?: any) {
         return request({
             method: 'post',
             data: {
@@ -492,7 +496,7 @@ export default class api {
     /**
      * 删除碳足迹列
      */
-    static async DeleteCarbonReport(report_id) {
+    static async DeleteCarbonReport(report_id?: number | string) {
         return request({
             method: 'DELETE',
             data: {
@@ -503,11 +507,12 @@ export default class api {
     }
     /**
      * 创建草稿/另存为新草稿
+     * type: 'form',
      */
-    static async CreateDraftReport(data) {
+    static async CreateDraftReport(data?: any) {
         return request({
             method: 'put',
-            type: 'form',
+            
             data: {
                 cmd: 'createDraftReport',
                 ...data
@@ -516,11 +521,12 @@ export default class api {
     }
     /**
      * 获取碳足迹报告详情
+     * type: 'form',
      */
-    static async GetReportDetail(data) {
+    static async GetReportDetail(data?: any) {
         return request({
             method: 'post',
-            type: 'form',
+            
             data: {
                 cmd: 'getReportDetail',
                 ...data
@@ -529,11 +535,12 @@ export default class api {
     }
     /**
      *  获取指定时间指定园区碳排放量时间线
+     * type: 'form',
      */
-    static async GetEmissionTimeline(data) {
+    static async GetEmissionTimeline(data?: any) {
         return request({
             method: 'post',
-            type: 'form',
+            
             data: {
                 cmd: 'getEmissionTimeline',
                 ...data
@@ -542,11 +549,12 @@ export default class api {
     }
     /**
      *  碳足迹测评-数据看板-数据类型排放量对比
+     * type: 'form',
      */
-    static async GetParkComparison(data) {
+    static async GetParkComparison(data?: any) {
         return request({
             method: 'post',
-            type: 'form',
+            
             data: {
                 cmd: 'getParkComparison',
                 ...data
@@ -556,11 +564,12 @@ export default class api {
     /**
      *  碳足迹测评-数据看板-碳足迹趋势图
      * type ● single: 只查看本周期数据;● comparison:包含去年同期对比
+     * type: 'form',
      */
-    static async GetCarbonTrend(data) {
+    static async GetCarbonTrend(data?: any) {
         return request({
             method: 'post',
-            type: 'form',
+            
             data: {
                 cmd: 'getCarbonTrend',
                 ...data
@@ -569,11 +578,12 @@ export default class api {
     }
     /**
      *  碳足迹测评-数据看板-活动类别排放量占比
+     * type: 'form',
      */
-    static async GetActivityComparison(data) {
+    static async GetActivityComparison(data?: any) {
         return request({
             method: 'post',
-            type: 'form',
+            
             data: {
                 cmd: 'getActivityComparison',
                 ...data
@@ -582,11 +592,12 @@ export default class api {
     }
     /**
      *  实施园区配电拓扑图
+     * type: 'form',
      */
     static async GetTopologyDiagram() {
         return request({
             method: 'post',
-            type: 'form',
+            
             data: {
                 cmd: 'getTopologyDiagram',
             }
