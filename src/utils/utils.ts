@@ -3,11 +3,11 @@
  * @param {String} str 时间
  * @returns 获取str 的 年/月/日
  */
-export function getNowDate(str){
+export function getNowDate(str?: string){
     var date = str ? new Date(str) : new Date();
     var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
+    var month: string | number = date.getMonth() + 1;
+    var day: string | number = date.getDate();
     if (month < 10) {
         month = "0" + month;
     }
@@ -24,11 +24,11 @@ export function getNowDate(str){
 export function getNowHour(){
     var date = new Date();
     var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    let h = date.getHours();
-    let m = date.getMinutes();
-    let s = date.getSeconds();
+    var month: string | number = date.getMonth() + 1;
+    var day: string | number = date.getDate();
+    let h: string | number = date.getHours();
+    let m: string | number = date.getMinutes();
+    let s: string | number = date.getSeconds();
 
     if (month < 10) {
         month = "0" + month;
@@ -51,14 +51,14 @@ export function getNowHour(){
 /****
  * 获取指定时间的年-月-日 时:分:秒
  */
-export function getDateHour(time){
+export function getDateHour(time?: any){
     var date = new Date(time);
     var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    let h = date.getHours();
-    let m = date.getMinutes();
-    let s = date.getSeconds();
+    var month: string | number = date.getMonth() + 1;
+    var day: string | number = date.getDate();
+    let h: string | number = date.getHours();
+    let m: string | number = date.getMinutes();
+    let s: string | number = date.getSeconds();
 
     if (month < 10) {
         month = "0" + month;
@@ -83,8 +83,8 @@ export function getDateHour(time){
  * @param {*} key 
  * @param {*} desc 为true是升序排序，false是降序排序
  */
-export function compare(key, desc){
-    return (a, b) => {
+export function compare(key?: any, desc?: string){
+    return (a: any[], b: any[]) => {
         let val1 = a[key];
         let val2 = b[key];
         if (desc) {

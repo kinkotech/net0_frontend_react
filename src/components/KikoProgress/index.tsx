@@ -1,6 +1,14 @@
 import './index.scss';
 
-const KikoProgress = function({name, percent, value, color}) {
+type Props = {
+    name?: string;
+    percent?: number;
+    value?: string | number;
+    color?: string;
+}
+
+const KikoProgress = function(props: Props) {
+    let {name, percent, value, color} = props;
     return (
 		<div className='kiko-progress d-flex'>
             <div className='kiko-progress-name flex-1'>{name}</div>

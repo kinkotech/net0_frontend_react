@@ -1,0 +1,66 @@
+.listContainer {
+    margin-right: .2rem;
+    // height: 450px;
+    width: 2rem;
+    overflow: hidden;
+}
+.animate {
+    transition: all .8s;
+}
+.opacityAnimation {
+    animation: opacityAnimation 1s 1;
+    -webkit-animation: opacityAnimation 1s 1;
+}
+@keyframes opacityAnimation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes opacityAnimation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.ant-list .ant-list-item .ant-list-item-meta .ant-list-item-meta-description {
+    color: #fff !important;
+}
+.prediction-center-right-li {
+    flex: 1;
+    margin-top: .4rem;
+    text-align: right;
+    &-name {
+        color: #fff;
+        font-size: .18rem;
+        margin-top: .1rem;
+    }
+    .icon {
+        text-align: right;
+        width: .4rem;
+        display: inline-block;
+        margin-left: .1rem;
+    }
+    .text {
+        display: inline-block;
+        min-width: 1.3rem;
+        text-align: right;
+        .ant-statistic {
+            z-index: 1;
+        }
+    }
+    .ant-statistic-content-suffix {
+        font-size: 100% !important;
+    }
+}
+
+.ant-list-empty-text {
+    display: none;
+}

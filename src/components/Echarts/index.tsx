@@ -1,18 +1,26 @@
 import { useEffect } from 'react';
 import * as echarts from 'echarts';
 
-function Echarts({id, option}) {
+type Props =  {
+    id?: any;
+    option?: any
+}
+
+function Echarts(props: Props) {
+    let {id, option} = props;
     useEffect(() => {
         init();
     }, [option])
 
     function init() {
-        let chartDom = document.getElementById(id);
+        let chartDom: HTMLElement | null = document.getElementById(id);
+        // 断言 chartDom 不为 null
+        let chartElement: HTMLElement = chartDom!;
         //获取之前的echarts的实例
-        let myChart = echarts.getInstanceByDom(chartDom);
+        let myChart = echarts.getInstanceByDom(chartElement);
         //没有就初始化echarts实例
         if (!myChart) {
-            myChart = echarts.init(chartDom);
+            myChart = echarts.init(chartElement);
         }
 		// 绘制图表
 		myChart.setOption(option);
