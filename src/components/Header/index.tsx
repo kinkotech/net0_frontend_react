@@ -1,5 +1,6 @@
 import { Layout, Menu, Dropdown} from 'antd';
 import { useNavigate} from 'react-router-dom';
+import IconPark from '@/components/IconPark';
 import './index.scss';
 const { Header } = Layout;
 
@@ -8,13 +9,19 @@ const HeaderPage = () => {
 	const navigate = useNavigate();
 
 	// 点击菜单
-	const handleSiderClick = (e) => {
+	const handleSiderClick = (e: any) => {
 		// 路由跳转
 		navigate(e.key, {replace: false})
 	}
 
 	// menu菜单
-	function getItem(label, key, path, icon, children) {
+	function getItem(
+		label?: string,
+		key?: any,
+		path?: string,
+		icon?: string,
+		children?: any[]
+		) {
 		return {
 			key,
 			icon,
@@ -54,15 +61,15 @@ const HeaderPage = () => {
 			<Header className='header'style={{background: '#222',position: 'relative'}}>
 				<div className="left">
 					<div className="logo">
-						<iconpark-icon size="100%" color="#0BCFC8" name="logo"></iconpark-icon>
+						<IconPark className="iconpark-icon" style={{ color: '#0BCFC8', marginRight: '.1rem', fontSize: '100%' }} iconName='logo'></IconPark>
 					</div>
 					<div className="text fw-600">零碳园区</div>
 				</div>
 				<Menu
 					theme='dark'
 					mode='horizontal'
-					defaultSelectedKeys={window.location.pathname}
-					selectedKeys={window.location.pathname}
+					defaultSelectedKeys={[window.location.pathname]}
+					selectedKeys={[window.location.pathname]}
 					items={menuItems}
 					onClick={handleSiderClick}
 					style={{height: '100%',background: '#222',position: 'absolute',right: '10%', top: 0}}
@@ -76,7 +83,7 @@ const HeaderPage = () => {
 						placement="bottomLeft"
 						trigger={['click']}
 					>
-						<iconpark-icon size="100%" color="#A1A1A1" name="User"></iconpark-icon>
+						<IconPark className="iconpark-icon" style={{ color: '#A1A1A1', marginRight: '.1rem', fontSize: '100%' }} iconName='User'></IconPark>
 					</Dropdown>
 				</div>
 			</Header>

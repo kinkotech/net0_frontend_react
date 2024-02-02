@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@antv/g6": "^4.8.24",
 		"@jiaminghi/data-view-react": "^1.2.5",
+		"@types/qs": "^6.9.11",
 		"@types/react-redux": "^7.1.33",
 		"antd": "^5.13.3",
 		"axios": "^1.6.7",

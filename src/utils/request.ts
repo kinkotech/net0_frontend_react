@@ -4,7 +4,7 @@ import qs from 'qs';
 // import store from '@/store';
 
 // 记录和显示错误
-function errorLog(error) {
+function errorLog(error: any) {
   message.error({
     content: error.message,
   })
@@ -18,8 +18,9 @@ const service = axios.create({
 
 // 请求拦截器
 service.interceptors.request.use(
-  config => {
+  (config: any) => {
     config.method === 'get'? config.params = { ...config.params, ...config.data }: (config.data = (config.headers['Content-Type'] === 'application/x-www-form-urlencoded'? qs.stringify(config.data): config.data));
+	
     if(window.localStorage.getItem('token')) {
         config.headers['Authorization'] = `token ${window.localStorage.getItem('token')}`
     }

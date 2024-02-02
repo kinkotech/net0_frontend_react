@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Select, Statistic } from 'antd';
 import api from '@/api/index';
 import './index.scss';
 
-function LeftTop({date, parkList, getScreen}) {
+type Props = {
+	date?: string;
+	parkList?: any;
+	getScreen?: any
+}
+
+function LeftTop(props: Props) {
+	let {date, parkList, getScreen} = props;
 	// 总碳排放量
 	let [carbon, setCarbon] = useState(0);
 	let [carbonTrend, setCarbonTrend] = useState('');
@@ -26,34 +33,34 @@ function LeftTop({date, parkList, getScreen}) {
     }, [date])
 
 	// 获取选择的时间
-	const getCurrentDate = function(date) {
+	const getCurrentDate = function(date: any) {
 		let d = date.split('-');
 		setNowDate(`${d[0]}年${d[1]}月${d[2]}日`)
 	}
 
-	const getCarbonByDay = async function(date) {
-		await api.GetCarbonByDay(date).then(res=>{
+	const getCarbonByDay = async function(date: any) {
+		await api.GetCarbonByDay(date).then((res: any)=>{
 			setCarbon(res.today);
 			setCarbonTrend(res.trend);
 			setCarbonUnit(res.unit);
 		})
 	}
 
-	const getElectricityByDay = async function(date) {
-		await api.GetElectricityByDay(date).then(res=>{
+	const getElectricityByDay = async function(date: any) {
+		await api.GetElectricityByDay(date).then((res: any)=>{
 			setElectricit(res.today);
 			setElectricitTrend(res.trend);
 			setElectricitUnit(res.unit);
 		})
 	}
 
-	const handleChange = (value) => {
+	const handleChange = (value: any) => {
 		console.log(`selected ${value}`);
 		
 	};
 
 	// 全屏
-	const fullScreen = function(element) {
+	const fullScreen = function(element: any) {
 		if (element.requestFullscreen) {
 			element.requestFullscreen(); return true
 		} else if (element.mozRequestFullScreen) {
@@ -70,14 +77,14 @@ function LeftTop({date, parkList, getScreen}) {
 		if (document.exitFullscreen) {
 			document.exitFullscreen();
 		}
-		else if (document.mozCancelFullScreen) {
-			document.mozCancelFullScreen();
+		else if ((document as any).mozCancelFullScreen) {
+			(document as any).mozCancelFullScreen();
 		}
-		else if (document.webkitCancelFullScreen) {
-			document.webkitCancelFullScreen();
+		else if ((document as any).webkitCancelFullScreen) {
+			(document as any).webkitCancelFullScreen();
 		}
-		else if (document.msExitFullscreen) {
-			document.msExitFullscreen();
+		else if ((document as any).msExitFullscreen) {
+			(document as any).msExitFullscreen();
 		}
 	}
 
@@ -107,7 +114,7 @@ function LeftTop({date, parkList, getScreen}) {
 					disabled
 					/>
 				<div className="full-screen-icon" onClick={changeScreen}>
-					<div className="icon"><iconpark-icon size="100%" color="#999" name={screen}></iconpark-icon></div>
+					{/* <div className="icon"><iconpark-icon size="100%" color="#999" name={screen}></iconpark-icon></div> */}
 				</div>
 				<div className="now-date">{ nowDate }</div>
 			</div>
