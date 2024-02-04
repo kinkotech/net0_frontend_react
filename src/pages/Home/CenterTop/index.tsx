@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import api from '@/api/index';
 import G6 from '@antv/g6';
-// import { DatePicker } from 'antd';
-// import dayjs from 'dayjs';
+import { DatePicker } from 'antd';
+import dayjs from 'dayjs';
 import {getNowDate} from '@/utils/utils';
 import CenterTopRight from '../CenterTopRight';
 import './index.scss';
@@ -16,9 +16,9 @@ const CenterTop: React.FC<ChildProps> = (props: any) => {
 	let [date] = useState(getNowDate());
 	let [serverId, setServerId] = useState('a00000000000000');
 	let [list, setList] = useState([]);
-	// let [setGraph] = useState(null);
+	let [graph, setGraph] = useState(null);
 
-	// const dateFormat = 'YYYY-MM-DD';
+	const dateFormat = 'YYYY-MM-DD';
 	// let defaultDate = getNowDate();
 
 	useEffect(() => {
@@ -270,7 +270,7 @@ const CenterTop: React.FC<ChildProps> = (props: any) => {
 			graph.changeSize(container.scrollWidth, container.scrollHeight);
 		};
 
-		// setGraph(() => graph)
+		setGraph(() => graph)
 	}
 	const getGraph = async function(serverId: string) {
 		let params = {
@@ -285,11 +285,11 @@ const CenterTop: React.FC<ChildProps> = (props: any) => {
 	}
 
 	// 时间切换
-	// const onChange = (
-	// 	dateString?: string
-	// 	) => {
-	// 	props.getDate(dateString)
-	// };
+	const onChange = (
+		dateString?: string
+		) => {
+		props.getDate(dateString)
+	};
 
 	// 刷新
 	const refresh = function() {
@@ -309,14 +309,14 @@ const CenterTop: React.FC<ChildProps> = (props: any) => {
 			<div className="refresh-icon pointer" onClick={refresh}>
 				{/* <iconpark-icon size="100%" color="#0BCFC8" name="refresh-9mhn0n62"></iconpark-icon> */}
 			</div>
-			{/* <DatePicker 
+			<DatePicker 
 				onChange={onChange}
 				defaultValue={dayjs(date, dateFormat)}
 				format={dateFormat}
 				allowClear={false}
 				size='large'
 				superNextIcon
-				className='w-100 kiko-date'/> */}
+				className='w-100 kiko-date'/>
 			<div className='right h-100'>
 				{/*  date={date} serverId={serverId} */}
 				<CenterTopRight/>

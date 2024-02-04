@@ -6,7 +6,7 @@ import LeftCenter from './LeftCenter';
 import LeftBottom from './LeftBottom';
 import CenterTop from './CenterTop';
 import CenterBottom from './CenterBottom';
-// import RightTop from './RightTop';
+import RightTop from './RightTop';
 import RightBottom from './RightBottom';
 import * as datav from '@jiaminghi/data-view-react';
 import api from '@/api/index';
@@ -64,7 +64,7 @@ function Home() {
                             <CenterTop getNodes={(nodes: any) => getNodes(nodes)} getDate={(date: any) => getDate(date)}/>
                         </div>
                         <div className='border flex-1'>
-                            {/* <RightTop date={date} node={node}/> */}
+                            <RightTop date={date} node={node}/>
                         </div>
                     </div>
                     {/* 下 */}

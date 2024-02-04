@@ -1,0 +1,159 @@
+.right-top {
+    position: relative;
+    flex: 1;
+    font-size: .16rem;
+    color: #fff;
+    .con {
+        box-sizing: border-box;
+        position: relative;
+        overflow: hidden;
+        .title {
+            padding: .2rem;
+            color: #fff;
+            background: rgba(5, 5, 15, 0.3);
+        }
+        .top {
+            display: flex;
+            align-items: center;
+            padding: .2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, .1);
+            .cursor {
+                cursor: pointer;
+                display: inline-block;
+            }
+            .arrar,.text1 {
+                color: rgba(255, 255, 255, .4);
+            }
+            .text2 {
+                color: rgba(255, 255, 255, .87);
+            }
+            .arrar {
+                margin-right: .06rem;
+                font-size: 16px;
+                vertical-align: middle;
+            }
+
+        }
+        .bottom {
+            height: 81%;
+            position: absolute;
+            top: 1.2rem;
+            .header {
+                display: flex;
+                align-items: center;
+                padding: .2rem;
+                color: rgba(255, 255, 255, 0.4);
+                .name {
+                    flex: .6;
+                }
+                &-unit {
+                    flex: 1;
+                    display: flex;
+                    justify-content: end;
+                    align-items: center;
+                    .kinko-selection {
+                        margin-left: .1rem;
+                    }
+                }
+                &-carbon {
+                    flex: .8;
+                    text-align: right;
+                }
+                .electricity {
+                    margin-left: .2rem;
+                }
+            }
+            .ul-list {
+                overflow: auto;
+                li {
+                    display: flex;
+                    padding: .15rem 0;
+                    align-items: center;
+                    color: rgba(255, 255, 255, .85);
+                    
+                    cursor: pointer;
+                    &:hover {
+                        background: rgba(5, 5, 15, 0.3);
+                    }
+                    &.active {
+                        background: rgba(5, 5, 15, 0.3);
+                    }
+                    .left {
+                        display: flex;
+                        flex: 1;
+                        padding-left: .32rem;
+                        align-items: center;
+                        .circle {
+                            display: inline-block;
+                            margin-right: .08rem;
+                            margin-left: .1rem;
+                            width: .16rem;
+                            height: .16rem;
+                            border-radius: 50%;
+                            border: 1px solid #DFC9FF;
+                            vertical-align: middle;
+                        }
+                        .text {
+                            line-height: .2rem;
+                        }
+                    }
+                    .middle,.right {
+                        flex: 1;
+                        text-align: center;
+                    }
+                    .descend {
+                        margin-top: .1rem;
+                        color: #9AE4A7;
+                        font-size: .16rem;
+                    }
+                    .rise {
+                        margin-top: .1rem;
+                        color: #EF8F8F;
+                        font-size: .16rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*滚动条样式开始*/
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0;
+    background-color: #000;
+}
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 0.375rem #1e1e1e;
+    border-radius: 0.625rem;
+    background-color: #000;
+}
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+    border-radius: 0.625rem;
+    box-shadow: inset 0 0 0.375rem #1e1e1e;
+    background-color: #333;
+}
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #1e1e1e;
+}
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+::-webkit-scrollbar-track-piece {
+    background-color: transparent;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #e9e7e7;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+}
