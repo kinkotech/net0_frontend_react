@@ -6,7 +6,15 @@ import ycz from '@/assets/svg/ycz.svg';
 import zsz from '@/assets/svg/zsz.svg';
 import gs from '@/assets/svg/gs.svg';
 
-const PopverPage = function({help=false, helpObj, con}) {
+type Props = {
+    help?: boolean;
+    helpObj?: any;
+    con?: any
+}
+
+const PopverPage = function(props: Props) {
+    let {help=false, helpObj, con} = props;
+
     let [color, setColor] = useState('#999');
 
     // i内容
@@ -59,7 +67,7 @@ const PopverPage = function({help=false, helpObj, con}) {
     )
 
     // popver显示/隐藏
-    const handleHoverChange = (open) => {
+    const handleHoverChange = (open: boolean) => {
         let str = '';
         str = open ? '#fff' : '#999';
         setColor(str);
@@ -71,12 +79,7 @@ const PopverPage = function({help=false, helpObj, con}) {
             onOpenChange={handleHoverChange}
             >
             <div className="icon pointer">
-                <iconpark-icon
-                    name={help ? 'Question' : 'Info-bjej4ag7'}
-                    color={color}
-                    size="26"
-                >
-                </iconpark-icon>
+                {/* <IconPark className="iconpark-icon" style={{ color, marginRight: '.1rem', fontSize: 12 }} iconName={help ? 'Question' : 'Info-bjej4ag7'}></IconPark> */}
             </div>
         </Popover>
 	)

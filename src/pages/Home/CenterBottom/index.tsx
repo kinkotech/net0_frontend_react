@@ -3,7 +3,7 @@ import * as echarts from 'echarts';
 import api from '@/api/index';
 import { Select } from 'antd';
 import SelectNode from '@/components/SelectNode';
-// import Popver from '@/components/Popver';
+import Popver from '@/components/Popver';
 import { connect } from 'react-redux';
 import './index.scss';
 
@@ -29,10 +29,10 @@ function CenterBottom(props: Props) {
 	let [beforeOneDay, setBeforeOneDay] = useState('');
 	let [afterOneDay, setAfterOneDay] = useState('');
 
-	let [dataList] = useState({
-		prediction: [], // 预测值
-		reality: [] // 实际值
-	})
+	// let [dataList, setDataList] = useState({
+	// 	prediction: [], // 预测值
+	// 	reality: [] // 实际值
+	// })
 	let [tab, setTab] = useState([
 		{
 			text: '碳排放',
@@ -57,7 +57,7 @@ function CenterBottom(props: Props) {
 		{ value: 'kWh', label: 'kWh' },
 		{ value: 'MWh', label: 'MWh' }
 	]);
-	// let [setHelpObj] = useState({});
+	let [helpObj, setHelpObj] = useState({});
 
 	
 
@@ -78,7 +78,8 @@ function CenterBottom(props: Props) {
 		dataType: any,
 		unit: string,
 		server_id: string
-		) {
+
+	) {
 		let params = {};
 		if (server_id) {
 			params = {
@@ -107,18 +108,13 @@ function CenterBottom(props: Props) {
 				obj.reality = el.value;
 			}
 		})
-
-		getOption();
-		// setDataList(() => {
-		// 	dataList = obj;
-		// 	getOption();
-		// 	return {...obj}
-		// });
+		// setDataList(obj);
+		getOption(obj);
 		
 	}
 
 	// 获取option
-	const getOption = function() {
+	const getOption = function(dataList: any) {
 		let myChart = echarts.init(document.getElementById('centerBottomMain'));
 		let maxValue = Math.max.apply(null, [...dataList.prediction, ...dataList.reality]);
 		let date1 = getBeforeDate();
@@ -160,7 +156,8 @@ function CenterBottom(props: Props) {
 				},
 				type: 'category',
 				// 设置 x 轴的数据, 使用 日期 在数据中的 序列号 来表示 横坐标数值。
-				data: chartXAxis && chartXAxis.map((index) => {
+				data: chartXAxis && chartXAxis.map((seg, index) => {
+					console.log(seg)
 					return index
 				}),
 				splitLine: {
@@ -293,7 +290,7 @@ function CenterBottom(props: Props) {
 
 		// 计算两个数据的最大值，组成二维数据
 		let line3Data: any[] = [];
-		dataList.prediction.forEach((item, i) => {
+		dataList.prediction.forEach((item: any, i: number) => {
 			if (item - dataList.reality[i] >= 0) {
 				line3Data.push([i, item])
 			} else {
@@ -343,25 +340,7 @@ function CenterBottom(props: Props) {
 			},
 		})
 
-		interface OptionProps {
-			z: any,
-			name: string,
-			type: string,
-			smooth: boolean,
-			showSymbol: boolean,
-			data: any[],
-			lineStyle: {
-				color: string,
-				type: string, // 设置为虚线
-				width: number
-			},
-			areaStyle: {
-				color: string,
-				opacity: number,
-				origin: string, // 填充折线外的区域
-			}
-		}
-		const optionProps: OptionProps = {
+		chartOption.series.push({
 			z: -1,
 			name: 'name4',
 			type: 'line',
@@ -377,10 +356,8 @@ function CenterBottom(props: Props) {
 				color: '#1e1e1e',
 				opacity: 1,
 				origin: 'end', // 填充折线外的区域
-			}
-		}
-
-		chartOption.series.push(optionProps)
+			},
+		})
 
 
 
@@ -392,8 +369,8 @@ function CenterBottom(props: Props) {
 		let arr = [];
 		if (selectValue !== '24小时') {
 			let y = Number(selectDate.split('-')[0]); // //当前年
-			let m:number = Number(selectDate.split('-')[1]); // //当前月
-			let d:number = Number(selectDate.split('-')[2]); // 当前日
+			let m: number = Number(selectDate.split('-')[1]); // //当前月
+			let d: number = Number(selectDate.split('-')[2]); // 当前日
 
 			let data = new Date(y, m-1, 0);
 			let time: any = (data.getDate() > 9 ? data.getDate() : '0' + data.getDate());// 上一月最后一天
@@ -435,8 +412,8 @@ function CenterBottom(props: Props) {
 		let arr = [];
 		if (selectValue !== '24小时') {
 			let y = Number(selectDate.split('-')[0]); // //当前年
-			let m = Number(selectDate.split('-')[1]); // //当前月
-			let d:number = Number(selectDate.split('-')[2]); // 当前日
+			let m: number = Number(selectDate.split('-')[1]); // //当前月
+			let d: number = Number(selectDate.split('-')[2]); // 当前日
 
 			let data = new Date(y, m, 0);
 			let time: any = (data.getDate() > 9 ? data.getDate() : '0' + data.getDate());// 本月最后一天
@@ -476,6 +453,7 @@ function CenterBottom(props: Props) {
 	// 计算两个线段交点，通过传入 两条线段、四个端点 的 横纵坐标 值，来计算两者交点的坐标
 	const segmentsIntr = function(props: { a: any, b: any, c: any, d: any }) {
 		let {a, b, c, d} = props;
+
 		let denominator = (b.y - a.y) * (d.x - c.x) - (a.x - b.x) * (c.y - d.y)
 		let x = ((b.x - a.x) * (d.x - c.x) * (c.y - a.y) +
 			(b.y - a.y) * (d.x - c.x) * a.x -
@@ -498,11 +476,13 @@ function CenterBottom(props: Props) {
 	}
 
 	// 获取两线所有交点
-	const getIntersectionPoint = function(props: { line1: any, line2: any, date: any}) {
+	const getIntersectionPoint = function(props: { line1: any, line2: any, date: any }) {
 		let {line1, line2, date} = props;
+
 		// 交点数组
 		let intersectionPointList: any[] = []
-		date.forEach((idx: any) => {
+		date.forEach((seg: any, idx: number) => {
+			console.log(seg)
 			// 分别是两条线在相邻两处的数值，用于通过比较大小，来确定此段内是否有交点
 			let valueGroup: [any, any, any, any] = [line1[idx], line2[idx], line1[idx + 1], line2[idx + 1]]
 			if (ifCalculatePoint(idx, date.length, valueGroup)) {
@@ -521,7 +501,8 @@ function CenterBottom(props: Props) {
 	}
 
 	// 能耗/碳排放
-	const changeTab = function(type: string, i: number) {
+	const changeTab = function(e: any, type: any, i: number) {
+		console.log(e)
 		let arr = tab;
 		arr.forEach((item, index) => {
 			item.isActive = false
@@ -535,7 +516,7 @@ function CenterBottom(props: Props) {
 	}
 
 	// 碳排放单位切换
-	const changeCarbonUnit = function(value: any) {
+	const changeCarbonUnit = function(value: string) {
 		if (dataType === 'usage') {
 			setUnit(value)
 		} else {
@@ -544,7 +525,7 @@ function CenterBottom(props: Props) {
 	}
 
 	// 能耗单位切换
-	const changeUnit = function(value: any) {
+	const changeUnit = function(value: string) {
 		if (dataType === 'usage') {
 			setUnit(value)
 		} else {
@@ -559,8 +540,7 @@ function CenterBottom(props: Props) {
 				...res,
 				date: selectDate
 			}
-			console.log(obj)
-			// setHelpObj(obj);
+			setHelpObj(obj);
 		})
 	}
 
@@ -580,9 +560,9 @@ function CenterBottom(props: Props) {
 		setAfterOneDay(`${m}/${d}`)
 	}
 
-	// const popverCon = `<p className='info3'></p>
-	// <p className='title'>选择不同模型</p>
-	// <p>获得未来24小时和7天的用能相关的碳排放预测数据。</p>`
+	const popverCon = `<p className='info3'></p>
+	<p className='title'>选择不同模型</p>
+	<p>获得未来24小时和7天的用能相关的碳排放预测数据。</p>`
 
     return (
 		<div className="container border w-100 h-100 d-flex flex-column">
@@ -598,14 +578,14 @@ function CenterBottom(props: Props) {
 						/>
 					<div>预测</div>
 					<SelectNode nodeName={node.nodeText || '电试院'} level={node.level || 1}/>
-					{/* <Popver con={popverCon}/> */}
+					<Popver con={popverCon}/>
 				</span>
 				<div className="tabs">
 					<div className="tabs-con right-tabs">
 						{
 							tab.map((item, index) => {
 								return (
-									<div className={item.isActive ? 'item active' : 'item'} key={index} onClick={()=> changeTab(item.type, index)}>{item.text}</div>
+									<div className={item.isActive ? 'item active' : 'item'} key={index} onClick={(e)=> changeTab(e, item.type, index)}>{item.text}</div>
 								)
 							})
 						}
@@ -657,7 +637,7 @@ function CenterBottom(props: Props) {
 			}
 			<div className="bottom-help d-flex">
 				<div>预测准确率</div>
-				{/* <Popver help={true} helpObj={helpObj}/> */}
+				<Popver help={true} helpObj={helpObj}/>
 			</div>
 		</div>
 	)
