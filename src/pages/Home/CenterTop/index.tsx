@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '@/api/index';
 import G6 from '@antv/g6';
 import { DatePicker } from 'antd';
@@ -7,15 +7,15 @@ import {getNowDate} from '@/utils/utils';
 import CenterTopRight from '../CenterTopRight';
 import './index.scss';
 
-interface ChildProps {
+interface Props {
 	getNodes: (value: string) => void;
 	getDate: (value: string) => void;
 }
 
-const CenterTop: React.FC<ChildProps> = (props: any) => {
+
+function CenterTop(props: Props) {
 	let [date] = useState(getNowDate());
 	let [serverId, setServerId] = useState('a00000000000000');
-	let [list, setList] = useState([]);
 	let [graph, setGraph] = useState(null);
 
 	const dateFormat = 'YYYY-MM-DD';
@@ -24,12 +24,13 @@ const CenterTop: React.FC<ChildProps> = (props: any) => {
 	useEffect(() => {
 		props.getDate(date);
 		// 由于图表需要获取数据，因此会将初始化代码放入useEffect中进行更新，这造成了重复的初始化新的图表对象，并创建画布进行二次渲染
+		console.log(graph)
 		// graph && graph.destroy();
 		getGraph(serverId)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [serverId])
 
-	const getCarbonMap = function() {
+	const getCarbonMap = function(list: any[]) {
 		const container = document.getElementById('carbonMapBox');
 
 		if (!container) return;
@@ -254,7 +255,7 @@ const CenterTop: React.FC<ChildProps> = (props: any) => {
 			if (level === 1) return;
 			if (!child) return;
 
-			let nodes = {
+			let nodes: any = {
 				id,
 				nodeText,
 				level
@@ -272,29 +273,32 @@ const CenterTop: React.FC<ChildProps> = (props: any) => {
 
 		setGraph(() => graph)
 	}
+
 	const getGraph = async function(serverId: string) {
 		let params = {
 			server_id: serverId,
 		}
 		await api.Graph(params).then((res: any)=>{
-			setList({
-				...res
-			})
-			getCarbonMap()
+			getCarbonMap(res);
 		})
 	}
 
 	// 时间切换
+	// const onChange = (props: {dateString: string}) => {
+		// console.log(props.dateString)
+		// props.getDate(props.dateString)
+	// };
+
 	const onChange = (
-		dateString?: string
+		dateString?: any
 		) => {
 		props.getDate(dateString)
-	};
+	}
 
 	// 刷新
 	const refresh = function() {
 		setServerId('a00000000000000');
-		let nodes = {
+		let nodes: any = {
 			id: 'a00000000000000',
 			nodeText: '电试院',
 			level: 1
@@ -318,7 +322,6 @@ const CenterTop: React.FC<ChildProps> = (props: any) => {
 				superNextIcon
 				className='w-100 kiko-date'/>
 			<div className='right h-100'>
-				{/*  date={date} serverId={serverId} */}
 				<CenterTopRight/>
 			</div>
 		</div>
