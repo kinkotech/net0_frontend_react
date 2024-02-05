@@ -1,11 +1,16 @@
 import './index.scss';
 
-const Percentage = ({list}) => {
+type Props = {
+    list?: any
+}
+
+const Percentage = (props: Props) => {
+    let {list} = props;
     console.log(list)
     return (
         <ul className='percentage-bg'>
             {
-                list.map((item, i) => {
+                list.map((item: any, i: number) => {
                     return (
                         <li className={'color' + i} style={{width: item + '%'}}></li>
                     )

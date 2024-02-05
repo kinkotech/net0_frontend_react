@@ -13,7 +13,7 @@ const { RangePicker } = DatePicker;
 const FootList = () => {
 	const navigate = useNavigate();
 
-	const [parkList] = useState(JSON.parse(localStorage.getItem('PARK_LIST')));
+	const [parkList] = useState(JSON.parse(localStorage.getItem('PARK_LIST')?.toString() ?? ""));
 	const [defaultParkValue] = useState('电试院');
     let [park_id, setPark_id] = useState(1);
 	let [timeString, setTimeString] = useState([]);
@@ -23,7 +23,7 @@ const FootList = () => {
 	},{
 		value: '碳排放总量(kgCO₂e)'
 	}]);
-    let [unit, setUnit] = useState('碳排放总量(tCO₂e)');
+    let [unit] = useState('碳排放总量(tCO₂e)');
 	let [dataSource, setDataSource] = useState([]);
 
 	const items = [
@@ -70,7 +70,7 @@ const FootList = () => {
 		  title: '园区',
 		  key: 'name',
 		  dataIndex: 'name',
-		  sorter: (a, b) => a.name.length - b.name.length,
+		  sorter: (a: any, b: any) => a.name.length - b.name.length,
 		//   sortDirections: ['descend'],
 		},
 		{
@@ -78,20 +78,20 @@ const FootList = () => {
 		  key: 'month',
 		  dataIndex: 'month',
 		//   defaultSortOrder: 'descend',
-		  sorter: (a, b) => a.age - b.age,
+		  sorter: (a: any, b: any) => a.age - b.age,
 		},
 		{
 		  title: '报告者姓名',
 		  key: 'reporter',
 		  dataIndex: 'reporter',
-		  sorter: (a, b) => a.age - b.age,
+		  sorter: (a: any, b: any) => a.age - b.age,
 		},
 		{
 			title: '碳排放组成',
 			key: 'percentage',
 			dataIndex: 'percentage',
-			sorter: (a, b) => a.age - b.age,
-			render: (record) => {
+			sorter: (a: any, b: any) => a.age - b.age,
+			render: (record: any) => {
 				return <Percent list={record}/>
 			}
 		},
@@ -99,7 +99,7 @@ const FootList = () => {
 			title: '碳排放总量',
 			key: 'num',
 			dataIndex: 'num',
-			sorter: (a, b) => a.age - b.age,
+			sorter: (a: any, b: any) => a.age - b.age,
 		},
 		{
 			title: '操作',
@@ -134,11 +134,11 @@ const FootList = () => {
 	}, [park_id, timeString, reporter, unit])
 
 	// 碳足迹报告创建接口
-	const getReport = async (params) => {
+	const getReport = async (params: any) => {
 		await api.GetReport(params).then(res=>{
 			if (res) {
 				let data = res.data
-				const dataSource = data.map((item, index) => ({ ...item, key: (index+1).toString() }));
+				const dataSource = data.map((item: any, index: number) => ({ ...item, key: (index+1).toString() }));
 				setDataSource(dataSource);
 				// this.pagination.total = res.total;
 			}
@@ -146,28 +146,29 @@ const FootList = () => {
 	}
 
 	// 园区切换
-	const changePark = (value, option) => {
+	const changePark = (value: any, option: any) => {
+		console.log(value)
         setPark_id(option.id)
     }
 	// 时间切换
-	const changePicker = (time, timeString) => {
+	const changePicker = (time: any, timeString: any) => {
 		console.log(time, timeString)
 		setTimeString(timeString)
 	}
 
 	// 单位切换
-	const unitChange = (value, option) => {
-        
+	const unitChange = (value: any, option: any) => {
+        console.log(value, option)
     }
 	// 报告者
-	const reporterChange = (e) => {
+	const reporterChange = (e: any) => {
 		setReporter(e.target.value)
 	}
 
 	// 分页切换
-	const onChange = (pagination, filters, sorter, extra) => {
-		console.log('params', pagination, filters, sorter, extra);
-	};
+	// const onChange = (pagination: any, filters: any, sorter: any, extra: any) => {
+	// 	console.log('params', pagination, filters, sorter, extra);
+	// };
 	// 上传
 	const uploadClick = () => {}
 	// 添加
@@ -183,7 +184,7 @@ const FootList = () => {
 					<div className="btns">
 						<div className="btn" onClick={uploadClick}>
 							<div className="icon">
-								<iconpark-icon size="100%" color="#1E1E1E" name="Input"></iconpark-icon>
+								{/* <iconpark-icon size="100%" color="#1E1E1E" name="Input"></iconpark-icon> */}
 							</div>
 							<span>导入</span>
 						</div>
@@ -201,7 +202,7 @@ const FootList = () => {
 						</Dropdown>
 					<div className="addIcon d-flex pointer" onClick={goAdd}>
 						<div className="icon">
-							<iconpark-icon size="100%" color="#fff" name="Add"></iconpark-icon>
+							{/* <iconpark-icon size="100%" color="#fff" name="Add"></iconpark-icon> */}
 						</div>
 						添加
 					</div>

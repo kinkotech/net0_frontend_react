@@ -3,7 +3,7 @@ import request from '@/utils/request';
 
 export default class footApi {
     // 获取碳足迹 水气电 数据
-    static async GetWEC(data) {
+    static async GetWEC(data?: any) {
         return request({ 
             method: 'post',
             data: {

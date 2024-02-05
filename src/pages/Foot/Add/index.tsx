@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
-    DatePicker,
     Form,
-    Input,
-    Select
   } from 'antd';
 import OrganizationSummary from './components/OrganizationSummary';
-import FuelUse from './components/FuelUse';
-import FugitiveEmission from './components/FugitiveEmission';
-import PurchasedEnergy from './components/OutboundLogistics';
-import MaterialInputs from './components/MaterialInputs';
-import InboundLogistics from './components/InboundLogistics';
-import OutboundLogistics from './components/OutboundLogistics';
-import BusinessTrave from './components/BusinessTrave';
-import WasteAndWater from './components/WasteAndWater';
-import CustomerApportionment from './components/CustomerApportionment';
-import ProductApportionment from './components/ProductApportionment';
+// import FuelUse from './components/FuelUse';
+// import FugitiveEmission from './components/FugitiveEmission';
+// import PurchasedEnergy from './components/OutboundLogistics';
+// import MaterialInputs from './components/MaterialInputs';
+// import InboundLogistics from './components/InboundLogistics';
+// import OutboundLogistics from './components/OutboundLogistics';
+// import BusinessTrave from './components/BusinessTrave';
+// import WasteAndWater from './components/WasteAndWater';
+// import CustomerApportionment from './components/CustomerApportionment';
+// import ProductApportionment from './components/ProductApportionment';
 import api from '@/api/index';
 import './index.scss';
 
@@ -123,7 +120,7 @@ const FootAdd = () => {
 	}, [])
 
 	// 获取卡片页选项
-	const getCarbonFootPrintFactor = async(type, newList, i) => {
+	const getCarbonFootPrintFactor = async(type: any, newList: any, i: number) => {
 		await api.GetCarbonFootPrintFactor(type).then(res=>{
 			if (res) {
 				newList[i].conList.push({res})
@@ -133,14 +130,15 @@ const FootAdd = () => {
 	}
 	
 
-	const closeOrOpen = (el, i) => {
+	const closeOrOpen = (el: any, i: number) => {
+		console.log(el)
 		list.forEach((item, index) => {
 			if(i == index) {
 				item.show = !item.show;
 			}
 		})
 	}
-	const addCon = (i, title) => {
+	const addCon = (i: number, title: any) => {
 		let type = '';
 		let newList = list;
 		switch (title) {
@@ -182,25 +180,25 @@ const FootAdd = () => {
 		setList(newList)
 	}
 
-	const reduceCon = (ii, conI) => {
-		this.getModule(ii)
+	// const reduceCon = (ii, conI) => {
+	// 	this.getModule(ii)
 
-		// 对应模块的数组减去一个
-		this[this.moduleType].splice(conI, 1);
-		// 数组循环的值先清空，通过后面的addCon再次添加
-		list[ii].conList = [];
+	// 	// 对应模块的数组减去一个
+	// 	this[this.moduleType].splice(conI, 1);
+	// 	// 数组循环的值先清空，通过后面的addCon再次添加
+	// 	list[ii].conList = [];
 
-		for(let i = 0; i < this[this.moduleType].length; i++) {
-			this.addCon(ii, this.mpduleName)
-		}
-	}
+	// 	for(let i = 0; i < this[this.moduleType].length; i++) {
+	// 		this.addCon(ii, this.mpduleName)
+	// 	}
+	// }
 
 
 	return (
 		<div>
-			{/* 
 			
-			<FugitiveEmission/>
+			
+			{/* <FugitiveEmission/>
 			<PurchasedEnergy/>
 			<MaterialInputs/>
 			<InboundLogistics/>
@@ -217,15 +215,15 @@ const FootAdd = () => {
 							<div className="foot-add-list-header">
 								<div className="foot-add-list-header-left">
 									<div className="arrow pointer" onClick={()=> closeOrOpen(item, i)}>
-										<iconpark-icon
+										{/* <iconpark-icon
 											size="100%"
 											color="#999999"
 											name="ArrowDownSmall"
 											className={item.show ? 'up-icon' : 'down-icon'}
-										></iconpark-icon>
+										></iconpark-icon> */}
 									</div>
 									<span className={item.conList.length > 0 ? 'foot-add-list-header-left-icon bg-blue' : 'foot-add-list-header-left-icon'}>
-										<iconpark-icon size="100%" color={item.conList.length > 0 ? '#0BCFC8' : '#999'} name={item.icon}></iconpark-icon>
+										{/* <iconpark-icon size="100%" color={item.conList.length > 0 ? '#0BCFC8' : '#999'} name={item.icon}></iconpark-icon> */}
 									</span>
 									<div className="foot-add-list-header-left-text">
 										<div className="foot-add-list-header-left-text-title fw-600">{ item.title }</div>
@@ -235,7 +233,7 @@ const FootAdd = () => {
 								{
 									item.title != '主体信息' &&
 									<div className="add-icon" onClick={()=> addCon(i, item.title)}>
-										<iconpark-icon size="100%" color="#999999" name="Add"/>
+										{/* <iconpark-icon size="100%" color="#999999" name="Add"/> */}
 									</div>
 								}
 							</div>
@@ -253,9 +251,10 @@ const FootAdd = () => {
 								}
 								{
 									item.title == '现场燃料使用' &&
-									list[i].conList.map((el, conI) => {
+									list[i].conList.map(() => {
 										return (
-											<FuelUse/>
+											// <FuelUse/>
+											<div>22</div>
 										)
 									})
 								}

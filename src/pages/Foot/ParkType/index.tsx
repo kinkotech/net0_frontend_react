@@ -36,7 +36,7 @@ const ParkType = () => {
 		}
 	]
 
-	const onChange = (key) => {
+	const onChange = (key: any) => {
 		console.log(key);
 	}
 

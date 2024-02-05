@@ -10,15 +10,21 @@ import './index.scss';
 
 const { Option } = Select;
 
+type Props = {
+	value: any;
+	onChange?: (any: any) => void
+}
 
-const FuelUse = ({ value = {}, onChange }) => {
+const FuelUse = (props: Props) => {
+	let { value = {}, onChange } = props;
+
 	const rules = {
         park_id: [{required: true}]
     }
 
 	const [number, setNumber] = useState(0);
 	const [currency, setCurrency] = useState('rmb');
-	const triggerChange = (changedValue) => {
+	const triggerChange = (changedValue: any) => {
 		onChange?.({
 		number,
 		currency,
@@ -26,7 +32,7 @@ const FuelUse = ({ value = {}, onChange }) => {
 		...changedValue,
 		});
 	};
-	const onNumberChange = (e) => {
+	const onNumberChange = (e: any) => {
 		const newNumber = parseInt(e.target.value || '0', 10);
 		if (Number.isNaN(number)) {
 		return;
@@ -38,7 +44,7 @@ const FuelUse = ({ value = {}, onChange }) => {
 		number: newNumber,
 		});
 	};
-	const onCurrencyChange = (newCurrency) => {
+	const onCurrencyChange = (newCurrency: any) => {
 		if (!('currency' in value)) {
 		setCurrency(newCurrency);
 		}

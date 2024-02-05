@@ -9,18 +9,25 @@ import Title from '@/components/Title';
 import * as echarts from 'echarts';
 import './index.scss';
 
-const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
-	let [electricity, setElectricity] = useState({
+type Props = {
+	start?: any;
+	end?: any;
+	park_id?: any;
+	sidebarFold?: any;
+}
+
+const WaterElectricityGas: React.FC<Props> = ({start, end, park_id, sidebarFold}) => {
+	let [electricity, setElectricity]: any = useState({
 		unit: '',
 		total: 0,
 		option: {}
 	});
-	let [gas, setGas] = useState({
+	let [gas, setGas]: any = useState({
 		unit: '',
 		total: 0,
 		option: {}
 	});
-	let [water, setWater] = useState({
+	let [water, setWater]: any = useState({
 		unit: '',
 		total: 0,
 		option: {}
@@ -43,7 +50,7 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 	}, [start, end, park_id, sidebarFold])
 
 	// 获取数据
-	const getWEC = async(start, end, park_id) => {
+	const getWEC = async(start: any, end: any, park_id?: any) => {
 		let data = ['electricity', 'gas', 'water']
 
 		for(let i = 0;i<data.length; i++) {
@@ -56,7 +63,7 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
                 start,
                 end
             }
-			await footApi.GetWEC(param).then(res=>{
+			await footApi.GetWEC(param).then((res: any)=>{
 				if (res) {
 					option = {
 						tooltip: {
@@ -101,7 +108,7 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 								// rotate: -40,
 								fontSize: 12,
 								color: '#fff',
-								formatter(data, i) {
+								formatter(data: any, i: number) {
 									let arr = data.split('-');
 									arr = [arr[1], arr[0]];
 									arr[0] = Number(arr[0]) + '月';
@@ -138,7 +145,7 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 						]
 					}
 					unit = res.unit;
-					res.value.forEach(el => {
+					res.value.forEach((el: any) => {
 						// 精度问题 先*再/
 						el = el * 100;
 						total += el;
@@ -180,13 +187,13 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 	return (
 		<FootLayout>
 			<div className="page w-100 h-100">
-				<Title title="水电煤看板" fontSize=".18rem" color={'white'} showPopver={true} popverContent={popverContent} showSelect={true}/>
+				<Title title="水电煤看板" color={'white'} showPopver={true} popverContent={popverContent} showSelect={true}/>
 				<TimeLine/>
 				<div className="page-right border">
 					<div className="page-right-left">
 							<div className="page-right-left-title">
 								<div className="page-right-left-title-icon">
-									<iconpark-icon size="100%" color="rgb(253, 176, 34)" name="TypeBulb" className="icon"></iconpark-icon>
+									{/* <iconpark-icon size="100%" color="rgb(253, 176, 34)" name="TypeBulb" className="icon"></iconpark-icon> */}
 									<span>电</span>
 								</div>
 							</div>
@@ -194,8 +201,7 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 								<Echarts
 									option={electricity.option}
 									id='chart1'
-									>
-								</Echarts>
+									/>
 							</div>
 							<div className="page-right-left-bottom">
 								<Statistic
@@ -209,7 +215,7 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 						<div className="page-right-right-top">
 								<div className="page-right-right-top-title">
 									<div className="page-right-right-top-title-icon">
-										<iconpark-icon size="100%" color="#0BCFC8" name="TypeFire" className="icon"></iconpark-icon>
+										{/* <iconpark-icon size="100%" color="#0BCFC8" name="TypeFire" className="icon"></iconpark-icon> */}
 										<span>气</span>
 									</div>
 								</div>
@@ -218,8 +224,7 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 										<Echarts
 											option={gas.option}
 											id="chart2"
-											>
-										</Echarts>
+											/>
 									</div>
 									<div className="page-right-right-top-chart-right flex-1">
 										<Statistic
@@ -233,7 +238,7 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 						<div className="page-right-right-bottom">
 								<div className="page-right-right-bottom-title">
 									<div className="page-right-right-bottom-title-icon">
-										<iconpark-icon size="100%" color="#53B1FD" name="TypeWater" className="icon"></iconpark-icon>
+										{/* <iconpark-icon size="100%" color="#53B1FD" name="TypeWater" className="icon"></iconpark-icon> */}
 										<span>水</span>
 									</div>
 								</div>
@@ -242,8 +247,7 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 										<Echarts
 											option={water.option}
 											id="chart3"
-											>
-										</Echarts>
+											/>
 									</div>
 									<div className="page-right-right-bottom-chart-right flex-1">
 										<Statistic
@@ -261,7 +265,7 @@ const WaterElectricityGas = ({start, end, park_id, sidebarFold}) => {
 	)
 }
 // 使用connect函数将state和dispatch映射为props
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         start: state.foot.start,
 		end: state.foot.end,
