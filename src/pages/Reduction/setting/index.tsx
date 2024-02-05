@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { ReductionLayout } from '@/pages/Reduction/index';
 
 const FootIndex = () => {
