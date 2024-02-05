@@ -1,17 +1,31 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Select } from 'antd';
 import Popver from '../Popver';
 import { connect } from 'react-redux';
 import Help from '../Help';
 import './index.scss';
 
-const Title = function({color, title,popverContent, currentTime, showPopver, showHelp=false, helpImgUrl, showSelect, setParkId}) {
+type Props = {
+    color?: string;
+    title?: string;
+    popverContent?: string;
+    currentTime?: string;
+    showPopver?: boolean;
+    showHelp?: boolean;
+    helpImgUrl?: string;
+    showSelect?: boolean;
+    setParkId?: any;
+}
+
+const Title: React.FC<Props> = function(props: Props) {
+    let {color, title,popverContent, currentTime, showPopver, showHelp=false, helpImgUrl, showSelect, setParkId} = props;
+
     let [screen, setScreen] = useState('FullScreen');
-    const [parkList] = useState(JSON.parse(localStorage.getItem('PARK_LIST')));
+    const [parkList] = useState(JSON.parse(localStorage.getItem('PARK_LIST')?.toString() ?? ""));
     let [defaultValue, setDefaultValue] = useState('电试院');
 
     // 全屏
-    const fullScreen = (element) => {
+    const fullScreen = (element: any) => {
         if (element.requestFullscreen) {
             element.requestFullscreen(); return true
         } else if (element.mozRequestFullScreen) {
@@ -28,14 +42,14 @@ const Title = function({color, title,popverContent, currentTime, showPopver, sho
         if (document.exitFullscreen) {
             document.exitFullscreen();
         }
-        else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
+        else if ((document as any).mozCancelFullScreen) {
+            (document as any).mozCancelFullScreen();
         }
-        else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
+        else if ((document as any).webkitCancelFullScreen) {
+            (document as any).webkitCancelFullScreen();
         }
-        else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
+        else if ((document as any).msExitFullscreen) {
+            (document as any).msExitFullscreen();
         }
     }
 
@@ -45,29 +59,16 @@ const Title = function({color, title,popverContent, currentTime, showPopver, sho
         if (screen == 'FullScreen') {
             str = 'UnFullScreen';
             fullScreen(document.documentElement);
-            // this.$store.commit('SET_FULL_SCREEN', 1);
         } else {
             str = 'FullScreen';
             unFullScreen();
-            // this.$store.commit('SET_FULL_SCREEN', 0);
         }
         setScreen(str)
     }
 
-    const changePark = (value, option) => {
+    const changePark = (value: string, option: any) => {
         setDefaultValue(value)
         setParkId(option.id)
-        // parkList.forEach((el) => {
-        //     if (el.id == id) {
-        //         this.parkValue = el.value
-        //     }
-        // })
-        // this.park_id = id;
-        // if (this.showAll) {
-        //     this.$store.state.footBoard.park_id = id;
-        //     this.$store.state.footBoard.weg_park_id = id;
-        // }
-        // this.$emit('parkId', id)
     }
     
 	return (
@@ -87,7 +88,7 @@ const Title = function({color, title,popverContent, currentTime, showPopver, sho
                 }
                 <div className="screen-icon pointer" onClick={changeScreen}>
                     <div className="icon">
-                        <iconpark-icon size="100%" color="#999" name={screen}></iconpark-icon>
+                        {/* <iconpark-icon size="100%" color="#999" name={screen}></iconpark-icon> */}
                     </div>
                 </div>
                 <div v-if="showCurrentTime" className="time">{ currentTime }</div>
@@ -104,15 +105,15 @@ const Title = function({color, title,popverContent, currentTime, showPopver, sho
 	)
 }
 // 使用connect函数将state和dispatch映射为props
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         park_id: state.foot.park_id
     };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: any) {
     return {
-        setParkId: (value) => dispatch({ type: 'SET_PARK_ID', value})
+        setParkId: (value: string) => dispatch({ type: 'SET_PARK_ID', value})
     };
 }
 

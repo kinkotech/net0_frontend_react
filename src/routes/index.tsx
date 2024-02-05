@@ -2,7 +2,7 @@ import {
     createBrowserRouter
 } from "react-router-dom";
 import Home from '@/pages/Home';
-// import FootBoard from '@/pages/Foot/Board';
+import FootBoard from '@/pages/Foot/Board';
 // import FootList from "@/pages/Foot/List";
 // import FootAdd from '@/pages/Foot/Add';
 // import FootParkType from '@/pages/Foot/ParkType';
@@ -17,10 +17,10 @@ const Router = createBrowserRouter([
         path: "/",
         element: <Home/>,
     },
-    // {
-    //     path: "foot",
-    //     element: <FootBoard/>,
-    // },
+    {
+        path: "foot",
+        element: <FootBoard/>,
+    },
     // {
     //     path: "foot/parkType",
     //     element: <FootParkType/>,

@@ -1,7 +1,7 @@
 import { Popover } from 'antd';
 import parse from 'html-react-parser';
 import './index.scss';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import ycz from '@/assets/svg/ycz.svg';
 import zsz from '@/assets/svg/zsz.svg';
 import gs from '@/assets/svg/gs.svg';
@@ -12,10 +12,11 @@ type Props = {
     con?: any
 }
 
-const PopverPage = function(props: Props) {
+const PopverPage: React.FC<Props> = function(props: Props) {
     let {help=false, helpObj, con} = props;
 
     let [color, setColor] = useState('#999');
+    console.log(color)
 
     // i内容
     const content = (

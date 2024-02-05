@@ -1,18 +1,28 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import api from '@/api/index';
 import Echarts from '@/components/Echarts';
 import { connect } from 'react-redux';
 
-const colors = [];
-const xColors = [];
+const colors: any[] = [];
+const xColors: any[] = [];
 for(let i = 0; i < 24; i++) {
     colors.push('#0BCFC8');
     xColors.push('rgba(255, 255, 255, .85)')
 }
-const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) => {
+
+interface Props {
+	park_id?: string;
+    setStart?: any;
+    setEnd?: any;
+    startIndex?: any;
+    endIndex?: any;
+    getXData?: any
+}
+
+const TimeChart: React.FC<Props> = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) => {
     let [option, setOption] = useState({});
-    let [colorList, setColorList] = useState(colors);
-    let [xFontcolor, setxFontcolor] = useState(xColors);
+    let [colorList] = useState(colors);
+    let [xFontcolor] = useState(xColors);
 
     useEffect(() => {
         getParams(24);
@@ -22,7 +32,7 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
      * 获取柱形图的开始日期和结束日期
      * @param {Number} totalMonth 获取最近totalMonth个月
      */
-    const getParams = (totalMonth) => {
+    const getParams = (totalMonth: any) => {
         let dataArr = [];
         let data = new Date();
         let start = '';
@@ -30,7 +40,7 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
         data.setMonth(data.getMonth() + 1 + 1, 1)//获取到当前月份的后一个月,设置月份
         for (let i = 0; i < totalMonth; i++) {
             data.setMonth(data.getMonth() - 1);//每次循环一次 月份值减1
-            let m = data.getMonth() + 1;
+            let m: any = data.getMonth() + 1;
             m = m < 10 ? "0" + m : m;
             dataArr.push(data.getFullYear() + "-" + m)
         }
@@ -40,7 +50,7 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
     }
 
     // 柱形图options
-    const getOptions = (data, xAxisData) => {
+    const getOptions = (data: any, xAxisData: any) => {
         let option = {
             grid: {
                 left: 0,
@@ -61,7 +71,8 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
                     interval: 0,
                     fontSize: 10,
                     textStyle: {
-                        color: function(value, index) {
+                        color: function(value: any, index: number) {
+                            console.log(value)
                             if (index < startIndex || index > endIndex) {
                                 xFontcolor[index] = 'rgba(255, 255, 255, .12)';
                             } else {
@@ -70,7 +81,7 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
                             return xFontcolor[index]
                         }
                     },
-                    formatter(data, i) {
+                    formatter(data: any, i: number) {
                         let text = data;
                         let arr = text.split('-');
                         // 第一个数据加上 年 月
@@ -98,7 +109,7 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
                     type: 'bar',
                     barWidth: '40%',
                     itemStyle:{
-                        color:function(params){
+                        color:function(params: any){
                             return colorList[params.dataIndex]
                         }
                     },
@@ -110,13 +121,13 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
     }
 
     // 获取数据
-    const getEmissionTimeline = async (start, end) => {
+    const getEmissionTimeline = async (start: any, end: any) => {
         let params = {
             park_id,
             start,
             end
         }
-        await api.GetEmissionTimeline(params).then(res=>{
+        await api.GetEmissionTimeline(params).then((res: any)=>{
             getOptions(res.value, res.key);
             // 传参给父元素
             getXData(res.key)
@@ -133,8 +144,8 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
      * @param {Number} endIndex 结束时间的位置
      * @returns 返回柱形图颜色
      */
-    const modifyColor = (option, startIndex, endIndex, data) => {
-        let colorList = [];
+    const modifyColor = (option: any, startIndex: any, endIndex: any, data: any) => {
+        let colorList: any[] = [];
         let xFontcolor = [];
         for(let i = 0; i < 24; i++) {
             if (i < startIndex || i > endIndex) {
@@ -153,7 +164,7 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
                     type: 'bar',
                     barWidth: '40%',
                     itemStyle:{
-                        color:function(params){
+                        color:function(params: any){
                             return colorList[params.dataIndex]
                         }
                     },
@@ -173,7 +184,7 @@ const TimeChart = ({park_id, setStart, setEnd, startIndex, endIndex, getXData}) 
 }
 
 // 使用connect函数将state和dispatch映射为props
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         start: state.foot.start,
         end: state.foot.end,
@@ -181,10 +192,10 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: any) {
     return {
-        setStart: (value) => dispatch({ type: 'SET_START', value}),
-        setEnd: (value) => dispatch({ type: 'SET_END', value})
+        setStart: (value: any) => dispatch({ type: 'SET_START', value}),
+        setEnd: (value: any) => dispatch({ type: 'SET_END', value})
     };
 }
 

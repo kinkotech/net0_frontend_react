@@ -1,9 +1,16 @@
+import React from 'react';
 import { Menu } from 'antd';
 import { useNavigate} from 'react-router-dom';
 import { connect } from 'react-redux';
 import './index.scss';
 
-const LeftMenu = function(props) {
+type Props = {
+    type: any;
+    list: any[];
+    sidebarFold: boolean;
+    setSidebarFold: ()=>{};
+}
+const LeftMenu: React.FC<Props> = function(props: Props) {
     const { type, list,  sidebarFold, setSidebarFold } = props;
 
     const navigate = useNavigate()
@@ -16,7 +23,7 @@ const LeftMenu = function(props) {
         
     }
 
-    const changeMenu = (e) => {
+    const changeMenu = (e: any) => {
         if(e.key === '/staff') return;
         navigate(e.key, {replace: false})
     };
@@ -24,7 +31,7 @@ const LeftMenu = function(props) {
     return (
         <div className="left-menu h-100">
             <div className={sidebarFold ? 'arrow-icon' : 'arrow-icon collapsed'} onClick={setSidebarFold}>
-                <iconpark-icon  size="18" color="#fff" name='ArrowDownSmall' className="arrow"></iconpark-icon>
+                {/* <iconpark-icon  size="18" color="#fff" name='ArrowDownSmall' className="arrow"></iconpark-icon> */}
             </div>
             {/* <transition> */}
                 {
@@ -34,7 +41,7 @@ const LeftMenu = function(props) {
                             type==='foot' ?
                             <div className="menu-btn pointer" onClick={addFoot}>
                                 <div className="menu-btn-icon">
-                                    <iconpark-icon size="100%" color="#fff" name="Add"></iconpark-icon>
+                                    {/* <iconpark-icon size="100%" color="#fff" name="Add"></iconpark-icon> */}
                                 </div>
                                 <span>添加碳足迹</span>
                             </div>
@@ -75,13 +82,13 @@ const LeftMenu = function(props) {
 }
 
 // 使用connect函数将state和dispatch映射为props
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         sidebarFold: state.foot.sidebarFold
     };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: any) {
     return {
         setSidebarFold: () => dispatch({ type: 'SET_SIDEBAR_FOLD' })
     };

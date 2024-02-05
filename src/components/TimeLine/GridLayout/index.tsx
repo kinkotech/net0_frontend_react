@@ -4,11 +4,24 @@ import RGL, { WidthProvider } from "react-grid-layout";
 import { connect } from 'react-redux';
 import './index.scss';
 
+type Props = {
+	items: any;
+	xData: any[];
+	getStartIndex: (index: number) => void;
+	getEndIndex: (index: number) => void;
+	setStart: (value: any) => void;
+	setEnd: (value: any) => void;
+};
+
+type State = {
+	layout: any;
+  };
+
 const ReactGridLayout = WidthProvider(RGL);
 
 // https://www.jianshu.com/p/fb20bc2cfb0d 参考api地址
 
-class GridLayout extends React.PureComponent {
+class GridLayout extends React.Component<Props, State> {
 	
 	static defaultProps = {
 		className: "layout",
@@ -17,7 +30,7 @@ class GridLayout extends React.PureComponent {
 		cols: 24
 	};
 
-	constructor(props) {
+	constructor(props: Props) {
 		super(props);
 		const layout = this.generateLayout();
 
@@ -31,7 +44,8 @@ class GridLayout extends React.PureComponent {
 	}
 
 	generateDOM() {
-		return _.map(_.range(this.props.items), function (i) {
+		const { items } = this.props;
+		return _.map(_.range(items), function (i: number) {
 			return (
 				<div key={i} >
 					<span className="text"></span>
@@ -43,7 +57,7 @@ class GridLayout extends React.PureComponent {
 	generateLayout() {
 		let xIndex = 11; // 默认从第11个下标开始
 		let containWidth = 12; // 默认显示12个月
-		const p = this.props;
+		const p: any = this.props;
 		// 默认情况下，调整大小图标仅显示在右下（东南）角。 
 		// 's' - South handle (bottom-center)
 		// 'w' - West handle (left-center)
@@ -57,7 +71,7 @@ class GridLayout extends React.PureComponent {
 		// const availableHandles = ["s", "w", "e", "n", "sw", "nw", "se", "ne"];
 		const availableHandles = [ "w", "e"]
 
-		return _.map(new Array(p.items), function (item, i) {
+		return _.map(new Array(p.items), function() {
 			return {
 				x: xIndex,
 				y: 2,
@@ -70,27 +84,31 @@ class GridLayout extends React.PureComponent {
 		});
 	}
 	// 拖拽停止
-	onDragStop(layout) {
+	onDragStop(layout: any) {
+		const { xData, getStartIndex, getEndIndex, setStart, setEnd } = this.props;
+
 		console.log(layout,'onDragStop')
 		let startIndex = layout[0].x;
 		let endIndex = layout[0].x + layout[0].w - 1;
-		this.getStartIndex(startIndex);
-		this.getEndIndex(endIndex)
+		getStartIndex(startIndex);
+		getEndIndex(endIndex)
 		// redux方法
-		this.setStart(this.xData[startIndex]);
-		this.setEnd(this.xData[endIndex])
+		setStart(xData[startIndex]);
+		setEnd(xData[endIndex])
 	}
 
 	// 缩放停止
-	onResizeStop(layout) {
+	onResizeStop(layout: any) {
+		const { xData, getStartIndex, getEndIndex, setStart, setEnd} = this.props;
+
 		console.log(layout,'onResizeStop')
 		let startIndex = layout[0].x;
 		let endIndex = layout[0].x + layout[0].w - 1;
-		this.getStartIndex(startIndex);
-		this.getEndIndex(endIndex)
+		getStartIndex(startIndex);
+		getEndIndex(endIndex)
 		// redux方法
-		this.setStart(this.xData[startIndex]);
-		this.setEnd(this.xData[endIndex])
+		setStart(xData[startIndex]);
+		setEnd(xData[endIndex])
 	}
 
 	render() {
@@ -107,7 +125,7 @@ class GridLayout extends React.PureComponent {
 	}
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         start: state.foot.start,
         end: state.foot.end,
@@ -115,10 +133,10 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: any) {
     return {
-        setStart: (value) => dispatch({ type: 'SET_START', value}),
-        setEnd: (value) => dispatch({ type: 'SET_END', value})
+        setStart: (value: any) => dispatch({ type: 'SET_START', value}),
+        setEnd: (value: any) => dispatch({ type: 'SET_END', value})
     };
 }
 

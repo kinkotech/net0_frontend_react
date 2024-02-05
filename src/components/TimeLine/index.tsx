@@ -12,26 +12,26 @@ const TimeLine = function() {
 	}, [])
 
 	// 获取开始下标
-	const getStartIndex = (i) => {
+	const getStartIndex = (i: number) => {
 		setStartIndex(i)
 	}
 
 	// 获取结束下标
-	const getEndIndex = (i) => {
+	const getEndIndex = (i: number) => {
 		setEndIndex(i)
 	}
 	// 获取x轴坐标key
-	const getXData = (xData) => {
+	const getXData = (xData: any) => {
 		setXData(xData)
 	}
 	
 	return (
 		<div className="time-line w-100">
 			<div className="grid w-100">
-				<GridLayout getStartIndex={index => getStartIndex(index)} getEndIndex={index => getEndIndex(index)} xData={xData}/>
+				<GridLayout getStartIndex={(index: number) => getStartIndex(index)} getEndIndex={(index: number) => getEndIndex(index)} xData={xData}/>
 			</div>
 			<div className="time-chart w-100">
-				<TimeChart startIndex={startIndex} endIndex={endIndex} getXData={xData => getXData(xData)}/>
+				<TimeChart startIndex={startIndex} endIndex={endIndex} getXData={(xData: any) => getXData(xData)}/>
 			</div>
 		</div>
 	)
