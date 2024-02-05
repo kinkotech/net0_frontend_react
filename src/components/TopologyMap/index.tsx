@@ -8,7 +8,8 @@ interface Props {
     server_id: string,
     dayDeviceTypeName: any,
     dayDeviceTypeColor: any,
-    getGraphItem: any
+    getGraphItem: any;
+    item: any
 }
 
 type Item = {

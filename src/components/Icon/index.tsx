@@ -4,3 +4,6 @@
 //         <iconpark-icon size={size || 18} color={color} name={iconName} style={{marginRight: '.1rem'}}></iconpark-icon>
 //     )
 // }
+export default function( ){
+
+}
