@@ -284,16 +284,13 @@ function CenterTop(props: Props) {
 	}
 
 	// 时间切换
-	// const onChange = (props: {dateString: string}) => {
-		// console.log(props.dateString)
-		// props.getDate(props.dateString)
-	// };
-
 	const onChange = (
+		date?: any,
 		dateString?: any
 		) => {
-		props.getDate(dateString)
-	}
+			console.log(date)
+			props.getDate(dateString)
+		}
 
 	// 刷新
 	const refresh = function() {

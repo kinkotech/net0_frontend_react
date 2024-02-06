@@ -18,7 +18,6 @@ function Home() {
     let [pageH, setPageH] = useState(document.getElementById('root')!.offsetHeight);
 
     useEffect(() => {
-        
 		getPark();
     }, [pageH])
 

@@ -22,18 +22,23 @@ class CenterTopRight extends React.Component {
 	}
 
 	// 碳结构右侧数据
-	getUsageByDay = async function(date?: string, serverId?: string) {
-		await api.GetUsageByDay(date, serverId).then(()=>{
-			// this.setState({
-			// 	data: res
-			// }, () => {
-			// 	this.startScrollUp()
-			// })
+	async getUsageByDay(date?: string, serverId?: string) {
+		await api.GetUsageByDay(date, serverId).then((res)=>{
+			this.setState({
+				data: res
+			}, () => {
+				this.startScrollUp()
+			})
 		})
 	}
 
 	scrollUp() {
-		this.state.data.push(this.state.data[0]);
+		console.log(this.state.data,'this.state.data')
+		let arr: any[] = [];
+		arr.push(this.state.data[0])
+		this.setState({
+			data: arr
+		})
 		const element = document.getElementById('scrollList');
 		let height = element && element.getElementsByTagName("li")[0].scrollHeight + 1;
 		this.setState({

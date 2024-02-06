@@ -25,11 +25,11 @@ function LeftTop(props: Props) {
 	let [screen, setScreen] = useState('FullScreen');
 
 	useEffect(() => {
-		// if (date) {
-			getCurrentDate(date || '2023-12-01')
-			getCarbonByDay(date || '2023-12-01');
-			getElectricityByDay(date || '2023-12-01');
-		// }
+		if (date) {
+			getCurrentDate(date)
+			getCarbonByDay(date);
+			getElectricityByDay(date);
+		}
     }, [date])
 
 	// 获取选择的时间

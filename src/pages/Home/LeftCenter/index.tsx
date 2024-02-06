@@ -32,10 +32,10 @@ function LeftCenter(props: Props) {
 	const topEl: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
 	
 	useEffect(() => {
-		// if (date) {
-			getParkByDay(date || '2023-12-01');
+		if (date) {
+			getParkByDay(date);
 			getHeight();
-		// }
+		}
     }, [date, unit])
 
 	// 获取内容高度

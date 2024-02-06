@@ -13,9 +13,9 @@ function LeftBottom(props: Props) {
 	let [option, setOption] = useState({});
 
 	useEffect(() => {
-		// if (date) {
-			getEnergyTypeByDay(date || '2023-12-01')
-		// }
+		if (date) {
+			getEnergyTypeByDay(date)
+		}
 		
     },[date])
 
