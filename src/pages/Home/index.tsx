@@ -2,35 +2,34 @@ import { useState, useEffect } from 'react';
 import { MainLayout } from "@/layout/MainLayout";
 import './index.scss'
 import LeftTop from './LeftTop';
-// import LeftCenter from './LeftCenter';
-// import LeftBottom from './LeftBottom';
-// import CenterTop from './CenterTop';
-// import CenterBottom from './CenterBottom';
-// import RightTop from './RightTop';
-// import RightBottom from './RightBottom';
+import LeftCenter from './LeftCenter';
+import LeftBottom from './LeftBottom';
+import CenterTop from './CenterTop';
+import CenterBottom from './CenterBottom';
+import RightTop from './RightTop';
+import RightBottom from './RightBottom';
 import * as datav from '@jiaminghi/data-view-react';
 import api from '@/api/index';
 
 function Home() {
-    // let [node, setNode] = useState({});
-    let [date] = useState('');
+    let [node, setNode] = useState({});
+    let [date, setDate] = useState('');
     let [parkList, setParkList] = useState([]);
     let [pageH, setPageH] = useState(document.getElementById('root')!.offsetHeight);
 
     useEffect(() => {
-        
 		getPark();
     }, [pageH])
 
     // 获取碳节点
-    // const getNodes = function(node) {
-    //     setNode(node)
-    // }
+    const getNodes = function(node: any) {
+        setNode(node)
+    }
 
     // // 获取时间
-    // const getDate = function(date) {
-    //     setDate(date)
-    // }
+    const getDate = function(date: any) {
+        setDate(date)
+    }
 
     const getPark = async function() {
         await api.GetPark().then((res: any)=>{
@@ -56,27 +55,27 @@ function Home() {
                                 <LeftTop date={date} parkList={parkList} getScreen={() => getScreen()}/>    
                             </div>
                             <div className='border' style={{flex: 1}}>
-                                {/* <LeftCenter date={date}/> */}
+                                <LeftCenter date={date}/>
                             </div>
                         </div>
                         <div style={{flex: 2,margin: '0 .2rem'}}>
                             {/* 通过 getNodes获取子组件传过来的值*/}
-                            {/* <CenterTop getNodes={nodes => getNodes(nodes)} getDate={date => getDate(date)}/> */}
+                            <CenterTop getNodes={(nodes: any) => getNodes(nodes)} getDate={(date: any) => getDate(date)}/>
                         </div>
                         <div className='border flex-1'>
-                            {/* <RightTop date={date} node={node}/> */}
+                            <RightTop date={date} node={node}/>
                         </div>
                     </div>
                     {/* 下 */}
                     <div className='d-flex' style={{height: pageH *.4 }}>
                         <div className='border flex-1'>
-                            {/* <LeftBottom date={date} node={node}/> */}
+                            <LeftBottom date={date}/>
                         </div>
                         <div className='border' style={{flex: 2,margin: '0 .2rem'}}>
-                            {/* <CenterBottom selectDate={date} node={node}/> */}
+                            <CenterBottom selectDate={date} node={node}/>
                         </div>
                         <div className='border flex-1'>
-                            {/* <RightBottom date={date} node={node}/> */}
+                            <RightBottom date={date}/>
                         </div>
                     </div>
                 </div>

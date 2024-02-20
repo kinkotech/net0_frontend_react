@@ -1,0 +1,43 @@
+.left-center {
+    font-size: .16rem;
+    .top {
+		justify-content: space-between;
+		align-items: center;
+		margin: .1rem .2rem 0 0;
+		.title {
+			color: #fff;
+		}
+		.right {
+			display: flex;
+			align-items: center;
+			.sort {
+				align-items: center;
+				padding: .05rem .1rem;
+				margin-right: .1rem;
+				color: #999;
+				border: 1px solid rgba(255, 255, 255, .15);
+				border-radius: .1rem;
+				cursor: pointer;
+				.s1 {
+					vertical-align: middle;
+				}
+			}
+			.sort-icon {
+				width: .25rem;
+				height: .25rem;
+				margin-left: .1rem;
+			}
+		}
+	}
+	.total {
+		padding: 0 .2rem;
+	}
+    &-list {
+		padding: 0 .2rem;
+        height: 80%;
+        overflow: auto;
+        .kiko-progress {
+            margin-top: .2rem;
+        }
+    }
+}

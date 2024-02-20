@@ -8,7 +8,7 @@ import './index.scss';
 interface Props {
 	url?: string
 }
-const Help: React.FC = (prop: Props) => {
+const Help: React.FC<Props> = (prop: Props) => {
 	const { url } = prop;
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	let [iconName, setIconName] = useState(Info)
