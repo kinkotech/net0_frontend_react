@@ -7,6 +7,8 @@ import img4 from '@/assets/img/parkType_img04.jpg';
 // import Title from '@/components/title/index.vue';
 import './index.scss';
 
+const TabPane = Tabs.TabPane;
+
 const ParkType = () => {
 	const items = [
 		{
@@ -36,10 +38,6 @@ const ParkType = () => {
 		}
 	]
 
-	const onChange = (key: any) => {
-		console.log(key);
-	}
-
 	return (
 		<FootLayout>
 			<div className="park-type w-100">
@@ -51,20 +49,26 @@ const ParkType = () => {
 				</div>
 			</div>
 			<div className="park-type-tab">
-				<Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-				{/* <a-tabs :defaultActiveKey="defaultActiveKey" @change="callback">
-					<a-tab-pane :key="item.key" :tab="item.title" v-for="item in tabList">
-						<div className="park-type-tab-content">
-							<div className="park-type-tab-content-left">
-								<div className="park-type-tab-content-left-title">{{ item.title }}</div>
-								<div className="park-type-tab-content-left-content" v-html="item.content"></div>
-							</div>
-							<div className="park-type-tab-content-right">
-								<img :src="item.img" alt="" className="img">
-							</div>
-						</div>
-					</a-tab-pane>
-				</a-tabs> */}
+				{/* <Tabs defaultActiveKey="1" items={items}/> */}
+				<Tabs defaultActiveKey="1">
+					{
+						items.map((item) => {
+							return (
+								<TabPane tab={<span className="customLabelColor">{item.label}</span>} key={item.key}>
+									<div className="park-type-tab-content">
+										<div className="park-type-tab-content-left">
+											<div className="park-type-tab-content-left-title">{ item.label }</div>
+											<div className="park-type-tab-content-left-content" dangerouslySetInnerHTML={{__html: item.children}}/>
+										</div>
+										<div className="park-type-tab-content-right">
+											<img src={item.img} alt="" className="img"/>
+										</div>
+									</div>
+								</TabPane>
+							)
+						})
+					}
+				</Tabs>
 			</div>
 		</div>
 		</FootLayout>
