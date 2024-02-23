@@ -114,7 +114,7 @@ function LeftTop(props: Props) {
 					disabled
 					/>
 				<div className="full-screen-icon" onClick={changeScreen}>
-					{/* <div className="icon"><iconpark-icon size="100%" color="#999" name={screen}></iconpark-icon></div> */}
+					<div className="icon"><iconpark-icon size="100%" color="#999" name={screen}></iconpark-icon></div>
 				</div>
 				<div className="now-date">{ nowDate }</div>
 			</div>

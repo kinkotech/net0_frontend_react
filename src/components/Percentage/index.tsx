@@ -6,7 +6,6 @@ type Props = {
 
 const Percentage = (props: Props) => {
     let {list} = props;
-    console.log(list)
     return (
         <ul className='percentage-bg'>
             {

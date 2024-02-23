@@ -39,8 +39,9 @@ service.interceptors.response.use(
 		if (res.code !== 200) {
 			// 未登录
 			if (res.code === 401) {
+				localStorage.removeItem('token')
 				// store.commit('SET_TOKEN','');
-				// location.href = `${location.origin}/#/login`;
+				location.href = `${location.origin}/login`;
 			} else {
 				message.error(res.message);
 				return;

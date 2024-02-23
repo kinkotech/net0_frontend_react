@@ -501,8 +501,7 @@ function CenterBottom(props: Props) {
 	}
 
 	// 能耗/碳排放
-	const changeTab = function(e: any, type: any, i: number) {
-		console.log(e)
+	const changeTab = function(type: any, i: number) {
 		let arr = tab;
 		arr.forEach((item, index) => {
 			item.isActive = false
@@ -585,7 +584,7 @@ function CenterBottom(props: Props) {
 						{
 							tab.map((item, index) => {
 								return (
-									<div className={item.isActive ? 'item active' : 'item'} key={index} onClick={(e)=> changeTab(e, item.type, index)}>{item.text}</div>
+									<div className={item.isActive ? 'item active' : 'item'} key={index} onClick={()=> changeTab(item.type, index)}>{item.text}</div>
 								)
 							})
 						}

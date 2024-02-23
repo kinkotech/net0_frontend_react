@@ -21,6 +21,7 @@ const Login: React.FC = () => {
 	const onFinish = async (values: any) => {
 		await api.Login(values).then((res: any)=>{
 			if (res.token) {
+				localStorage.setItem('token', res.token);
 				message.success('登录成功');
 				navigate('/', {replace: false})
 			} else {

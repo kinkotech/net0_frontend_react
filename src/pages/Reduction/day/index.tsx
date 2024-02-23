@@ -500,14 +500,14 @@ const ReductionDay: React.FC<Props>  = ({timeUnit, dayDeviceTypeColor, server_id
 												<div className="p1">
 													<div className="name">{ item.title }</div>
 													<div className="icon">
-														{/* {
+														{
 															item.title === '可再生能源' &&
 															<iconpark-icon size="100%" color="#36BFFA" name="TypePurchasedEnergy"/>
 														}
 														{
 															item.title === '光伏' &&
 															<iconpark-icon size="100%" color="#FDB022" name="TypeThunderbolt"/>
-														} */}
+														}
 													</div>
 												</div>
 												{
@@ -539,7 +539,7 @@ const ReductionDay: React.FC<Props>  = ({timeUnit, dayDeviceTypeColor, server_id
 									<div className="p1">
 										<div className="name">环境</div>
 										<div className="icon">
-											{/* <iconpark-icon size="100%" color="#32D583" name="TypeFugitiveEmission"></iconpark-icon> */}
+											<iconpark-icon size="100%" color="#32D583" name="TypeFugitiveEmission"></iconpark-icon>
 										</div>
 									</div>
 									<div className="p2">

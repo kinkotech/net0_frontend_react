@@ -88,7 +88,7 @@ const Title: React.FC<Props> = function(props: Props) {
                 }
                 <div className="screen-icon pointer" onClick={changeScreen}>
                     <div className="icon">
-                        {/* <iconpark-icon size="100%" color="#999" name={screen}></iconpark-icon> */}
+                        <iconpark-icon size="100%" color="#999" name={screen}></iconpark-icon>
                     </div>
                 </div>
                 <div v-if="showCurrentTime" className="time">{ currentTime }</div>

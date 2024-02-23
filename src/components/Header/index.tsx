@@ -1,10 +1,10 @@
+import React from 'react'
 import { Layout, Menu, Dropdown} from 'antd';
 import { useNavigate} from 'react-router-dom';
-import IconPark from '@/components/IconPark';
 import './index.scss';
 const { Header } = Layout;
 
-const HeaderPage = () => {
+const HeaderPage: React.FC = () => {
 	// 获得路由表
 	const navigate = useNavigate();
 
@@ -61,7 +61,7 @@ const HeaderPage = () => {
 			<Header className='header'style={{background: '#222',position: 'relative'}}>
 				<div className="left">
 					<div className="logo">
-						<IconPark className="iconpark-icon" style={{ color: '#0BCFC8', marginRight: '.1rem', fontSize: '100%' }} iconName='logo'></IconPark>
+						<iconpark-icon size="100%" color="#0BCFC8" name="logo"></iconpark-icon>
 					</div>
 					<div className="text fw-600">零碳园区</div>
 				</div>
@@ -83,7 +83,7 @@ const HeaderPage = () => {
 						placement="bottomLeft"
 						trigger={['click']}
 					>
-						<IconPark className="iconpark-icon" style={{ color: '#A1A1A1', marginRight: '.1rem', fontSize: '100%' }} iconName='User'></IconPark>
+						<iconpark-icon size="100%" color="#A1A1A1" name="User"></iconpark-icon>
 					</Dropdown>
 				</div>
 			</Header>
