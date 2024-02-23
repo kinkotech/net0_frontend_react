@@ -2,6 +2,7 @@ import {
     createBrowserRouter
 } from "react-router-dom";
 import Home from '@/pages/Home';
+import Login from '@/pages/Login';
 import FootBoard from '@/pages/Foot/Board';
 import FootList from "@/pages/Foot/List";
 import FootAdd from '@/pages/Foot/Add';
@@ -16,6 +17,10 @@ const Router = createBrowserRouter([
     {
         path: "/",
         element: <Home/>,
+    },
+    {
+        path: "login",
+        element: <Login/>,
     },
     {
         path: "foot",
